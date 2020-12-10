@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+}
+.wrapper{
+    width: 100%;
+    height: 100%;
+}
+.top_navbar{
+    background: #80cbc4;
+    height: 60px;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.top_navbar .hamburger{
+    width: 80px;
+    background: #004da0;
+    position: relative;
+    font-size: 28px;
+}
+
+.top_navbar .hamburger .hamburger__inner{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    width: 40px;
+    height: 20px;
+}
+
+.top_navbar .hamburger .hamburger__inner > div{
+    width: 30px;
+    height: 2px;
+    background: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.top_navbar .hamburger .hamburger__inner div.two{
+    top: 10px;
+    width: 40px;
+}
+
+.top_navbar .hamburger .hamburger__inner div.three{
+    top: 20px;
+}
+
+.top_navbar .menu{
+    width: calc(100% - 80px);
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:  0 20px;
+}
+
+.top_navbar .menu .logo{
+    color: #004d40;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.top_navbar .menu .right_menu ul li{
+    position: relative;
+}
+
+.top_navbar .menu .right_menu ul li .fas{
+    font-size: 22px;
+    cursor: pointer;
+    cursor: #004d40;
+}
+
+.top_navbar .menu .right_menu ul li .profile_dd{
+    position: absolute;
+    top: 35px;
+    right: -10px;
+    background: #ffffff;
+    width: 180px;
+    padding: 10px 0;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    user-select: none;
+    display: none;
+}
+
+.top_navbar .menu .right_menu ul li .profile_dd .dd_item{
+    padding: 10px;
+    cursor: pointer;
+    cursor: #004d40;
+}
+
+.top_navbar .menu .right_menu ul li .profile_dd .dd_item:hover{
+    background: #e0f2f1;
+}
+
+.top_navbar .menu .right_menu ul li .profile_dd::before{
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: 10px;
+    border: 10px solid;
+    border-color: transparent transparent #ffffff transparent;
+}
+
+.top_navbar .menu .right_menu ul li .profile_dd.active{
+    display: block;
+}
+
+.main_container .sidebar{
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 225px;
+    height: 100%;
+    background: #004d40;
+    transition: all 0.3s ease;
+}
+
+.main_container .sidebar .sidevar__inner{
+    position: relative;
+
+}
+
+.main_container .sidebar .profile{
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    padding: 20px 0;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.main_container .sidebar .profile .img img{
+    width: 45px;
+    margin: 0 10px;
+}
+
+.main_container .sidebar .profile p:first-child{
+    font-size: 14px;
+    color: #80cbc4;
+    margin-bottom: 3px;
+}
+
+.main_container .sidebar ul li a{
+    color: #ffffff;
+    font-size: 18px;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1px;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.main_container .sidebar ul li a .icon{
+    margin-right: 15px;
+    font-size: 20px;
+}
+
+.main_container .sidebar ul li a span{
+    display: inline-block;
+}
+.main_container .sidebar ul li a:hover,
+.main_container .sidebar ul li a.active{
+    background: #ffffff;
+    color: #004d40;
+}
+
+.main_container .container{
+    margin-top: 60px;
+    width: calc(100% - 225px);
+    margin-left: 225px;
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+.main_container .container .item{
+    border: 1px solid #e0f2f1; 
+    margin-bottom: 30px;
+    padding: 20px;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+.wrapper.active .sidebar{
+    width: 80px;
+}
+
+.wrapper.active .sidebar ul li a span.title,
+.wrapper.active .sidebar .profile{
+    display: none;
+}
+
+.wrapper.active .main_container .container{
+    width: calc(100% - 80px);
+    margin-left: 80px;
+}
