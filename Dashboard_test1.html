@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>SideBar Menu</title>
+	<title>Data Center Monitoring Dashboard</title>
 	<link rel="stylesheet" href="/css/style.css">
 	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -16,7 +16,8 @@
 			   $(".profile_dd").toggleClass("active");
 			});
 		})
-	</script>
+  </script>
+
 </head>
 <body>
 
@@ -30,12 +31,16 @@
        </div>
     </div>
     <div class="menu">
+       <!-- <div class="img"> -->
+          
+        <!-- </div> -->
       <div class="logo">
-        data center monitoring Dashboard
+        <img src="images/logo3.png" alt="" width="100px">
+        <p>data center monitoring Dashboard</p>
       </div>
       <div class="right_menu">
         <ul>
-          <li><i class="fas fa-user"></i>
+          <li><i class="fas fa-user-cog" style="color: white;"></i>
             <div class="profile_dd">
                <div class="dd_item">Profile</div>
                <div class="dd_item">Change Password</div>
@@ -52,7 +57,8 @@
           <div class="sidebar__inner">
             <div class="profile">
               <div class="img">
-                <img src="user5.png" alt="profile_pic">
+                <!-- <img src="user5.png"  alt="profile_pic"> -->
+                <i class="fas fa-user" style="color: white;"></i>
               </div>
               <div class="profile_info">
                  <p>Welcome</p>
@@ -115,10 +121,56 @@
         <div class="item">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque, molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum eligendi laudantium placeat aspernatur! Quos dolorum unde officiis labore est animi excepturi neque, provident, inventore nobis expedita facilis aspernatur, nihil in atque?
         </div>
+        <section class="accordion">
+          <section class="accordion-tabs">
+            <button class="accordion-tab accodion-active" data-actab-group="0" data-actab-id="0">Tab1</button>
+            <button class="accordion-tab " data-actab-group="0" data-actab-id="1">Tab2</button>
+            <button class="accordion-tab " data-actab-group="0" data-actab-id="2">Tab3</button>
+            <button class="accordion-tab " data-actab-group="0" data-actab-id="3">Tab4</button>
+            <button class="accordion-tab " data-actab-group="0" data-actab-id="4">Tab5</button>
+          </section>
+          <section class="accordion-content"></section>
+              <article class="accordion-item accordion-active" data-actab-group="0" data-actab-id="0">
+                  <h4 class="accordion-item__label">Tab1</h4>
+                  <div class="accordion-item__container">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem ipsa consequuntur, 
+                      officiis harum labore doloremque esse laudantium quibusdam minus 
+                      sit sunt voluptates qui nam doloribus minima facere neque cum quae!</p>
+                  </div>
+              </article>
+              <article class="accordion-item" data-actab-group="0" data-actab-id="1">
+                  <h4 class="accordion-item__label">Tab2</h4>
+                  <div class="accordion-item__container">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem ipsa consequuntur, 
+                      officiis harum labore doloremque esse laudantium quibusdam minus sit </p>
+                  </div>
+              </article>
+              <article class="accordion-item" data-actab-group="0" data-actab-id="2">
+                  <h4 class="accordion-item__label">Tab3</h4>
+                  <div class="accordion-item__container">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem ipsa consequuntur, </p>
+                  </div>
+              </article>
+              <article class="accordion-item" data-actab-group="0" data-actab-id="3">
+                  <h4 class="accordion-item__label">Tab4</h4>
+                  <div class="accordion-item__container">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem ipsa consequuntur, 
+                      officiis harum labore doloremque esse laudantium quibusdam minus  </p>
+                  </div>
+              </article>
+              <article class="accordion-item" data-actab-group="0" data-actab-id="4">
+                  <h4 class="accordion-item__label">Tab5</h4>
+                  <div class="accordion-item__container">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                  </div>
+              </article>
+            
+        </section>
+        <p>Scale down the browser to view the mobile version</p>
       </div>
   </div>
   
 </div>	
-
+<script src="script.js"></script>
 </body>
 </html>
