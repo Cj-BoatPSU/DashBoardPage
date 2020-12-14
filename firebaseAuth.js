@@ -22,53 +22,51 @@ firebase.initializeApp(firebaseConfig);
 //     }
 //   });
 // }
-// const rmCheck = document.getElementById("rememberMe"),
-// var userEmail = document.getElementById("email_field").value;
-// if (localStorage.checkbox && localStorage.checkbox !== "") {
-// rmCheck.setAttribute("checked", "checked");
-// userEmail.value = localStorage.username;
-// } else {
-// rmCheck.removeAttribute("checked");
-// userEmail.value = "";
-// }
+const rmCheck = document.getElementById("rememberMe");
+const emailInput = document.getElementById("email_field");
 
+if (localStorage.checkbox && localStorage.checkbox !== "") {
+rmCheck.setAttribute("checked", "checked");
+emailInput.value = localStorage.username;
+} else {
+rmCheck.removeAttribute("checked");
+emailInput.value = "";
+}
 function login() {
-
+    //IsRememberMe
+    if (rmCheck.checked && emailInput.value !== "") {
+        localStorage.username = emailInput.value;
+        localStorage.checkbox = rmCheck.value;
+      } else {
+        localStorage.username = "";
+        localStorage.checkbox = "";
+      }
     var userEmail = document.getElementById("email_field").value;
     var userPW = document.getElementById("password_field").value;
-  
     console.log(userEmail + "      " + userPW);
     firebase.auth().signInWithEmailAndPassword(userEmail, userPW)
         .then((user) => {
-           console.log("login success!!!!");
-           window.location.href="Dashboard_test1.html";
+            console.log("login success!!!!");
+            window.location.href = "Dashboard_test1.html";
         })
         .catch((error) => {
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log(errorMessage);
         });
-    
-    // function lsRememberMe() {
-    //   if (rmCheck.checked && userEmail.value !== "") {
-    //     localStorage.username = userEmail.value;
-    //     localStorage.checkbox = rmCheck.value;
-    //   } else {
-    //     localStorage.username = "";
-    //     localStorage.checkbox = "";
-    //   }
-    // }
+
+
 
 
 }
 
 function logout() {
-    firebase.auth().signOut().then(function() {
-        // Sign-out successful.
+    firebase.auth().signOut().then(function () {
         console.log("Sign-out successful");
-        window.location.href="LoginPage.html"
-      }).catch(function(error) {
+        window.location.href = "LoginPage.html"
+    }).catch(function (error) {
         console.log(error);
-      });
-      
+    });
+
 }
+
