@@ -4,7 +4,7 @@ const tabs = document.querySelectorAll('.accordion-tab');
 function toggleShow() {
     const target = this;
     const item = target.classList.contains("accordion-tab") ? target : target.parentElement;
-    console.log(target);
+    console.log(target.parentElement);
     const group = item.dataset.actabGroup;
     const id = item.dataset.actabId;
 
@@ -38,3 +38,15 @@ labels.forEach(function(label) {
 tabs.forEach(function(tab) {
     tab.addEventListener('click', toggleShow);
 })
+
+var header = document.getElementById("item_tabs");
+var btns = header.getElementsByClassName("btn");
+console.log(btns);
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener('click', function() {
+  var current = document.getElementsByClassName("active");
+  current[0].className = current[0].className.replace(" active", "");
+  this.className += " active";
+  });
+}
+

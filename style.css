@@ -51,6 +51,7 @@
 }
 .accordion-active {
     background: rgba(68, 127, 255, 0.1);
+   
 }
 .accordion-active .accordion-item__label {
     padding-bottom: 0;
@@ -112,7 +113,8 @@
         border-right: 0;
     }
     .accordion-tabs .accordion-tab.accordion-active {
-        background: #f9f9f9;
+        /* background: #f9f9f9; */
+        background: red;
     }
     .accordion-item {
         padding: 2.4rem;

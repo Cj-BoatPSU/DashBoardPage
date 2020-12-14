@@ -130,9 +130,8 @@
     transition: all 0.3s ease;
 }
 
-.main_container .sidebar .sidevar__inner{
+.main_container .sidebar .sidebar__inner{
     position: relative;
-
 }
 
 .main_container .sidebar .profile{
@@ -152,7 +151,7 @@
 
 .main_container .sidebar .profile p:first-child{
     font-size: 14px;
-    color: #0466C8; /*change*/
+    color: #0466C8; 
     margin-bottom: 3px;
 }
 
@@ -167,16 +166,16 @@
     transition: all 0.3s ease;
 }
 
-.main_container .sidebar ul li a .icon{
+.main_container .sidebar ul li a .icon {
     margin-right: 15px;
     font-size: 20px;
 }
 
-.main_container .sidebar ul li a span{
+.main_container .sidebar ul li a span {
     display: inline-block;
 }
 .main_container .sidebar ul li a:hover,
-.main_container .sidebar ul li a.active{
+.main_container .sidebar ul li a.active, .active {
     background: #ffffff;
     color: #001233;
 }
@@ -187,7 +186,6 @@
     margin-left: 225px;
     padding: 30px;
     transition: all 0.3s ease;
-    /* background-color: #A9D6E5; */
 }
 
 .main_container .container .item{
@@ -196,7 +194,6 @@
     padding: 20px;
     font-size: 14px;
     line-height: 22px;
-    /* color: #ffffff; */
 }
 
 .wrapper.active .sidebar{
