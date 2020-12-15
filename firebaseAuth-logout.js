@@ -15,13 +15,9 @@ function logout() {
 function checkAuth() {
     console.log("checkAuth function");
     console.log(localStorage.getItem("check-auth"));
-    console.log(sessionStorage.getItem("check-auth"));
-    console.log(typeof(sessionStorage.getItem("check-auth")));
-    if(localStorage.getItem("check-auth") === "true"){
-        console.log("Auth");
-    }else {
-        console.log("not Auth");
+    if(localStorage.getItem("check-auth") === "false"){
+        console.log(" no Auth");
         window.location.href = "LoginPage.html";
-    }
+    } 
 }
 

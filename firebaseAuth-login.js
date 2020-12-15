@@ -46,14 +46,8 @@ function login() {
 function checkAuth() {
     console.log("checkAuth function");
     console.log(localStorage.getItem("check-auth"));
-    console.log(typeof(sessionStorage.getItem("check-auth")));
-    temp = sessionStorage.getItem("check-auth");
     if(localStorage.getItem("check-auth") === "true"){
         console.log("Auth");
         window.location.href = "Dashboard_test1.html";
-        location.assign("Dashboard_test1.html");
-    }
-    else {
-        console.log("not Auth");
     }
 }
