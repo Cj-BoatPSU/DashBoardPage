@@ -2,6 +2,15 @@
 
 window.onloadstart = checkAuth();
 
+const firebaseConfig = {
+    apiKey: FIREBASE_CONFIG.apiKey,
+    authDomain: FIREBASE_CONFIG.authDomain,
+    projectId: FIREBASE_CONFIG.projectId,
+    storageBucket: FIREBASE_CONFIG.storageBucket,
+    messagingSenderId: FIREBASE_CONFIG.messagingSenderId,
+    appId: FIREBASE_CONFIG.appId
+};
+firebase.initializeApp(firebaseConfig);
 
 const rmCheck = document.getElementById("rememberMe");
 const emailInput = document.getElementById("email_field");
@@ -45,7 +54,10 @@ function login() {
 
 function checkAuth() {
     console.log("checkAuth function");
-    console.log(localStorage.getItem("check-auth"));
+    // console.log(localStorage.getItem("check-auth"));
+    // console.log( dbHost);
+    console.log(FIREBASE_CONFIG.projectId);
+    console.log("--------------");
     if(localStorage.getItem("check-auth") === "true"){
         console.log("Auth");
         window.location.href = "Dashboard_test1.html";
