@@ -187,13 +187,16 @@
     padding: 30px;
     transition: all 0.3s ease;
 }
-
+#item-1 {
+    display: block;
+}
 .main_container .container .item{
     border: 1px solid #e0f2f1; 
     margin-bottom: 30px;
     padding: 20px;
     font-size: 14px;
     line-height: 22px;
+    display: none;
 }
 
 .wrapper.active .sidebar{
