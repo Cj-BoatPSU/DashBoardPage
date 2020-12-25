@@ -1,0 +1,82 @@
+<!-- @trevorstarick 	starick.me -->
+<!--  GitHub-Event-Map v1.0.0  -->
+<!--  do what you want with this. -->
+<!-- my code sucks. deal with it. -->
+<!-- 	          have fun :)	     -->
+
+<html>
+<!-- START CRAPPY CODE -->
+<head>
+	<!-- HEADER AND CSS/JS STUFF -->
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="initial-scale=1.0, width=1024" />
+	<title>GitHub Events Map</title>
+	<link  rel="stylesheet" type="text/css" href="http://meyerweb.com/eric/tools/css/reset/reset.css" />
+	<link  rel="stylesheet" type="text/css" href="stylesheet.css" />
+	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+	<!-- CODE AND DESIGN SHIT -->
+	<div id="top">
+		<img id="github-logo"src="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/GitHub-Mark.png?1366128846">
+		<h1>GitHub Event Map</h1>
+		<p>Maps out GitHub Events such as <font color="66D9EF">Fork</font>, <font color="4271AE">Pull</font> and <font color="AE81FF">Push</font> requests, <font color="A6E22E">Creation</font>, <font color="FD971F">Publication</font> and <font color="F92672">Deletion</font> of repos and, <font color="E6DB74">Commenting</font></p>
+	</div>
+	<div id="container"><canvas id="canvas"></canvas></div>
+	<div id='bottom'><div id="footer"><p style="z-index: -1"><a href="http://starick.me">@trevorstarick</a></p></div></div>
+</body>
+
+<!-- JAVASCRIPTING STUFF -->
+
+<script>
+	//CANVAS SHIT
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext("2d");
+	var longitude, latitude, city;
+</script>
+<script>
+	//SOCKET.IO SHIT
+	var socket = io.connect('http://localhost:3000');
+	socket.on('data', function(data) {
+		latitude = parseFloat(data['latitude']);
+		longitude = parseFloat(data['longitude']);
+		city = data['city'];
+		action = data['action'];
+		sumLongitude = longitude + canvas.width/2;
+		sumLatitude = latitude + canvas.height/2;
+		console.log(latitude+', '+longitude+', '+city+', '+action);
+		//SCHEME MONOKAI
+		switch (action){
+			case 'CreateEvent':
+				ctx.fillStyle = "rgb(166,226,46)";
+				break;
+			case 'DeleteEvent':
+				ctx.fillStyle = "rgb(249,38,114)";
+				break;
+			case 'ForkEvent':
+				ctx.fillStyle = "rgb(102,217,239)";
+				break;
+			case 'IssueCommentEvent':
+				ctx.fillStyle = "rgb(230,219,116)";
+				break;
+			case 'IssuesEvent':
+				ctx.fillStyle = "rgb(230,219,116)";
+				break;
+			case 'PublicEvent':
+				ctx.fillStyle = "rgb(253,151,31)";
+				break;
+			case 'PullRequestEvent':
+				ctx.fillStyle = "rgb(66, 113, 174)";
+				break;
+			case 'PushEvent':
+				ctx.fillStyle = "rgb(174,129,255)";
+				break;
+			default:
+				ctx.fillStyle = "rgb(0, 0, 0)";
+		}
+		ctx.fillRect(canvas.width/2+((longitude/180)*(canvas.width/2)),canvas.height/2-((latitude/90)*(canvas.height/2)),2,2)
+	});
+</script>
+<!-- END CRAPPY CODE -->
+</html>

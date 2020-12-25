@@ -1,5 +1,3 @@
-
-
 window.onloadstart = checkAuth();
 
 const firebaseConfig = {
@@ -22,6 +20,7 @@ if (localStorage.checkbox && localStorage.checkbox !== "") {
     rmCheck.removeAttribute("checked");
     emailInput.value = "";
 }
+
 function login() {
     //IsRememberMe
     if (rmCheck.checked && emailInput.value !== "") {
@@ -58,7 +57,7 @@ function checkAuth() {
     // console.log( dbHost);
     console.log(FIREBASE_CONFIG.projectId);
     console.log("--------------");
-    if(localStorage.getItem("check-auth") === "true"){
+    if (localStorage.getItem("check-auth") === "true") {
         console.log("Auth");
         window.location.href = "Dashboard_test1.html";
     }

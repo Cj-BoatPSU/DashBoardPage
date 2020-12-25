@@ -2,44 +2,46 @@
     font-family: 'Roboto', sans-serif;
 }
 
-body{
+body {
     /* background-color: #151E3D; */
     /* background-image: linear-gradient( #151E3D, #2b3252);#151E3D, #2b3252 */
-    background-image: linear-gradient(to bottom right, #000428 , #004e92);
+    background-image: linear-gradient(to bottom right, #000428, #004e92);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
 }
 
-.title{
+.title {
     margin-top: 30px;
     text-align: center;
     font-size: 60px;
     /* font-family: 'Texturina', serif; */
     font-family: 'Patua One', cursive;
 }
-.sub-title{
+
+.sub-title {
     text-align: center;
     font-size: 45px;
 }
 
-.login-div{
-    margin:auto;
+.login-div {
+    margin: auto;
     width: 500px;
     /* background-color: #dcd4c0; */
     padding: 60px;
     border-radius: 30px;
 }
-.logo{
+
+.logo {
     margin-top: 50px;
     text-align: center;
 }
 
-.form{
+.form {
     width: 100%;
 }
 
-.form input{
+.form input {
     font-size: 18px;
     padding: 10px 20px 10px 5px;
     border: none;
@@ -47,15 +49,16 @@ body{
     background: none;
 }
 
-.username, .password{
+.username,
+.password {
     display: block;
     border-radius: 30px;
-    border: 1px solid rgba(255,255,255);
+    border: 1px solid rgba(255, 255, 255);
     padding: 10px;
     margin: 10px 0;
 }
 
-.form svg{
+.form svg {
     height: 25px;
     margin-bottom: -5px;
     margin-left: 10px;
@@ -63,21 +66,21 @@ body{
     fill: #ffffff;
 }
 
-.option{
+.option {
     display: flex;
-    padding:  5px 0px;
+    padding: 5px 0px;
     margin-bottom: 30px;
 }
 
-button.signin-btn{
+button.signin-btn {
     width: 100%;
     padding: 12px 10px;
-    border: 1px solid rgba(0, 0,0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.2);
     font-size: 18px;
     border-radius: 30px;
 }
 
-button.signin-btn:hover{
+button.signin-btn:hover {
     /* color:gray; */
     box-shadow: 2px 2px 3px 0 #ffffff;
 }

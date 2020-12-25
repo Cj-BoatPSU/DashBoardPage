@@ -2,149 +2,182 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Data Center Monitoring Dashboard</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script>
-    $(document).ready(function () {
-      $(".hamburger .hamburger__inner").click(function () {
-        $(".wrapper").toggleClass("active")
-      })
+    <meta charset="UTF-8">
+    <title>Data Center Monitoring Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".hamburger .hamburger__inner").click(function() {
+                $(".wrapper").toggleClass("active")
+            })
 
-      $(".top_navbar .fas").click(function () {
-        $(".profile_dd").toggleClass("active");
-      });
+            $(".top_navbar .fas").click(function() {
+                $(".profile_dd").toggleClass("active");
+            });
 
-    });
-  </script>
-  <script type="text/javascript" src="modules/config.js"></script>
+        });
+    </script>
+    <script type="text/javascript" src="modules/config.js"></script>
 </head>
 
 <body>
-  <!--onload="checkAuth()"-->
-  <div class="wrapper">
-    <div class="top_navbar">
-      <div class="hamburger">
-        <div class="hamburger__inner">
-          <div class="one"></div>
-          <div class="two"></div>
-          <div class="three"></div>
-        </div>
-      </div>
-      <div class="menu">
-        <div class="logo">
-          <img src="images/logo3.png" alt="" width="100px">
-          <p>data center monitoring Dashboard</p>
-        </div>
-        <div class="right_menu">
-          <ul>
-            <li><i class="fas fa-user-cog" style="color: white;"></i>
-              <div class="profile_dd">
-                <div class="dd_item">Profile</div>
-                <div class="dd_item" onclick="logout()">Logout</div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="main_container">
-      <div class="sidebar">
-        <div class="sidebar__inner">
-          <div class="profile">
-            <div class="img">
-              <i class="fas fa-user" style="color: white;"></i>
+    <!--onload="checkAuth()"-->
+    <div class="wrapper">
+        <div class="top_navbar">
+            <div class="hamburger">
+                <div class="hamburger__inner">
+                    <div class="one"></div>
+                    <div class="two"></div>
+                    <div class="three"></div>
+                </div>
             </div>
-            <div class="profile_info">
-              <p>Welcome</p>
-              <p class="profile_name">CjBoat</p>
+            <div class="menu">
+                <div class="logo">
+                    <img src="images/logo3.png" alt="" width="100px">
+                    <p>data center monitoring Dashboard</p>
+                </div>
+                <div class="right_menu">
+                    <ul>
+                        <li><i class="fas fa-user-cog" style="color: white;"></i>
+                            <div class="profile_dd">
+                                <!-- <div class="dd_item" onclick="toggle_contents('btn-6')">Profile setting</div> -->
+                                <div class="dd_item" onclick="logout()">Logout</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
-          </div>
-          <div id="item_tabs">
-            <ul>
-              <li>
-                <a href="#" class="btn active" id="btn-1"> <!--onclick="sidemenu_click()"-->
-                  <span class="icon"><i class="fas fa-dice-d6"></i></span>
-                  <span class="title">Dashboard</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="btn" id="btn-2">
-                  <span class="icon"><i class="fas fa-chart-pie"></i></span>
-                  <span class="title">Charts</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="btn" id="btn-3">
-                  <span class="icon"><i class="fas fa-bullhorn"></i></span> <!--<i class="fab fa-delicious"></i>-->
-                  <span class="title">Alert</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="btn" id="btn-4">
-                  <span class="icon"><i class="fas fa-cog"></i></span>
-                  <span class="title">Config</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="btn"  id="btn-5">
-                  <span class="icon"><i class="fas fa-user-edit"></i></span>
-                  <span class="title">Profile</span>
-                </a>
-              </li>
-            </ul>
-          </div>
         </div>
-      </div>
-      <div class="container">
-        <div class="item" id="item-1">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque,
-          molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum
-          eligendi laudantium placeat aspernatur! Quos dolorum unde officiis labore est animi excepturi neque,
-          provident, inventore nobis expedita facilis aspernatur, nihil in atque?
-          <strong>item-1</strong>
-        </div>
-        <div class="item" id="item-2">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque,
-          molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum
-          eligendi laudantium placeat aspernatur! Quos dolorum unde officiis labore est animi excepturi neque,
-          provident, inventore nobis expedita facilis aspernatur, nihil in atque?
-          <strong>item-2</strong>
-        </div>
-        <div class="item" id="item-3">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque,
-          molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum
-          eligendi laudantium placeat aspernatur! Quos dolorum unde officiis labore est animi excepturi neque,
-          provident, inventore nobis expedita facilis aspernatur, nihil in atque?
-          <strong>item-3</strong>
-        </div>
-        <div class="item" id="item-4">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque,
-          molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum
-          eligendi laudantium placeat aspernatur! Quos dolorum unde officiis labore est animi excepturi neque,
-          provident, inventore nobis expedita facilis aspernatur, nihil in atque?
-          <strong>item-4</strong>
-        </div>
-        <div class="item" id="item-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque,
-          molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum
-          eligendi laudantium placeat aspernatur! Quos dolorum unde officiis labore est animi excepturi neque,
-          provident, inventore nobis expedita facilis aspernatur, nihil in atque?
-          <strong>item-5</strong>
-        </div>
-      
-        <!-- <iframe src="demo_iframe.htm" name="iframe_a" height="400px" width="100%" title="Iframe Example" id="iframe_test"></iframe> -->
-      </div>
-    </div>
 
-  </div>
-  <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
-  <script src="script.js"></script>
-  <script src="firebaseAuth-logout.js"></script>
+        <div class="main_container">
+            <div class="sidebar">
+                <div class="sidebar__inner">
+                    <div class="profile">
+                        <div class="img">
+                            <i class="fas fa-user" style="color: white;"></i>
+                        </div>
+                        <div class="profile_info">
+                            <p>Welcome</p>
+                            <p class="profile_name">CjBoat</p>
+                        </div>
+                    </div>
+                    <div id="item_tabs">
+                        <ul>
+                            <li>
+                                <a href="#" class="btn active" id="btn-1">
+                                    <!--onclick="sidemenu_click()"-->
+                                    <span class="icon"><i class="fas fa-dice-d6"></i></span>
+                                    <span class="title">Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="btn" id="btn-2">
+                                    <span class="icon"><i class="fas fa-chart-pie"></i></span>
+                                    <span class="title">Charts</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="btn" id="btn-3">
+                                    <span class="icon"><i class="fas fa-history"></i></span>
+                                    <span class="title">History</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="btn" id="btn-4">
+                                    <span class="icon"><i class="fas fa-bullhorn"></i></span>
+                                    <!--<i class="fab fa-delicious"></i>-->
+                                    <span class="title">Alert</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="btn" id="btn-5">
+                                    <span class="icon"><i class="fas fa-cog"></i></span>
+                                    <span class="title">Config</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="btn" id="btn-6">
+                                    <span class="icon"><i class="fas fa-user-edit"></i></span>
+                                    <span class="title">Profile</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="item" id="item-1">
+                    <canvas id="myCanvas"></canvas>
+                </div>
+                <div class="item" id="item-2">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque, molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum eligendi laudantium placeat aspernatur!
+                    Quos dolorum unde officiis labore est animi excepturi neque, provident, inventore nobis expedita facilis aspernatur, nihil in atque?
+                    <strong>item-2</strong><br>
+                </div>
+                <div class="item" id="item-3">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque, molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum eligendi laudantium placeat aspernatur!
+                    Quos dolorum unde officiis labore est animi excepturi neque, provident, inventore nobis expedita facilis aspernatur, nihil in atque?
+                    <strong>item-3</strong>
+                </div>
+                <div class="item" id="item-4">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque, molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum eligendi laudantium placeat aspernatur!
+                    Quos dolorum unde officiis labore est animi excepturi neque, provident, inventore nobis expedita facilis aspernatur, nihil in atque?
+                    <strong>item-4</strong>
+                </div>
+                <div class="item" id="item-5">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque, molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum eligendi laudantium placeat aspernatur!
+                    Quos dolorum unde officiis labore est animi excepturi neque, provident, inventore nobis expedita facilis aspernatur, nihil in atque?
+                    <strong>item-5</strong>
+                </div>
+                <div class="item" id="item-6">
+                    <div class="profile-edit">
+                        <div class="profile-agile">
+                            <form action="#" method="GET">
+                                <h1>Profile Setting</h1>
+                                <div class="form-control">
+                                    <label class="header">First Name :</label>
+                                    <input type="text" id="store_firstname" name="store_name" placeholder="FirstName" title="Please enter your First Name" required="">
+                                </div>
+
+                                <div class="form-control">
+                                    <label class="header">Last Name :</label>
+                                    <input type="text" id="store_lastname" name="store_type" placeholder="LastName" title="Please enter your Last Name" required="">
+                                </div>
+
+                                <div class="form-control">
+                                    <label class="header">Contact Email :</label>
+                                    <input type="email" id="store_contactEmail" name="owner_type" placeholder="Email" title="Please enter a valid email" required="">
+                                </div>
+
+                                <div class="form-control">
+                                    <label class="header">Contact Number :</label>
+                                    <input type="text" id="store_contactNumber" name="website" placeholder="PhoneNumber" id="password1" required="">
+                                </div>
+                                <div class="save-info-div" id="save-info">
+                                    <input type="button" class="btnsave-info" value="save" onclick="updateProfile()">
+                                </div>
+                                <div class="change-info-div" id="change-info">
+                                    <input type="button" class="btnchange-info" value="change" onclick="changeProfile()">
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <iframe src="demo_iframe.htm" name="iframe_a" height="400px" width="100%" title="Iframe Example" id="iframe_test"></iframe> -->
+            </div>
+        </div>
+
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-firestore.js"></script>
+    <!-- <script src="script.js"></script> -->
+    <script src="firebaseAuth-logout.js"></script>
+    <!-- <script src="canvas_heatmap.js"></script> -->
 </body>
 
 </html>
