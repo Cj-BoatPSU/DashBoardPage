@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script>
         $(document).ready(function() {
             $(".hamburger .hamburger__inner").click(function() {
@@ -20,6 +21,7 @@
         });
     </script>
     <script type="text/javascript" src="modules/config.js"></script>
+    <script src="circleDonutChart.js"></script>
 </head>
 
 <body>
@@ -39,14 +41,9 @@
                     <p>data center monitoring Dashboard</p>
                 </div>
                 <div class="right_menu">
-                    <ul>
-                        <li><i class="fas fa-user-cog" style="color: white;"></i>
-                            <div class="profile_dd">
-                                <!-- <div class="dd_item" onclick="toggle_contents('btn-6')">Profile setting</div> -->
-                                <div class="dd_item" onclick="logout()">Logout</div>
-                            </div>
-                        </li>
-                    </ul>
+                    <button type="button" class="btn btn-default btn-sm" onclick="logout()">
+                        <span class="log-out"><i class="fas fa-sign-out-alt"></i></span> Logout
+                      </button>
                 </div>
             </div>
         </div>
@@ -112,9 +109,31 @@
                     <canvas id="myCanvas"></canvas>
                 </div>
                 <div class="item" id="item-2">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque, molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum eligendi laudantium placeat aspernatur!
-                    Quos dolorum unde officiis labore est animi excepturi neque, provident, inventore nobis expedita facilis aspernatur, nihil in atque?
-                    <strong>item-2</strong><br>
+                    <!-- <canvas id="myChart"></canvas> -->
+                    <!-- <div class="layout-chart" id="example"><p>Position : front Rack</p></div> -->
+                    <!-- <div class="layout-chart" id="example2"></div> -->
+                    <div class="gauge">
+                        <div class="gauge__body">
+                            <div class="gauge__fill"></div>
+                            <div class="gauge__cover"></div>
+
+                        </div>
+                        <span class="sc-min">0</span>
+                        <span class="sc-max">75</span>
+                        <span class="sc-name">Sensor1</span>
+                    </div>
+                    <!-- <div class="gauge">
+                        <div class="gauge__body">
+                            <div class="gauge__fill"></div>
+                            <div class="gauge__cover"></div>
+
+                        </div>
+                        <span class="sc-min">0</span>
+                        <span class="sc-max">75</span>
+                        <span class="sc-name">Sensor1</span>
+                    </div> -->
+
+
                 </div>
                 <div class="item" id="item-3">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque, molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum eligendi laudantium placeat aspernatur!
@@ -176,7 +195,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-firestore.js"></script>
     <!-- <script src="script.js"></script> -->
-    <script src="firebaseAuth-logout.js"></script>
+    <script src="DashboardScript.js"></script>
     <!-- <script src="canvas_heatmap.js"></script> -->
 </body>
 

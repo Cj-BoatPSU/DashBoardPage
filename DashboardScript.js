@@ -10,17 +10,29 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-firebase.auth().signInWithEmailAndPassword("admin@monitoring.com", "Test123**");
+var profileInfo = db.collection("profileUser").doc("profile-info");
+profileInfo.get().then(function(doc) {
+    if (doc.exists) {
+        doc.data().FirstName;
+        firebase.auth().signInWithEmailAndPassword(doc.data().EmailID, doc.data().PasswordID);
+    } else {
+        console.log("No such document!");
+    }
+}).catch(function(error) {
+    console.log("Error getting document:", error);
+});
+Createchart();
 
 // btn active to css
 var header = document.getElementById("item_tabs");
 var btns = header.getElementsByClassName("btn");
-console.log(btns);
+// console.log(btns);
 for (var i = 0; i < btns.length; i++) {
     btns[i].addEventListener('click', function() {
         var current = document.getElementsByClassName("active");
         current[0].className = current[0].className.replace(" active", "");
         this.className += " active";
+        // console.log(this.id);
         toggle_contents(this.id);
     });
 
@@ -38,11 +50,17 @@ function toggle_contents(btn_id) {
             // console.log(item.id + "===" + temp.id);
             item.style.display = "block";
             if (item.id === "item-6") {
-                console.log(temp.id);
+                // console.log(temp.id);
                 initProfile();
+            } else if (item.id === "item-7") {
+                // console.log(temp.id);
+                initAccount();
+            } else if (item.id === "item-2") {
+                // Createchart();
+                CreateGauge();
             }
+
         } else {
-            // console.log("else");
             item.style.display = "none";
         }
 
@@ -64,7 +82,6 @@ function logout() {
 function checkAuth() {
     console.log("checkAuth function");
     console.log(localStorage.getItem("check-auth"));
-    console.log(FIREBASE_CONFIG.projectId);
     if (localStorage.getItem("check-auth") === "false") {
         console.log(" no Auth");
         window.location.href = "LoginPage.html";
@@ -73,6 +90,14 @@ function checkAuth() {
 }
 
 // Profile section
+
+var firstname = document.getElementById("store_firstname");
+var lastname = document.getElementById("store_lastname");
+var contactEmail = document.getElementById("store_contactEmail");
+var contactNumber = document.getElementById("store_contactNumber");
+var profileInfo = db.collection("profileUser").doc("profile-info");
+
+
 function updateProfile() {
     // when to click save 
     var r = confirm("Are you sure to save changes?");
@@ -84,16 +109,10 @@ function updateProfile() {
 
 }
 
-var firstname = document.getElementById("store_firstname");
-var lastname = document.getElementById("store_lastname");
-var contactEmail = document.getElementById("store_contactEmail");
-var contactNumber = document.getElementById("store_contactNumber");
-var profileInfo = db.collection("profileUser").doc("profile-info");
-
 function initProfile() {
     profileInfo.get().then(function(doc) {
         if (doc.exists) {
-            console.log("Document data:", doc.data());
+            // console.log("Document data:", doc.data());
             firstname.value = doc.data().FirstName;
             lastname.value = doc.data().LastName;
             contactEmail.value = doc.data().ContactEmail;
@@ -125,7 +144,7 @@ function saveProfile() {
         ContactEmail: contactEmail.value,
         ContactNumber: contactNumber.value,
     });
-    console.log(firstname.value);
+    // console.log(firstname.value);
 
     initProfile();
 
@@ -135,7 +154,7 @@ function changeProfile() {
     console.log("accesss to changeProfile function");
     profileInfo.get().then(function(doc) {
         if (doc.exists) {
-            console.log("Document data:", doc.data());
+            // console.log("Document data:", doc.data());
             firstname.value = doc.data().FirstName;
             lastname.value = doc.data().LastName;
             contactEmail.value = doc.data().ContactEmail;
@@ -155,4 +174,90 @@ function changeProfile() {
     lastname.disabled = false;
     contactEmail.disabled = false;
     contactNumber.disabled = false;
+}
+
+// chart.js section
+
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [{
+            label: 'My First dataset',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45]
+        }]
+    },
+
+    // Configuration options go here
+    options: {}
+});
+
+
+// Donutchart section
+
+function Createchart() {
+    var circle1 = new circleDonutChart('example');
+    var circle2 = new circleDonutChart('example2');
+    var changeColor = '#ff7f00';
+    circle1.draw({
+        end: 20,
+        start: 0,
+        maxValue: 75,
+        unitText: '°C',
+        titlePosition: "outer-top",
+        titleText: "Sensor1",
+        outerCircleColor: changeColor,
+        innerCircleColor: '#909081'
+    });
+    circle2.draw({
+        end: 10,
+        start: 0,
+        maxValue: 75,
+        unitText: '°C',
+        titlePosition: "outer-top",
+        titleText: "Sensor2",
+        outerCircleColor: '#0085c8',
+        innerCircleColor: '#004081'
+    });
+    document.addEventListener('click', moveAround, false);
+    // document.addEventListener('touchstart', moveAround, false);
+
+    function moveAround() {
+        circle1.draw({
+            end: 100 * Math.random(),
+            maxValue: 75,
+            unitText: '°C',
+        });
+        circle2.draw({
+            end: 300 * Math.random(),
+            unitText: '°C',
+            maxValue: 75 //ถ้าไม่ใส่ถ้าตรงนี้มันจะเป็นค่า default
+        });
+    }
+}
+
+function CreateGauge() {
+    const gaugeElement = document.querySelector(".gauge");
+
+    function setGaugeValue(gauge, value) {
+        // if (value < 0 || value > 1) {
+        //     return;
+        // }
+
+        // gauge.querySelector(".gauge__fill").style.transform = `rotate(${value / 2}turn)`;
+        gauge.querySelector(".gauge__fill").style.transform = `rotate(${(value/75)*0.5}turn)`;
+
+        // gauge.querySelector(".gauge__cover").textContent = `${Math.fround(
+        //     value * 75).toFixed(1)}°C`;
+        gauge.querySelector(".gauge__cover").textContent = `${value}°C`;
+
+    }
+
+    setGaugeValue(gaugeElement, 22.5);
 }

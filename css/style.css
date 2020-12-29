@@ -75,6 +75,32 @@
     display: inline-flex;
 }
 
+.top_navbar .menu .right_menu button {
+    background-color: red;
+    opacity: 0.7;
+    width: 100px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    outline: none;
+    font-size: 16px;
+    font-weight: normal;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -o-border-radius: 30px;
+    -ms-border-radius: 30px;
+}
+
+.top_navbar .menu .right_menu button:hover {
+    opacity: 1;
+}
+
 .top_navbar .menu .right_menu ul li {
     position: relative;
 }
@@ -418,7 +444,7 @@ body {
     height: 100vh;
 }
 
-canvas {
+#myCanvas {
     border: 2px solid black;
     width: 100%;
     height: 100%;
@@ -433,7 +459,6 @@ canvas {
 .profile-edit {
     width: 50%;
     margin: 70px 15% 80%;
-    /* margin: auto; */
     padding: 0;
     display: table;
     position: absolute;
@@ -470,7 +495,11 @@ label.header {
 input#store_firstname,
 input#store_lastname,
 input#store_contactEmail,
-input#store_contactNumber {
+input#store_contactNumber,
+input#store_EmailID,
+input#store_NewPassword,
+input#store_ComfirmPassword,
+input#store_CurrentPassword {
     padding: 0 40px;
     width: 45%;
     height: 55px;
@@ -492,7 +521,8 @@ input#store_contactNumber {
 input#store_firstname:focus,
 input#store_lastname:focus,
 input#store_contactEmail:focus,
-input#store_contactNumber:focus {
+input#store_contactNumber:focus,
+input#store_CurrentPassword:focus {
     background-color: #f5f8fa !important;
     border: 1px solid #dadada;
 }
@@ -573,10 +603,90 @@ input:-ms-input-placeholder {
 
 .change-info-div {
     display: block;
-    /* display: none; */
 }
 
 .save-info-div {
     display: none;
-    /* display: block; */
+}
+
+path {
+    border: 3px solid green;
+}
+
+.layout-chart {
+    /* border: 1px solid black; */
+    display: inline-block;
+    margin: 20px;
+}
+
+
+/* gauge section */
+
+.gauge {
+    border: 1px solid black;
+    width: 100%;
+    max-width: 250px;
+    font-family: "Roboto", sans-serif;
+    font-size: 32px;
+    color: #004033;
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.gauge__body {
+    width: 100%;
+    height: 0;
+    padding-bottom: 50%;
+    background: #b4c0be;
+    position: relative;
+    border-top-left-radius: 100% 200%;
+    border-top-right-radius: 100% 200%;
+    overflow: hidden;
+}
+
+.gauge__fill {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: inherit;
+    height: 100%;
+    background: #009578;
+    transform-origin: center top;
+    transform: rotate(0.25turn);
+    transition: transform 0.2s ease-out;
+}
+
+.gauge__cover {
+    width: 75%;
+    height: 150%;
+    background: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    /* Text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 25%;
+    box-sizing: border-box;
+}
+
+.sc-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.sc-min {
+    float: left;
+    font-size: 14px;
+}
+
+.sc-max {
+    float: right;
+    font-size: 16px;
 }
