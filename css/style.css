@@ -614,7 +614,6 @@ path {
 }
 
 .layout-chart {
-    /* border: 1px solid black; */
     display: inline-block;
     margin: 20px;
 }
@@ -622,15 +621,21 @@ path {
 
 /* gauge section */
 
+
+/* #item-2 {
+    border: 2px solid black;
+} */
+
 .gauge {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     width: 100%;
-    max-width: 250px;
+    max-width: 270px;
     font-family: "Roboto", sans-serif;
     font-size: 32px;
     color: #004033;
     display: inline-block;
-    margin: 0 10px;
+    margin: 30px 32px;
+    position: relative;
 }
 
 .gauge__body {
@@ -656,7 +661,7 @@ path {
     transition: transform 0.2s ease-out;
 }
 
-.gauge__cover {
+.gauge__value {
     width: 75%;
     height: 150%;
     background: #ffffff;
@@ -671,14 +676,23 @@ path {
     justify-content: center;
     padding-bottom: 25%;
     box-sizing: border-box;
+    font-weight: bold;
 }
 
-.sc-name {
+.sc-position {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 200;
+}
+
+.sc-location {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 200;
 }
 
 .sc-min {
@@ -689,4 +703,37 @@ path {
 .sc-max {
     float: right;
     font-size: 16px;
+}
+
+.In-front-section {
+    border: 2px solid black;
+    margin-bottom: 10px;
+}
+
+.behind-section {
+    border: 2px solid black;
+    margin-bottom: 10px;
+}
+
+.humidity-section {
+    border: 2px solid black;
+}
+
+#item-2 p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.dot {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#status-color p {
+    font-size: 20px;
+    font-weight: bold;
 }

@@ -21,7 +21,7 @@ profileInfo.get().then(function(doc) {
 }).catch(function(error) {
     console.log("Error getting document:", error);
 });
-Createchart();
+// Createchart();
 
 // btn active to css
 var header = document.getElementById("item_tabs");
@@ -178,86 +178,155 @@ function changeProfile() {
 
 // chart.js section
 
-var ctx = document.getElementById('myChart').getContext('2d');
-var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'line',
+// var ctx = document.getElementById('myChart').getContext('2d');
+// var chart = new Chart(ctx, {
+//     // The type of chart we want to create
+//     type: 'line',
 
-    // The data for our dataset
-    data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45]
-        }]
-    },
+//     // The data for our dataset
+//     data: {
+//         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+//         datasets: [{
+//             label: 'My First dataset',
+//             backgroundColor: 'rgb(255, 99, 132)',
+//             borderColor: 'rgb(255, 99, 132)',
+//             data: [0, 10, 5, 2, 20, 30, 45]
+//         }]
+//     },
 
-    // Configuration options go here
-    options: {}
-});
+//     // Configuration options go here
+//     options: {}
+// });
 
 
 // Donutchart section
 
-function Createchart() {
-    var circle1 = new circleDonutChart('example');
-    var circle2 = new circleDonutChart('example2');
-    var changeColor = '#ff7f00';
-    circle1.draw({
-        end: 20,
-        start: 0,
-        maxValue: 75,
-        unitText: '°C',
-        titlePosition: "outer-top",
-        titleText: "Sensor1",
-        outerCircleColor: changeColor,
-        innerCircleColor: '#909081'
-    });
-    circle2.draw({
-        end: 10,
-        start: 0,
-        maxValue: 75,
-        unitText: '°C',
-        titlePosition: "outer-top",
-        titleText: "Sensor2",
-        outerCircleColor: '#0085c8',
-        innerCircleColor: '#004081'
-    });
-    document.addEventListener('click', moveAround, false);
-    // document.addEventListener('touchstart', moveAround, false);
+// function Createchart() {
+//     var circle1 = new circleDonutChart('example');
+//     var circle2 = new circleDonutChart('example2');
+//     var changeColor = '#ff7f00';
+//     circle1.draw({
+//         end: 20,
+//         start: 0,
+//         maxValue: 75,
+//         unitText: '°C',
+//         titlePosition: "outer-top",
+//         titleText: "Sensor1",
+//         outerCircleColor: changeColor,
+//         innerCircleColor: '#909081'
+//     });
+//     circle2.draw({
+//         end: 10,
+//         start: 0,
+//         maxValue: 75,
+//         unitText: '°C',
+//         titlePosition: "outer-top",
+//         titleText: "Sensor2",
+//         outerCircleColor: '#0085c8',
+//         innerCircleColor: '#004081'
+//     });
+//     document.addEventListener('click', moveAround, false);
+//     // document.addEventListener('touchstart', moveAround, false);
 
-    function moveAround() {
-        circle1.draw({
-            end: 100 * Math.random(),
-            maxValue: 75,
-            unitText: '°C',
-        });
-        circle2.draw({
-            end: 300 * Math.random(),
-            unitText: '°C',
-            maxValue: 75 //ถ้าไม่ใส่ถ้าตรงนี้มันจะเป็นค่า default
-        });
-    }
-}
+//     function moveAround() {
+//         circle1.draw({
+//             end: 100 * Math.random(),
+//             maxValue: 75,
+//             unitText: '°C',
+//         });
+//         circle2.draw({
+//             end: 300 * Math.random(),
+//             unitText: '°C',
+//             maxValue: 75 //ถ้าไม่ใส่ถ้าตรงนี้มันจะเป็นค่า default
+//         });
+//     }
+// }
+
+// Gauge chart section
+const infront_section = document.querySelector(".In-front-section");
+const behind_section = document.querySelector(".behind-section");
+const humidity_section = document.querySelector(".humidity-section");
 
 function CreateGauge() {
-    const gaugeElement = document.querySelector(".gauge");
-
-    function setGaugeValue(gauge, value) {
-        // if (value < 0 || value > 1) {
-        //     return;
-        // }
-
-        // gauge.querySelector(".gauge__fill").style.transform = `rotate(${value / 2}turn)`;
-        gauge.querySelector(".gauge__fill").style.transform = `rotate(${(value/75)*0.5}turn)`;
-
-        // gauge.querySelector(".gauge__cover").textContent = `${Math.fround(
-        //     value * 75).toFixed(1)}°C`;
-        gauge.querySelector(".gauge__cover").textContent = `${value}°C`;
-
+    // var fruits = ["Banana", "Orange", "Apple", "Mango"];
+    // fruits.push("Kiwi"); how to push data
+    var temp_value = [75 * Math.random().toFixed(1), 75 * Math.random().toFixed(1), 75 * Math.random().toFixed(1),
+        75 * Math.random().toFixed(1), 75 * Math.random().toFixed(1), 75 * Math.random().toFixed(1),
+        75 * Math.random().toFixed(1), 75 * Math.random().toFixed(1), 75 * Math.random().toFixed(1),
+        75 * Math.random().toFixed(1), 75 * Math.random().toFixed(1), 75 * Math.random().toFixed(1),
+    ];
+    var location = ["location : Rack1", "location : Rack1", "location : Rack1", "location : Rack1", "location : Rack2",
+        "location : Rack2", "location : Rack2", "location : Rack2", "location : Rack3", "location : Rack3", "location : Rack3",
+        "location : Rack3"
+    ];
+    // var position = ["Position : In front of Rack1", "Position : behind of Rack1", "Position : In front of Rack1",
+    //     "Position : In front of Rack2", "Position : behind of Rack2", "Position : In front of Rack2",
+    //     "Position : In front of Rack3", "Position : behind of Rack3", "Position : In front of Rack3"
+    // ];
+    for (i = 0; i < 4; i++) {
+        CreateDIVChart(infront_section);
+        CreateDIVChart(behind_section);
+        CreateDIVChart(humidity_section);
+    }
+    const gaugeElement = document.querySelectorAll(".gauge");
+    for (i = 0; i < gaugeElement.length; i++) {
+        setGaugeValue(gaugeElement[i], temp_value[i], location[i]);
     }
 
-    setGaugeValue(gaugeElement, 22.5);
+}
+
+function CreateDIVChart(element) {
+    console.log("access to CreateChart");
+    var gauge = document.createElement('div');
+    var gauge_body = document.createElement('div');
+    var gauge_fill = document.createElement('div');
+    var gauge_value = document.createElement('div');
+    var sc_min = document.createElement('span');
+    var sc_max = document.createElement('span');
+    var sc_location = document.createElement('span');
+    // var sc_position = document.createElement('span');
+
+    sc_min.textContent = "0";
+    sc_max.textContent = "75";
+
+    gauge.classList.add("gauge");
+    gauge_body.classList.add("gauge__body");
+    gauge_fill.classList.add("gauge__fill");
+    gauge_value.classList.add("gauge__value");
+    sc_min.classList.add("sc-min");
+    sc_max.classList.add("sc-max");
+    sc_location.classList.add("sc-location");
+    // sc_position.classList.add("sc-position");
+
+    gauge_body.appendChild(gauge_fill);
+    gauge_body.appendChild(gauge_value);
+    gauge.appendChild(gauge_body);
+    gauge.appendChild(sc_min);
+    gauge.appendChild(sc_max);
+    gauge.appendChild(sc_location);
+    // gauge.appendChild(sc_position);
+    element.appendChild(gauge);
+    console.log("success to CreateDIVChart");
+}
+
+function setGaugeValue(gauge, value, location) {
+    if (value == null || location == null) {
+        return;
+    }
+    // check temp value for change status color
+    if (value >= 0 && value < 25) {
+        gauge.querySelector(".gauge__fill").style.background = '#009578';
+    } else if (value >= 25 && value < 35) {
+        gauge.querySelector(".gauge__fill").style.background = '#ffcc00';
+    } else {
+        gauge.querySelector(".gauge__fill").style.background = '#e03b24';
+    }
+
+    // full gauge is (0.5)turn
+    gauge.querySelector(".gauge__fill").style.transform = `rotate(${(value/75)*0.5}turn)`;
+
+    gauge.querySelector(".gauge__value").textContent = `${value}°C`;
+    gauge.querySelector(".sc-location").textContent = location;
+    // gauge.querySelector(".sc-position").textContent = position;
+
 }
