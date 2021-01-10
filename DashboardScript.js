@@ -1,4 +1,7 @@
 window.onloadstart = checkAuth();
+// influxdb client
+// const Influx = require('influxdb-nodejs');
+// const influx_client = new Influx('http://mydb:cjboat@127.0.0.1:8086/db_version2');
 
 const firebaseConfig = {
     apiKey: FIREBASE_CONFIG.apiKey,
@@ -11,6 +14,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 var profileInfo = db.collection("profileUser").doc("profile-info");
+//login firebase auth
 profileInfo.get().then(function(doc) {
     if (doc.exists) {
         doc.data().FirstName;
@@ -21,7 +25,8 @@ profileInfo.get().then(function(doc) {
 }).catch(function(error) {
     console.log("Error getting document:", error);
 });
-// Createchart();
+
+
 
 // btn active to css
 var header = document.getElementById("item_tabs");
@@ -58,6 +63,7 @@ function toggle_contents(btn_id) {
             } else if (item.id === "item-2") {
                 // Createchart();
                 CreateGauge();
+                query_data_influxdb();
             }
 
         } else {
@@ -72,7 +78,7 @@ function logout() {
         console.log("Sign-out successful");
         localStorage.setItem("check-auth", false);
         sessionStorage.setItem("check-auth", false);
-        window.location.href = "LoginPage.html"
+        window.location.href = "index.html"
     }).catch(function(error) {
         console.log(error);
     });
@@ -84,7 +90,7 @@ function checkAuth() {
     console.log(localStorage.getItem("check-auth"));
     if (localStorage.getItem("check-auth") === "false") {
         console.log(" no Auth");
-        window.location.href = "LoginPage.html";
+        window.location.href = "index.html";
     }
 
 }
@@ -178,69 +184,27 @@ function changeProfile() {
 
 // chart.js section
 
-// var ctx = document.getElementById('myChart').getContext('2d');
-// var chart = new Chart(ctx, {
-//     // The type of chart we want to create
-//     type: 'line',
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
 
-//     // The data for our dataset
-//     data: {
-//         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-//         datasets: [{
-//             label: 'My First dataset',
-//             backgroundColor: 'rgb(255, 99, 132)',
-//             borderColor: 'rgb(255, 99, 132)',
-//             data: [0, 10, 5, 2, 20, 30, 45]
-//         }]
-//     },
+    // The data for our dataset
+    data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [{
+            label: 'My First dataset',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45]
+        }]
+    },
 
-//     // Configuration options go here
-//     options: {}
-// });
+    // Configuration options go here
+    options: {}
+});
 
 
-// Donutchart section
-
-// function Createchart() {
-//     var circle1 = new circleDonutChart('example');
-//     var circle2 = new circleDonutChart('example2');
-//     var changeColor = '#ff7f00';
-//     circle1.draw({
-//         end: 20,
-//         start: 0,
-//         maxValue: 75,
-//         unitText: '°C',
-//         titlePosition: "outer-top",
-//         titleText: "Sensor1",
-//         outerCircleColor: changeColor,
-//         innerCircleColor: '#909081'
-//     });
-//     circle2.draw({
-//         end: 10,
-//         start: 0,
-//         maxValue: 75,
-//         unitText: '°C',
-//         titlePosition: "outer-top",
-//         titleText: "Sensor2",
-//         outerCircleColor: '#0085c8',
-//         innerCircleColor: '#004081'
-//     });
-//     document.addEventListener('click', moveAround, false);
-//     // document.addEventListener('touchstart', moveAround, false);
-
-//     function moveAround() {
-//         circle1.draw({
-//             end: 100 * Math.random(),
-//             maxValue: 75,
-//             unitText: '°C',
-//         });
-//         circle2.draw({
-//             end: 300 * Math.random(),
-//             unitText: '°C',
-//             maxValue: 75 //ถ้าไม่ใส่ถ้าตรงนี้มันจะเป็นค่า default
-//         });
-//     }
-// }
 
 // Gauge chart section
 const infront_section = document.querySelector(".In-front-section");
@@ -269,6 +233,7 @@ function CreateGauge() {
         CreateDIVChart(humidity_section);
     }
     const gaugeElement = document.querySelectorAll(".gauge");
+    console.log("Number of gaugeElement : " + gaugeElement.length);
     for (i = 0; i < gaugeElement.length; i++) {
         setGaugeValue(gaugeElement[i], temp_value[i], location[i]);
     }
@@ -276,7 +241,7 @@ function CreateGauge() {
 }
 
 function CreateDIVChart(element) {
-    console.log("access to CreateChart");
+
     var gauge = document.createElement('div');
     var gauge_body = document.createElement('div');
     var gauge_fill = document.createElement('div');
@@ -306,7 +271,7 @@ function CreateDIVChart(element) {
     gauge.appendChild(sc_location);
     // gauge.appendChild(sc_position);
     element.appendChild(gauge);
-    console.log("success to CreateDIVChart");
+    // console.log("success to CreateDIVChart");
 }
 
 function setGaugeValue(gauge, value, location) {
@@ -314,9 +279,9 @@ function setGaugeValue(gauge, value, location) {
         return;
     }
     // check temp value for change status color
-    if (value >= 0 && value < 25) {
+    if (value >= 0 && value < 23) {
         gauge.querySelector(".gauge__fill").style.background = '#009578';
-    } else if (value >= 25 && value < 35) {
+    } else if (value >= 23 && value <= 27) {
         gauge.querySelector(".gauge__fill").style.background = '#ffcc00';
     } else {
         gauge.querySelector(".gauge__fill").style.background = '#e03b24';
@@ -329,4 +294,15 @@ function setGaugeValue(gauge, value, location) {
     gauge.querySelector(".sc-location").textContent = location;
     // gauge.querySelector(".sc-position").textContent = position;
 
+}
+
+function query_data_influxdb() {
+    fetch('http://127.0.0.1:8081/influxdb/temperature')
+        .then(response => response.json())
+        .then((json_value) => {
+            console.log(json_value)
+            console.log(json_value.location)
+            console.log(json_value.position)
+            console.log(json_value.value)
+        }).catch(err => console.log('Request Failed', err));
 }
