@@ -37,7 +37,6 @@ function login() {
         .then((user) => {
             check_auth = true;
             localStorage.setItem("check-auth", true);
-            sessionStorage.setItem("check-auth", true);
             console.log("login success!!!!");
             window.location.href = "Dashboard_test1.html";
         })
@@ -53,8 +52,6 @@ function login() {
 
 function checkAuth() {
     console.log("checkAuth function");
-    // console.log(localStorage.getItem("check-auth"));
-    // console.log( dbHost);
     console.log(FIREBASE_CONFIG.projectId);
     console.log("--------------");
     if (localStorage.getItem("check-auth") === "true") {

@@ -61,9 +61,10 @@ function toggle_contents(btn_id) {
                 // console.log(temp.id);
                 initAccount();
             } else if (item.id === "item-2") {
-                // Createchart();
+
                 CreateGauge();
-                query_data_influxdb();
+                // query_data_influxdb();
+                // relate_value();
             }
 
         } else {
@@ -227,16 +228,13 @@ function CreateGauge() {
     //     "Position : In front of Rack2", "Position : behind of Rack2", "Position : In front of Rack2",
     //     "Position : In front of Rack3", "Position : behind of Rack3", "Position : In front of Rack3"
     // ];
-    for (i = 0; i < 4; i++) {
-        CreateDIVChart(infront_section);
-        CreateDIVChart(behind_section);
-        CreateDIVChart(humidity_section);
-    }
-    const gaugeElement = document.querySelectorAll(".gauge");
-    console.log("Number of gaugeElement : " + gaugeElement.length);
-    for (i = 0; i < gaugeElement.length; i++) {
-        setGaugeValue(gaugeElement[i], temp_value[i], location[i]);
-    }
+    // for (i = 0; i < 1; i++) {
+    CreateDIVChart(infront_section);
+    CreateDIVChart(behind_section);
+    CreateDIVChart(humidity_section);
+    // }
+
+    relate_value();
 
 }
 
@@ -274,35 +272,93 @@ function CreateDIVChart(element) {
     // console.log("success to CreateDIVChart");
 }
 
-function setGaugeValue(gauge, value, location) {
-    if (value == null || location == null) {
+function setGaugeValue(gauge, json_value) {
+    // console.log(json_value);
+    if (json_value.value == null || json_value.location == null) {
         return;
     }
     // check temp value for change status color
-    if (value >= 0 && value < 23) {
+    if (json_value.value >= 0 && json_value.value < 23) {
         gauge.querySelector(".gauge__fill").style.background = '#009578';
-    } else if (value >= 23 && value <= 27) {
+    } else if (json_value.value >= 23 && json_value.value <= 27) {
         gauge.querySelector(".gauge__fill").style.background = '#ffcc00';
     } else {
         gauge.querySelector(".gauge__fill").style.background = '#e03b24';
     }
 
     // full gauge is (0.5)turn
-    gauge.querySelector(".gauge__fill").style.transform = `rotate(${(value/75)*0.5}turn)`;
+    gauge.querySelector(".gauge__fill").style.transform = `rotate(${(json_value.value/75)*0.5}turn)`;
+    if (json_value.type === "temperature") {
+        gauge.querySelector(".gauge__value").textContent = `${json_value.value}°C`;
+    } else {
+        gauge.querySelector(".gauge__value").textContent = `${json_value.value}%`;
+    }
 
-    gauge.querySelector(".gauge__value").textContent = `${value}°C`;
-    gauge.querySelector(".sc-location").textContent = location;
+    gauge.querySelector(".sc-location").textContent = json_value.location;
     // gauge.querySelector(".sc-position").textContent = position;
 
 }
 
+
 function query_data_influxdb() {
-    fetch('http://127.0.0.1:8081/influxdb/temperature')
-        .then(response => response.json())
-        .then((json_value) => {
-            console.log(json_value)
-            console.log(json_value.location)
-            console.log(json_value.position)
-            console.log(json_value.value)
-        }).catch(err => console.log('Request Failed', err));
+    var tmp = [];
+    var lack1_temp_front = { location: "lack1", position: "front lack", value: 24.8, type: "temperature" };
+    var lack1_temp_back = { location: "lack1", position: "back lack", value: 37.5, type: "temperature" };
+    var lack1_humidity = { location: "lack1", value: 51.2, type: "humidity" };
+    // fetch('http://127.0.0.1:8081/influxdb/lack1/temperature/frontlack')
+    //     .then(response => response.json())
+    //     .then((json_value) => {
+    //         // console.log(json_value)
+    //         // console.log(json_value.location)
+    //         // console.log(json_value.position)
+    //         // console.log(json_value.value)
+    //         lack1_temp_front.location = json_value.location;
+    //         lack1_temp_front.position = json_value.position;
+    //         lack1_temp_front.value = json_value.value;
+    //         tmp.push(lack1_temp_front);
+
+    //     }).catch(err => console.log('Request Failed', err));
+
+    // fetch('http://127.0.0.1:8081/influxdb/lack1/temperature/backlack')
+    //     .then(response => response.json())
+    //     .then((json_value) => {
+    //         // console.log(json_value)
+    //         // console.log(json_value.location)
+    //         // console.log(json_value.position)
+    //         // console.log(json_value.value)
+    //         lack1_temp_back.location = json_value.location;
+    //         lack1_temp_back.position = json_value.position;
+    //         lack1_temp_back.value = json_value.value;
+    //         tmp.push(lack1_temp_back);
+
+    //     }).catch(err => console.log('Request Failed', err));
+
+    // fetch('http://127.0.0.1:8081/influxdb/lack1/humidity')
+    //     .then(response => response.json())
+    //     .then((json_value) => {
+    //         // console.log(json_value)
+    //         // console.log(json_value.location)
+    //         // console.log(json_value.position)
+    //         // console.log(json_value.value)
+    //         lack1_humidity.location = json_value.location;
+    //         lack1_humidity.value = json_value.value;
+    //         tmp.push(lack1_humidity);
+    //         console.log(tmp[0]);
+    //     }).catch(err => console.log('Request Failed', err));
+    tmp.push(lack1_temp_front);
+    tmp.push(lack1_temp_back);
+    tmp.push(lack1_humidity);
+    return tmp;
+}
+
+function relate_value() {
+    var tmp = [];
+    tmp = query_data_influxdb();
+    console.log("access to relate_value");
+    console.log(tmp[0]);
+    const gaugeElement = document.querySelectorAll(".gauge");
+    console.log("Number of gaugeElement : " + gaugeElement.length);
+    for (i = 0; i < gaugeElement.length; i++) {
+        setGaugeValue(gaugeElement[i], tmp[i]);
+    }
 }
