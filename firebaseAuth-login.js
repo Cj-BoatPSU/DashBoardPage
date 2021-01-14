@@ -44,6 +44,7 @@ function login() {
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log(errorMessage);
+            document.getElementById('alert-auth').innerText = errorMessage;
         });
 
 }

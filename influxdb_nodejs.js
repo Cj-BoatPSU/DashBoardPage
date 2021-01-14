@@ -50,7 +50,7 @@ app.get('/influxdb/lack1/humidity', (req, res) => {
         // res.send('OK');
         res.json({
             location: data.results[0].series[0].values[0][1],
-            vulue: data.results[0].series[0].values[0][2],
+            value: data.results[0].series[0].values[0][2],
         });
     }).catch(err => {
         console.error(err);
@@ -58,55 +58,6 @@ app.get('/influxdb/lack1/humidity', (req, res) => {
 
 });
 
-app.get('/influxdb/lack2/temperature/frontlack', (req, res) => {
-    const reader = client.query('temperature').where('location', 'lack2').where('position', 'front lack');
-    reader.order = 'desc';
-    reader.then(data => {
-        console.info(data.results[0].series[0].values[0]);
-        // res.send('OK');
-        res.json({
-            location: data.results[0].series[0].values[0][1],
-            position: data.results[0].series[0].values[0][2],
-            value: data.results[0].series[0].values[0][3]
-        });
-    }).catch(err => {
-        console.error(err);
-    });
-
-});
-
-app.get('/influxdb/lack2/temperature/backlack', (req, res) => {
-    const reader = client.query('temperature').where('location', 'lack2').where('position', 'back lack');
-    reader.order = 'desc';
-    reader.then(data => {
-        console.info(data.results[0].series[0].values[0]);
-        // res.send('OK');
-        res.json({
-            location: data.results[0].series[0].values[0][1],
-            position: data.results[0].series[0].values[0][2],
-            value: data.results[0].series[0].values[0][3]
-        });
-    }).catch(err => {
-        console.error(err);
-    });
-
-});
-
-app.get('/influxdb/lack2/humidity', (req, res) => {
-    const reader = client.query('humidity').where('location', 'lack2');
-    reader.order = 'desc';
-    reader.then(data => {
-        console.info(data.results[0].series[0].values[0]);
-        // res.send('OK');
-        res.json({
-            location: data.results[0].series[0].values[0][1],
-            value: data.results[0].series[0].values[0][2]
-        });
-    }).catch(err => {
-        console.error(err);
-    });
-
-});
 
 
 

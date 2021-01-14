@@ -15,8 +15,8 @@ for (let index = 0; index < 3; index++) {
 }
 
 
-function createChart(element) {
-    console.log("access to CreateChart");
+function CreateDIVChart(element) {
+
     var gauge = document.createElement('div');
     var gauge_body = document.createElement('div');
     var gauge_fill = document.createElement('div');
@@ -24,19 +24,17 @@ function createChart(element) {
     var sc_min = document.createElement('span');
     var sc_max = document.createElement('span');
     var sc_location = document.createElement('span');
-    var sc_position = document.createElement('span');
 
     sc_min.textContent = "0";
     sc_max.textContent = "75";
 
     gauge.classList.add("gauge");
     gauge_body.classList.add("gauge__body");
-    gauge_fill.classList.add("gauge__fil");
+    gauge_fill.classList.add("gauge__fill");
     gauge_value.classList.add("gauge__value");
     sc_min.classList.add("sc-min");
     sc_max.classList.add("sc-max");
     sc_location.classList.add("sc-location");
-    sc_position.classList.add("sc-position");
 
     gauge_body.appendChild(gauge_fill);
     gauge_body.appendChild(gauge_value);
@@ -44,6 +42,5 @@ function createChart(element) {
     gauge.appendChild(sc_min);
     gauge.appendChild(sc_max);
     gauge.appendChild(sc_location);
-    gauge.appendChild(sc_position);
     element.appendChild(gauge);
 }
