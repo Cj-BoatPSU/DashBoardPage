@@ -21,6 +21,7 @@
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 2;
 }
 
 .top_navbar .hamburger {
@@ -636,6 +637,8 @@ path {
     display: inline-block;
     margin: 30px 32px;
     position: relative;
+    z-index: 1;
+    /*fix gauge is overlay on topbar menu*/
 }
 
 .gauge__body {
@@ -659,6 +662,7 @@ path {
     transform-origin: center top;
     transform: rotate(0.25turn);
     transition: transform 0.2s ease-out;
+    overflow: inherit;
 }
 
 .gauge__value {
@@ -677,14 +681,7 @@ path {
     padding-bottom: 25%;
     box-sizing: border-box;
     font-weight: bold;
-}
-
-.sc-position {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    font-weight: 200;
+    overflow: inherit;
 }
 
 .sc-location {
@@ -693,16 +690,19 @@ path {
     justify-content: center;
     font-size: 15px;
     font-weight: 200;
+    overflow: inherit;
 }
 
 .sc-min {
     float: left;
     font-size: 14px;
+    overflow: inherit;
 }
 
 .sc-max {
     float: right;
     font-size: 16px;
+    overflow: inherit;
 }
 
 .In-front-section {
@@ -735,5 +735,124 @@ path {
 
 #status-color p {
     font-size: 20px;
+    font-weight: bold;
+}
+
+
+/* config section */
+
+.body-table {
+    width: 50%;
+    margin: 70px 15% 80%;
+    padding: 0;
+    display: table;
+    position: absolute;
+}
+
+.table-agile {
+    width: 100%;
+    float: center;
+}
+
+.body-table .table-agile h1 {
+    font-size: 30px;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 5px solid #002855;
+}
+
+#input-device {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+#input-device input {
+    padding: 10px;
+    width: 250px;
+    border-radius: 30px;
+    border: solid black 1px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#input-device button {
+    padding: 10px;
+    width: 50px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: lightblue;
+    color: #fff;
+    /* outline: none; */
+}
+
+#input-device button:hover {
+    background-color: #023E7D;
+    color: #fff;
+}
+
+.group {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: top;
+}
+
+#btnadd-device {
+    margin-top: 25px;
+    position: absolute;
+    font-size: 16px;
+}
+
+.content-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    /* min-width: 400px; */
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table thead tr {
+    background-color: #023E7D;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.content-table th,
+.content-table td {
+    padding: 12px 15px;
+}
+
+.content-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+    font-size: 16px;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+
+/* .content-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+} */
+
+#delete-device {
+    width: 80px;
+    background-color: lightcoral;
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    border-radius: 30px;
+    font-size: 12px;
+}
+
+#delete-device:hover {
+    background-color: #E74C3C;
     font-weight: bold;
 }

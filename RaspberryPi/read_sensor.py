@@ -51,8 +51,8 @@ def _send_data_to_influxdb(temp, humidity):
             {
                 "measurement": "temperature",
                 "tags": {
-                    "location": "lack1",
-                    "position": "front lack"
+                    "location": "rack1",
+                    "position": "front rack"
                 }, 
                 "fields": {
                     "value": temp[0]
@@ -63,8 +63,8 @@ def _send_data_to_influxdb(temp, humidity):
             {
                 "measurement": "temperature",
                 "tags": {
-                    "location": "lack1",
-                    "position": "behind lack"
+                    "location": "rack1",
+                    "position": "behind rack"
                 }, 
                 "fields": {
                     "value": temp[1],
@@ -75,7 +75,7 @@ def _send_data_to_influxdb(temp, humidity):
             {
                 "measurement": "humidity",
                 "tags": {
-                    "location": "lack1",
+                    "location": "rack1",
                 }, 
                 "fields": {
                     "value": "{:.2f}".format(humidity),

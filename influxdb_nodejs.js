@@ -8,8 +8,8 @@ app.use(express.static('public'));
 app.use(cors({ origin: true }));
 
 
-app.get('/influxdb/lack1/temperature/frontlack', (req, res) => {
-    const reader = client.query('temperature').where('location', 'lack1').where('position', 'front lack');
+app.get('/influxdb/rack1/temperature/frontrack', (req, res) => {
+    const reader = client.query('temperature').where('location', 'rack1').where('position', 'front rack');
     reader.order = 'desc';
     reader.then(data => {
         console.info(data.results[0].series[0].values[0]);
@@ -25,8 +25,8 @@ app.get('/influxdb/lack1/temperature/frontlack', (req, res) => {
 
 });
 
-app.get('/influxdb/lack1/temperature/backlack', (req, res) => {
-    const reader = client.query('temperature').where('location', 'lack1').where('position', 'back lack');
+app.get('/influxdb/rack1/temperature/behindrack', (req, res) => {
+    const reader = client.query('temperature').where('location', 'rack1').where('position', 'behind rack');
     reader.order = 'desc';
     reader.then(data => {
         console.info(data.results[0].series[0].values[0]);
@@ -42,8 +42,8 @@ app.get('/influxdb/lack1/temperature/backlack', (req, res) => {
 
 });
 
-app.get('/influxdb/lack1/humidity', (req, res) => {
-    const reader = client.query('humidity').where('location', 'lack1');
+app.get('/influxdb/rack1/humidity', (req, res) => {
+    const reader = client.query('humidity').where('location', 'rack1');
     reader.order = 'desc';
     reader.then(data => {
         console.info(data.results[0].series[0].values[0]);

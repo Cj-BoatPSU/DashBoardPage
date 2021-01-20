@@ -1,7 +1,5 @@
 window.onloadstart = checkAuth();
-// influxdb client
-// const Influx = require('influxdb-nodejs');
-// const influx_client = new Influx('http://mydb:cjboat@127.0.0.1:8086/db_version2');
+
 
 const firebaseConfig = {
     apiKey: FIREBASE_CONFIG.apiKey,
@@ -42,7 +40,10 @@ for (var i = 0; i < btns.length; i++) {
     });
 
 }
+//Variable Declaration global
 
+var myTab = document.getElementById('table-device');
+var mytable = document.getElementsByTagName("tbody")[0];
 
 function toggle_contents(btn_id) {
     const items = document.querySelectorAll('.item');
@@ -59,6 +60,9 @@ function toggle_contents(btn_id) {
                 initAccount();
             } else if (item.id === "item-2") {
                 CreateGauge();
+            } else if (item.id === "item-5") {
+                console.log("Number of rows device table :" + mytable.rows.length);
+                console.log("Value location[0] :" + mytable.rows.item(0).cells.item(0).innerHTML);
             }
 
         } else {
@@ -101,19 +105,36 @@ var profileInfo = db.collection("profileUser").doc("profile-info");
 
 function updateProfile() {
     // when to click save 
-    var r = confirm("Are you sure to save changes?");
-    if (r == true) {
-        saveProfile();
+    if (firstname.value === "" || lastname.value === "" || contactEmail.value === "" || contactNumber.value === "") {
+        if (firstname.value === "") {
+            document.getElementById('alert-store_firstname').innerText = "Please enter your FirstName";
+        }
+        if (lastname.value === "") {
+            document.getElementById('alert-store_lastname').innerText = "Please enter your LastName";
+        }
+        if (contactEmail.value === "") {
+            document.getElementById('alert-store_contactEmail').innerText = "Please enter your Contact Email";
+        }
+        if (contactNumber.value === "") {
+            document.getElementById('alert-store_contactNumber').innerText = "Please enter your Contact Number";
+        }
     } else {
-        console.log("click cancel");
+        document.getElementById('alert-store_firstname').innerText = "";
+        document.getElementById('alert-store_lastname').innerText = "";
+        document.getElementById('alert-store_contactEmail').innerText = "";
+        document.getElementById('alert-store_contactNumber').innerText = "";
+        var r = confirm("Are you sure to save changes?");
+        if (r == true) {
+            saveProfile();
+        } else {
+            console.log("click cancel");
+        }
     }
-
 }
 
 function initProfile() {
     profileInfo.get().then(function(doc) {
         if (doc.exists) {
-            // console.log("Document data:", doc.data());
             firstname.value = doc.data().FirstName;
             lastname.value = doc.data().LastName;
             contactEmail.value = doc.data().ContactEmail;
@@ -145,10 +166,8 @@ function saveProfile() {
         ContactEmail: contactEmail.value,
         ContactNumber: contactNumber.value,
     });
-    // console.log(firstname.value);
-
+    console.log(firstname.value);
     initProfile();
-
 }
 
 function changeProfile() {
@@ -286,7 +305,7 @@ function setGaugeValue(gauge, json_value) {
     if (json_value.type === "temperature") {
         gauge.querySelector(".gauge__value").textContent = `${json_value.value.toFixed(2)}°C`;
     } else {
-        gauge.querySelector(".gauge__value").textContent = `${json_value.value.toFixed(2)}%`;
+        gauge.querySelector(".gauge__value").textContent = `${json_value.value}%`;
     }
 
     gauge.querySelector(".sc-location").textContent = json_value.location;
@@ -297,7 +316,7 @@ function setGaugeValue(gauge, json_value) {
 
 async function query_data_influxdb() {
     let tmp = [];
-    let lack1_temp_front = await fetch('http://127.0.0.1:8081/influxdb/lack1/temperature/frontlack')
+    let rack1_temp_front = await fetch('http://172.30.232.114:8081/influxdb/rack1/temperature/frontrack')
         .then(function(response) {
             // The response is a Response instance.
             // You parse the data into a useable format using `.json()`
@@ -305,28 +324,28 @@ async function query_data_influxdb() {
         })
         .catch(err => console.log('Request Failed', err));
 
-    lack1_temp_front['type'] = "temperature";
-    let lack1_temp_back = await fetch('http://127.0.0.1:8081/influxdb/lack1/temperature/backlack')
+    rack1_temp_front['type'] = "temperature";
+    let rack1_temp_back = await fetch('http://172.30.232.114:8081/influxdb/rack1/temperature/behindrack')
         .then(function(response) {
             // The response is a Response instance.
             // You parse the data into a useable format using `.json()`
             return response.json();
         })
         .catch(err => console.log('Request Failed', err));
-    lack1_temp_back['type'] = "temperature";
+    rack1_temp_back['type'] = "temperature";
 
-    let lack1_humidity = await fetch('http://127.0.0.1:8081/influxdb/lack1/humidity')
+    let rack1_humidity = await fetch('http://172.30.232.114:8081/influxdb/rack1/humidity')
         .then(function(response) {
             // The response is a Response instance.
             // You parse the data into a useable format using `.json()`
             return response.json();
         })
         .catch(err => console.log('Request Failed', err));
-    lack1_humidity['type'] = "humidity";
+    rack1_humidity['type'] = "humidity";
 
-    tmp.push(lack1_temp_front);
-    tmp.push(lack1_temp_back);
-    tmp.push(lack1_humidity);
+    tmp.push(rack1_temp_front);
+    tmp.push(rack1_temp_back);
+    tmp.push(rack1_humidity);
     return tmp;
 }
 
@@ -340,4 +359,55 @@ async function relate_value() {
     for (i = 0; i < gaugeElement.length; i++) {
         setGaugeValue(gaugeElement[i], tmp[i]);
     }
+}
+
+//config section
+
+var device_name = document.getElementById("device-name");
+var location_device = document.getElementById("location-device");
+var ip_address_device = document.getElementById("ip-address-device");
+
+function addDevice() {
+    var myTab = document.getElementById('table-device');
+    var myTable = document.getElementsByTagName("tbody")[0];
+    console.log("access addDevice");
+    if (device_name.value === "" || location_device.value === "" || ip_address_device.value === "") {
+        if (device_name.value === "") {
+            document.getElementById('alert-device-name').innerText = "Please enter Device Name";
+        } else {
+            document.getElementById('alert-device-name').innerText = "";
+        }
+        if (location_device.value === "") {
+            document.getElementById('alert-location-device').innerText = "Please enter Location";
+        } else {
+            document.getElementById('alert-location-device').innerText = "";
+        }
+        if (ip_address_device.value === "") {
+            document.getElementById('alert-ip-address-device').innerText = "Please enter IP address";
+        } else {
+            document.getElementById('alert-ip-address-device').innerText = "";
+        }
+    } else {
+        document.getElementById('alert-device-name').innerText = "";
+        document.getElementById('alert-location-device').innerText = "";
+        document.getElementById('alert-ip-address-device').innerText = "";
+        let template = `
+                <tr>
+                    <td>${device_name.value}</td>
+                    <td>${location_device.value}</td>
+                    <td>${ip_address_device.value}</td>
+                    <td style="width: 100px;">
+                        <button type="button" id="delete-device" onclick="deleteRow(this)">Delete</button>
+                    </td>
+                </tr>`;
+
+        myTable.innerHTML += template;
+
+    }
+
+}
+
+function deleteRow(r) {
+    var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("table-device").deleteRow(i);
 }

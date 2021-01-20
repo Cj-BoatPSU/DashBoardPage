@@ -122,7 +122,8 @@
                     <div class="In-front-section">
 
                     </div>
-                    <p>Behind of Rack</p>
+                    <p style="display: inline-block;">Behind of Rack</p>
+                    <p style="display: inline-block; color: red; margin-left: 10px; font-size: medium;">(*Heat energy released by servers originates in the microprocessor.)</p>
                     <div class="behind-section">
 
                     </div>
@@ -142,42 +143,110 @@
                     <strong>item-4</strong>
                 </div>
                 <div class="item" id="item-5">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque, molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum eligendi laudantium placeat aspernatur!
-                    Quos dolorum unde officiis labore est animi excepturi neque, provident, inventore nobis expedita facilis aspernatur, nihil in atque?
-                    <strong>item-5</strong>
+                    <div class="body-table">
+                        <div class="table-agile">
+                            <h1>All device</h1>
+                            <div id="input-device">
+                                <div class="group">
+                                    <label for="device-name">Device Name</label><br />
+                                    <input type="text" id="device-name" placeholder="Enter Device Name">
+                                    <span><p id="alert-device-name" style="color: red; "></p></span>
+                                </div>
+                                <div class="group">
+                                    <label for="location-device">Location</label><br />
+                                    <input type="text" id="location-device" placeholder="Enter Position">
+                                    <span><p id="alert-location-device" style="color: red; "></p></span>
+                                </div>
+                                <div class="group">
+                                    <label for="ip-address-device">IP address</label><br />
+                                    <input type="text" id="ip-address-device" placeholder="Enter IP address">
+                                    <span><p id="alert-ip-address-device" style="color: red; "></p></span>
+                                </div>
+                                <div class="group">
+                                    <button type="button" id="btnadd-device" value="add-device" onclick="addDevice()">Add</button>
+                                </div>
+                            </div>
+                            <table class="content-table" id="table-device">
+                                <thead>
+                                    <tr>
+                                        <th>Device Name</th>
+                                        <th>Location</th>
+                                        <th>IP address</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-data">
+                                    <tr>
+                                        <td>Raspberry Pi 1</td>
+                                        <td>rack1</td>
+                                        <td>172.30.232.71</td>
+                                        <td style="width: 100px;">
+                                            <button type="button" id="delete-device" onclick="deleteRow(this)">Delete</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Raspberry Pi 2</td>
+                                        <td>rack2</td>
+                                        <td>172.30.232.73</td>
+                                        <td style="width: 100px;">
+                                            <button type="button" id="delete-device" onclick="deleteRow(this)">Delete</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td>Raspberry Pi 3</td>
+                                        <td>rack3</td>
+                                        <td>172.30.232.74</td>
+                                        <td style="width: 100px;">
+                                            <button type="button" id="delete-device" onclick="deleteRow(this)">Delete</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Raspberry Pi 4</td>
+                                        <td>rack4</td>
+                                        <td>172.30.232.75</td>
+                                        <td style="width: 100px;">
+                                            <button type="button" id="delete-device" onclick="deleteRow(this)">Delete</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="item" id="item-6">
                     <div class="profile-edit">
                         <div class="profile-agile">
-                            <form action="#" method="GET">
-                                <h1>Profile Setting</h1>
-                                <div class="form-control">
-                                    <label class="header">First Name :</label>
-                                    <input type="text" id="store_firstname" name="store_name" placeholder="FirstName" title="Please enter your First Name" required="">
-                                </div>
+                            <h1>Profile Setting</h1>
 
-                                <div class="form-control">
-                                    <label class="header">Last Name :</label>
-                                    <input type="text" id="store_lastname" name="store_type" placeholder="LastName" title="Please enter your Last Name" required="">
-                                </div>
+                            <div class="form-control">
+                                <label class="header">First Name :</label>
+                                <input type="text" id="store_firstname" name="store_name" placeholder="FirstName" title="Please enter your First Name" required="">
+                                <p id="alert-store_firstname" style="color: red; padding-left:250px;"></p>
+                            </div>
 
-                                <div class="form-control">
-                                    <label class="header">Contact Email :</label>
-                                    <input type="email" id="store_contactEmail" name="owner_type" placeholder="Email" title="Please enter a valid email" required="">
-                                </div>
+                            <div class="form-control">
+                                <label class="header">Last Name :</label>
+                                <input type="text" id="store_lastname" name="store_type" placeholder="LastName" title="Please enter your Last Name" required="">
+                                <p id="alert-store_lastname" style="color: red ; padding-left:250px;"></p>
+                            </div>
 
-                                <div class="form-control">
-                                    <label class="header">Contact Number :</label>
-                                    <input type="text" id="store_contactNumber" name="website" placeholder="PhoneNumber" id="password1" required="">
-                                </div>
-                                <div class="save-info-div" id="save-info">
-                                    <input type="button" class="btnsave-info" value="save" onclick="updateProfile()">
-                                </div>
-                                <div class="change-info-div" id="change-info">
-                                    <input type="button" class="btnchange-info" value="change" onclick="changeProfile()">
-                                </div>
+                            <div class="form-control">
+                                <label class="header">Contact Email :</label>
+                                <input type="email" id="store_contactEmail" name="owner_type" placeholder="Email" title="Please enter a valid email" required="">
+                                <p id="alert-store_contactEmail" style="color: red ; padding-left:250px;"></p>
+                            </div>
 
-                            </form>
+                            <div class="form-control">
+                                <label class="header">Contact Number :</label>
+                                <input type="text" id="store_contactNumber" name="website" placeholder="PhoneNumber" id="password1" required="">
+                                <p id="alert-store_contactNumber" style="color: red ; padding-left:250px;"></p>
+                            </div>
+                            <div class="save-info-div" id="save-info">
+                                <input type="button" class="btnsave-info" value="save" onclick="updateProfile()">
+                            </div>
+                            <div class="change-info-div" id="change-info">
+                                <input type="button" class="btnchange-info" value="change" onclick="changeProfile()">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -190,10 +259,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-firestore.js"></script>
-    <!-- <script src="script.js"></script> -->
     <script src="DashboardScript.js"></script>
-    <!-- <script type="module" src="query_data1.js"></script> -->
-    <!-- <script src="canvas_heatmap.js"></script> -->
 </body>
 
 </html>
