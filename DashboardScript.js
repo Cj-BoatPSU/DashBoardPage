@@ -11,19 +11,20 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-var profileInfo = db.collection("profileUser").doc("profile-info");
-//login firebase auth
-profileInfo.get().then(function(doc) {
-    if (doc.exists) {
-        doc.data().FirstName;
-        firebase.auth().signInWithEmailAndPassword(doc.data().ContactEmail, doc.data().PasswordID);
-    } else {
-        console.log("No such document!");
-    }
-}).catch(function(error) {
-    console.log("Error getting document:", error);
-});
+// var profileInfo = db.collection("profileUser").doc("profile-info");
+// //login firebase auth
+// profileInfo.get().then(function(doc) {
+//     if (doc.exists) {
+//         doc.data().FirstName;
+//         firebase.auth().signInWithEmailAndPassword(doc.data().ContactEmail, doc.data().PasswordID);
+//     } else {
+//         console.log("No such document!");
+//     }
+// }).catch(function(error) {
+//     console.log("Error getting document:", error);
+// });
 
+firebase.auth().signInWithEmailAndPassword("Chutiwat.Boat@gmail.com", "boat123**");
 
 
 // btn active to css
@@ -42,8 +43,8 @@ for (var i = 0; i < btns.length; i++) {
 }
 //Variable Declaration global
 
-var myTab = document.getElementById('table-device');
-var mytable = document.getElementsByTagName("tbody")[0];
+// var myTab = document.getElementById('table-device');
+// var mytable = document.getElementsByTagName("tbody")[0];
 
 function toggle_contents(btn_id) {
     const items = document.querySelectorAll('.item');
@@ -61,8 +62,9 @@ function toggle_contents(btn_id) {
             } else if (item.id === "item-2") {
                 CreateGauge();
             } else if (item.id === "item-5") {
-                console.log("Number of rows device table :" + mytable.rows.length);
-                console.log("Value location[0] :" + mytable.rows.item(0).cells.item(0).innerHTML);
+                initConfigDevice();
+                // console.log("Number of rows device table :" + mytable.rows.length);
+                // console.log("Value location[0] :" + mytable.rows.item(0).cells.item(0).innerHTML);
             }
 
         } else {
@@ -225,16 +227,19 @@ const infront_section = document.querySelector(".In-front-section");
 const behind_section = document.querySelector(".behind-section");
 const humidity_section = document.querySelector(".humidity-section");
 
-function CreateGauge() {
+async function CreateGauge() {
     const gaugeElement = document.querySelectorAll(".gauge");
     console.log(gaugeElement.length);
-    if (gaugeElement.length === (1 * 3)) {
+    let all_devices = [];
+    all_devices = await fetchConfigDevice();
+    console.log("Number of all device (in CreateGauge function) :" + all_devices.length);
+    if (gaugeElement.length === (all_devices.length * 3)) {
         console.log("not create gaugeElement ");
         relate_value();
         return;
     } else {
         console.log("create gaugeElement");
-        for (let index = 0; index < 1; index++) {
+        for (let index = 0; index < all_devices.length; index++) {
             CreateDIVChart(infront_section);
             CreateDIVChart(behind_section);
             CreateDIVChart(humidity_section);
@@ -315,8 +320,9 @@ function setGaugeValue(gauge, json_value) {
 
 
 async function query_data_influxdb() {
+    let location = "rack1";
     let tmp = [];
-    let rack1_temp_front = await fetch('http://172.30.232.114:8081/influxdb/rack1/temperature/frontrack')
+    let rack1_temp_front = await fetch(`http://172.30.232.114:8081/influxdb/${location}/temperature/frontrack`)
         .then(function(response) {
             // The response is a Response instance.
             // You parse the data into a useable format using `.json()`
@@ -325,7 +331,7 @@ async function query_data_influxdb() {
         .catch(err => console.log('Request Failed', err));
 
     rack1_temp_front['type'] = "temperature";
-    let rack1_temp_back = await fetch('http://172.30.232.114:8081/influxdb/rack1/temperature/behindrack')
+    let rack1_temp_back = await fetch(`http://172.30.232.114:8081/influxdb/${location}/temperature/behindrack`)
         .then(function(response) {
             // The response is a Response instance.
             // You parse the data into a useable format using `.json()`
@@ -334,7 +340,7 @@ async function query_data_influxdb() {
         .catch(err => console.log('Request Failed', err));
     rack1_temp_back['type'] = "temperature";
 
-    let rack1_humidity = await fetch('http://172.30.232.114:8081/influxdb/rack1/humidity')
+    let rack1_humidity = await fetch(`http://172.30.232.114:8081/influxdb/${location}/humidity`)
         .then(function(response) {
             // The response is a Response instance.
             // You parse the data into a useable format using `.json()`
@@ -350,14 +356,30 @@ async function query_data_influxdb() {
 }
 
 async function relate_value() {
-    var tmp = [];
-    tmp = await query_data_influxdb();
+    var tmp_all_Devices = [];
+    let all_Device = [];
+    let tmp_device = [];
+    let test = [];
+    all_Device = await fetchConfigDevice();
+    for (let i = 0; i < all_Device.length; i++) {
+
+        tmp_device = await query_data_influxdb();
+        //push each json 
+        for (let j = 0; j < tmp_device.length; j++) {
+
+            tmp_all_Devices.push(tmp_device[j]);
+        }
+        // console.log(all_Device[i].location);
+    }
+
+
+
     console.log("access to relate_value");
-    console.log(tmp);
+    console.log(tmp_all_Devices);
     const gaugeElement = document.querySelectorAll(".gauge");
-    console.log("Number of gaugeElement : " + gaugeElement.length);
+    console.log(`Number of gaugeElement : ${gaugeElement.length}`);
     for (i = 0; i < gaugeElement.length; i++) {
-        setGaugeValue(gaugeElement[i], tmp[i]);
+        setGaugeValue(gaugeElement[i], tmp_all_Devices[i]);
     }
 }
 
@@ -368,7 +390,7 @@ var location_device = document.getElementById("location-device");
 var ip_address_device = document.getElementById("ip-address-device");
 
 function addDevice() {
-    var myTab = document.getElementById('table-device');
+    // var myTab = document.getElementById('table-device');
     var myTable = document.getElementsByTagName("tbody")[0];
     console.log("access addDevice");
     if (device_name.value === "" || location_device.value === "" || ip_address_device.value === "") {
@@ -410,4 +432,85 @@ function addDevice() {
 function deleteRow(r) {
     var i = r.parentNode.parentNode.rowIndex;
     document.getElementById("table-device").deleteRow(i);
+}
+
+function showTableData() {
+    var myTab = document.getElementById('table-device');
+    var tmp = [];
+    // LOOP THROUGH EACH ROW OF THE TABLE AFTER HEADER.
+    for (i = 1; i < myTab.rows.length; i++) {
+
+        // GET THE CELLS COLLECTION OF THE CURRENT ROW.
+        var objCells = myTab.rows.item(i).cells;
+        var tmp_json = { device_name: "", location: "", ip_address: "" };
+        tmp_json.device_name = objCells.item(0).innerHTML;
+        tmp_json.location = objCells.item(1).innerHTML;
+        tmp_json.ip_address = objCells.item(2).innerHTML;
+        tmp.push(tmp_json);
+    }
+    // console.log(tmp);
+    return tmp;
+}
+
+function saveConfigDevice() {
+    let tmp = [];
+    tmp = showTableData();
+    console.log(tmp);
+    var r = confirm("Are you sure to save config device?");
+    if (r == true) {
+        const options = {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(tmp),
+        }
+        fetch('http://127.0.0.1:8081/save-config-device', options);
+    } else {
+        console.log("click cancel");
+    }
+
+}
+
+async function fetchConfigDevice() {
+    let all_devices = [];
+    all_devices = await fetch('http://127.0.0.1:8081/init-config-device')
+        .then(function(response) {
+            // The response is a Response instance.
+            // You parse the data into a useable format using `.json()`
+            return response.json();
+        })
+        .catch(err => console.log('Request Failed', err));
+    return all_devices;
+}
+
+async function initConfigDevice() {
+    console.log("access to initConfigDevice function");
+    let all_devices = [];
+    all_devices = await fetchConfigDevice();
+    console.log(all_devices);
+    console.log(all_devices[0].device_name);
+    var myTable = document.getElementsByTagName("tbody")[0];
+    console.log(myTable.rows.length);
+    console.log(all_devices.length);
+    if (myTable.rows.length === all_devices.length) {
+        console.log("Not append table");
+        return;
+    } else {
+        for (let index = 0; index < all_devices.length; index++) {
+            let template = `
+            <tr>
+                <td>${all_devices[index].device_name}</td>
+                <td>${all_devices[index].location}</td>
+                <td>${all_devices[index].ip_address}</td>
+                <td style="width: 100px;">
+                    <button type="button" id="delete-device" onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>`;
+
+            myTable.innerHTML += template;
+
+        }
+    }
+
 }

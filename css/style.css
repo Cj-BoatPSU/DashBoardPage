@@ -783,7 +783,6 @@ path {
     cursor: pointer;
     background-color: lightblue;
     color: #fff;
-    /* outline: none; */
 }
 
 #input-device button:hover {
@@ -807,7 +806,6 @@ path {
     border-collapse: collapse;
     margin: 25px 0;
     font-size: 0.9em;
-    /* min-width: 400px; */
     width: 100%;
     border-radius: 5px 5px 0 0;
     overflow: hidden;
@@ -835,12 +833,6 @@ path {
 .content-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
-
-
-/* .content-table tbody tr.active-row {
-    font-weight: bold;
-    color: #009879;
-} */
 
 #delete-device {
     width: 80px;

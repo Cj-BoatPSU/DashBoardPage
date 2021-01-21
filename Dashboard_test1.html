@@ -21,7 +21,6 @@
         });
     </script>
     <script type="text/javascript" src="modules/config.js"></script>
-    <!-- <script src="fetch_api_influxdb.js"></script> -->
 </head>
 
 <body>
@@ -175,41 +174,9 @@
                                     </tr>
                                 </thead>
                                 <tbody id="table-data">
-                                    <tr>
-                                        <td>Raspberry Pi 1</td>
-                                        <td>rack1</td>
-                                        <td>172.30.232.71</td>
-                                        <td style="width: 100px;">
-                                            <button type="button" id="delete-device" onclick="deleteRow(this)">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Raspberry Pi 2</td>
-                                        <td>rack2</td>
-                                        <td>172.30.232.73</td>
-                                        <td style="width: 100px;">
-                                            <button type="button" id="delete-device" onclick="deleteRow(this)">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>Raspberry Pi 3</td>
-                                        <td>rack3</td>
-                                        <td>172.30.232.74</td>
-                                        <td style="width: 100px;">
-                                            <button type="button" id="delete-device" onclick="deleteRow(this)">Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Raspberry Pi 4</td>
-                                        <td>rack4</td>
-                                        <td>172.30.232.75</td>
-                                        <td style="width: 100px;">
-                                            <button type="button" id="delete-device" onclick="deleteRow(this)">Delete</button>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
+                            <input type="button" class="btnsave-info" value="save" onclick="saveConfigDevice()">
                         </div>
                     </div>
                 </div>
