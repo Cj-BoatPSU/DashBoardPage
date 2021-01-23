@@ -289,9 +289,9 @@ function setGaugeValue(gauge, json_value) {
     }
     // check temp value for change status color
     if (json_value.type === "temperature") {
-        if (json_value.value >= 0 && json_value.value < 23) {
+        if (json_value.value >= 0 && json_value.value < 27) {
             gauge.querySelector(".gauge__fill").style.background = '#009578';
-        } else if (json_value.value >= 23 && json_value.value <= 27) {
+        } else if (json_value.value >= 27 && json_value.value <= 30) {
             gauge.querySelector(".gauge__fill").style.background = '#ffcc00';
         } else {
             gauge.querySelector(".gauge__fill").style.background = '#e03b24';
@@ -460,6 +460,9 @@ function saveConfigDevice() {
     if (r == true) {
         const options = {
             method: "POST",
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'omit',
             headers: {
                 'Content-Type': 'application/json'
             },

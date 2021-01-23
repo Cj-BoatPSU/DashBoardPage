@@ -1,14 +1,23 @@
 const express = require('express');
 const app = express();
 const Influx = require('influxdb-nodejs');
-const client = new Influx('http://mydb:cjboat@127.0.0.1:8086/db_version2');
+const client = new Influx(`http://mydb:cjboat@127.0.0.1:8086/db_version2`);
 const cors = require('cors');
 const fs = require('fs');
+const { Server } = require('./modules/config.js');
 
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cors({ origin: true }));
 
+
+fs.readFile("modules/config.js", 'utf-8', function(err, data) {
+    // Check for errors 
+    if (err) throw err;
+    console.log(Server.ip_address);
+    // console.log(FIREBASE_CONFIG.appId);
+
+});
 
 app.get('/influxdb/rack1/temperature/frontrack', (req, res) => {
     const reader = client.query('temperature').where('location', 'rack1').where('position', 'front rack');
@@ -19,7 +28,7 @@ app.get('/influxdb/rack1/temperature/frontrack', (req, res) => {
         res.json({
             location: data.results[0].series[0].values[0][1],
             position: data.results[0].series[0].values[0][2],
-            value: data.results[0].series[0].values[0][3]
+            value: data.results[0].series[0].values[0][3],
         });
     }).catch(err => {
         console.error(err);
@@ -77,7 +86,7 @@ app.post('/save-config-device', (req, res) => {
 
 app.get('/init-config-device', (req, res) => {
 
-    fs.readFile("config_device.json", function(err, data) {
+    fs.readFile("config_device.json", 'utf-8', function(err, data) {
         // Check for errors 
         if (err) throw err;
         // Converting to JSON 
