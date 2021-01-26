@@ -19,55 +19,6 @@ fs.readFile("modules/config.js", 'utf-8', function(err, data) {
 
 });
 
-app.get('/influxdb/rack1/temperature/frontrack', (req, res) => {
-    const reader = client.query('temperature').where('location', 'rack1').where('position', 'front rack');
-    reader.order = 'desc';
-    reader.then(data => {
-        console.info(data.results[0].series[0].values[0]);
-        // res.send('OK');
-        res.json({
-            location: data.results[0].series[0].values[0][1],
-            position: data.results[0].series[0].values[0][2],
-            value: data.results[0].series[0].values[0][3],
-        });
-    }).catch(err => {
-        console.error(err);
-    });
-
-});
-
-app.get('/influxdb/rack1/temperature/behindrack', (req, res) => {
-    const reader = client.query('temperature').where('location', 'rack1').where('position', 'behind rack');
-    reader.order = 'desc';
-    reader.then(data => {
-        console.info(data.results[0].series[0].values[0]);
-        // res.send('OK');
-        res.json({
-            location: data.results[0].series[0].values[0][1],
-            position: data.results[0].series[0].values[0][2],
-            value: data.results[0].series[0].values[0][3]
-        });
-    }).catch(err => {
-        console.error(err);
-    });
-
-});
-
-app.get('/influxdb/rack1/humidity', (req, res) => {
-    const reader = client.query('humidity').where('location', 'rack1');
-    reader.order = 'desc';
-    reader.then(data => {
-        console.info(data.results[0].series[0].values[0]);
-        // res.send('OK');
-        res.json({
-            location: data.results[0].series[0].values[0][1],
-            value: data.results[0].series[0].values[0][2],
-        });
-    }).catch(err => {
-        console.error(err);
-    });
-
-});
 
 
 app.post('/save-config-device', (req, res) => {
@@ -104,7 +55,59 @@ app.post('/postJSON-config-device', (req, res) => {
 });
 
 
+app.get('/Queryinfluxdb', (req, res) => {
+    fs.readFile("config_device.json", 'utf-8', function(err, data) {
+        // Check for errors 
+        if (err) throw err;
+        const config_device = JSON.parse(data);
+        // console.log(config_device[0].location);
+        let reader = Query_influxDB(config_device);
+        reader.then(data => {
+            console.info(data);
+            res.json(data);
+        }).catch(err => {
+            console.error(err);
+        });
+    });
 
+});
+
+async function Query_influxDB(config_device) {
+    let tmp = [];
+    console.log(`Config device : ${config_device.length}`);
+    for (let i = 0; i < config_device.length; i++) {
+        // console.log(config_device[i].location);
+        const reader = client.query('temperature').where('location', `${config_device[i].location}`).where('position', 'front rack');
+        reader.order = 'desc';
+        let temp_front = await reader.then(function(data) {
+                // The response is a Response instance.
+                // You parse the data into a useable format using `.json()`
+                return data.results[0].series[0].values[0];
+            })
+            .catch(err => console.log('Request Failed', err));
+        let reader1 = client.query('temperature').where('location', `${config_device[i].location}`).where('position', 'behind rack');
+        reader1.order = 'desc';
+        let temp_behind = await reader1.then(function(data) {
+
+                return data.results[0].series[0].values[0];
+            })
+            .catch(err => console.log('Request Failed', err));
+        let reader2 = client.query('humidity').where('location', `${config_device[i].location}`);
+        reader2.order = 'desc';
+        let humidity = await reader2.then(function(data) {
+
+                return data.results[0].series[0].values[0];
+            })
+            .catch(err => console.log('Request Failed', err));
+
+
+        tmp.push(temp_front);
+        tmp.push(temp_behind);
+        tmp.push(humidity);
+    }
+
+    return tmp;
+}
 
 
 app.listen(8081, function() {

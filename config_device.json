@@ -1,1 +1,1 @@
-[{"device_name":"Raspberry Pi 1","location":"rack1","ip_address":"172.30.232.71"}]
+[{"device_name":"Raspberry Pi 1","location":"rack1","ip_address":"172.30.232.71"},{"device_name":"Raspberry Pi 2","location":"rack2","ip_address":"172.30.232.52"},{"device_name":"Raspberry Pi 4","location":"rack4","ip_address":"172.30.232.86"},{"device_name":"Raspberry Pi 3","location":"rack3","ip_address":"172.30.232.55"}]

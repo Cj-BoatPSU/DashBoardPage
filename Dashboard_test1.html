@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <title>Data Center Monitoring Dashboard</title>
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+    <script src="https://kit.fontawesome.com/4734782259.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="/node_modules/chart.js/dist/Chart.js"></script>
+    <script src="/node_modules/chart.js/dist/Chart.bundle.js"></script>
     <script>
         $(document).ready(function() {
             $(".hamburger .hamburger__inner").click(function() {
@@ -20,7 +22,7 @@
 
         });
     </script>
-    <script src="modules/config_firebase.js"></script>
+    <script type="text/javascript" src="modules/config_firebase.js"></script>
 </head>
 
 <body>
@@ -118,20 +120,12 @@
                         <p style="display: inline-block; margin-right: 10px ;">: Danger</p>
                     </div>
                     <p>In front of Rack</p>
-                    <div class="In-front-section">
-
-                    </div>
+                    <div class="In-front-section"></div>
                     <p style="display: inline-block;">Behind of Rack</p>
                     <p style="display: inline-block; color: red; margin-left: 10px; font-size: medium;">(*Heat energy released by servers originates in the microprocessor.)</p>
-                    <div class="behind-section">
-
-                    </div>
+                    <div class="behind-section"></div>
                     <p>Humidity</p>
-                    <div class="humidity-section">
-
-                    </div>
-
-
+                    <div class="humidity-section"></div>
                 </div>
                 <div class="item" id="item-3">
                     <canvas id="myChart" width="400" height="400"></canvas>

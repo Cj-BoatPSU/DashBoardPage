@@ -53,7 +53,6 @@ function login() {
 
 function checkAuth() {
     console.log("checkAuth function");
-    console.log(FIREBASE_CONFIG.projectId);
     console.log("--------------");
     if (localStorage.getItem("check-auth") === "true") {
         console.log("Auth");

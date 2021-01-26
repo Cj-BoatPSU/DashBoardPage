@@ -78,7 +78,7 @@ function logout() {
     firebase.auth().signOut().then(function() {
         console.log("Sign-out successful");
         localStorage.setItem("check-auth", false);
-        sessionStorage.setItem("check-auth", false);
+        // sessionStorage.setItem("check-auth", false);
         window.location.href = "index.html"
     }).catch(function(error) {
         console.log(error);
@@ -87,8 +87,7 @@ function logout() {
 }
 
 function checkAuth() {
-    console.log("checkAuth function");
-    console.log(localStorage.getItem("check-auth"));
+    console.log(`checkAuth function : ${localStorage.getItem("check-auth")}`);
     if (localStorage.getItem("check-auth") === "false") {
         console.log(" no Auth");
         window.location.href = "index.html";
@@ -155,7 +154,7 @@ function initProfile() {
 }
 
 function saveProfile() {
-    console.log("accesss to saveProfile function");
+    // console.log("accesss to saveProfile function");
     var btnChange = document.getElementById("change-info");
     var btnSave = document.getElementById("save-info");
     btnChange.style.display = "block";
@@ -173,7 +172,7 @@ function saveProfile() {
 }
 
 function changeProfile() {
-    console.log("accesss to changeProfile function");
+    // console.log("accesss to changeProfile function");
     profileInfo.get().then(function(doc) {
         if (doc.exists) {
             // console.log("Document data:", doc.data());
@@ -198,30 +197,6 @@ function changeProfile() {
     contactNumber.disabled = false;
 }
 
-// chart.js section
-
-var ctx = document.getElementById('myChart').getContext('2d');
-var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'line',
-
-    // The data for our dataset
-    data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45]
-        }]
-    },
-
-    // Configuration options go here
-    options: {}
-});
-
-
-
 // Gauge chart section
 const infront_section = document.querySelector(".In-front-section");
 const behind_section = document.querySelector(".behind-section");
@@ -229,10 +204,10 @@ const humidity_section = document.querySelector(".humidity-section");
 
 async function CreateGauge() {
     const gaugeElement = document.querySelectorAll(".gauge");
-    console.log(gaugeElement.length);
+
     let all_devices = [];
     all_devices = await fetchConfigDevice();
-    console.log("Number of all device (in CreateGauge function) :" + all_devices.length);
+    console.log(`Number of all device (in CreateGauge function) : ${all_devices.length}`);
     if (gaugeElement.length === (all_devices.length * 3)) {
         console.log("not create gaugeElement ");
         relate_value();
@@ -247,6 +222,7 @@ async function CreateGauge() {
         }
         relate_value();
     }
+    console.log(`Number of div each section : ` + infront_section.children.length);
 
 }
 
@@ -277,109 +253,107 @@ function CreateDIVChart(element) {
     gauge.appendChild(sc_min);
     gauge.appendChild(sc_max);
     gauge.appendChild(sc_location);
-    // gauge.appendChild(sc_position);
     element.appendChild(gauge);
-    // console.log("success to CreateDIVChart");
 }
 
 function setGaugeValue(gauge, json_value) {
-    // console.log(json_value);
-    if (json_value.value == null || json_value.location == null) {
-        return;
-    }
-    // check temp value for change status color
-    if (json_value.type === "temperature") {
-        if (json_value.value >= 0 && json_value.value < 27) {
-            gauge.querySelector(".gauge__fill").style.background = '#009578';
-        } else if (json_value.value >= 27 && json_value.value <= 30) {
-            gauge.querySelector(".gauge__fill").style.background = '#ffcc00';
-        } else {
-            gauge.querySelector(".gauge__fill").style.background = '#e03b24';
-        }
-    } else {
-        if (json_value.value >= 40 && json_value.value < 60) {
-            gauge.querySelector(".gauge__fill").style.background = '#009578';
-        } else if (json_value.value >= 0 && json_value.value <= 39) {
-            gauge.querySelector(".gauge__fill").style.background = '#ffcc00';
-        } else {
-            gauge.querySelector(".gauge__fill").style.background = '#e03b24';
-        }
-    }
-    // full gauge is (0.5)turn
-    gauge.querySelector(".gauge__fill").style.transform = `rotate(${(json_value.value/75)*0.5}turn)`;
-    if (json_value.type === "temperature") {
-        gauge.querySelector(".gauge__value").textContent = `${json_value.value.toFixed(2)}°C`;
-    } else {
-        gauge.querySelector(".gauge__value").textContent = `${json_value.value}%`;
-    }
+    // console.log("access to setGaugeValue");
+    // console.log(`Number of ${gauge.parentElement.className} section : ${gauge.parentElement.children.length}`);
 
-    gauge.querySelector(".sc-location").textContent = json_value.location;
-    // gauge.querySelector(".sc-position").textContent = position;
+
+    // check temp value for change status color
+    if (json_value.type === "temperature") { //type temperature
+        if (json_value[3] == null || json_value[1] == null) {
+            return;
+        }
+        if (json_value[3] >= 0 && json_value[3] < 27) {
+            gauge.querySelector(".gauge__fill").style.background = '#009578';
+        } else if (json_value[3] >= 27 && json_value[3] <= 30) {
+            gauge.querySelector(".gauge__fill").style.background = '#ffcc00';
+        } else {
+            gauge.querySelector(".gauge__fill").style.background = '#e03b24';
+        }
+        // full gauge is (0.5)turn
+        gauge.querySelector(".gauge__fill").style.transform = `rotate(${(json_value[3]/75)*0.5}turn)`;
+        gauge.querySelector(".gauge__value").textContent = `${json_value[3].toFixed(2)}°C`;
+
+    } else { //type humidity
+        if (json_value[2] == null || json_value[1] == null) {
+            return;
+        }
+        if (json_value[2] >= 40 && json_value[2] < 60) {
+            gauge.querySelector(".gauge__fill").style.background = '#009578';
+        } else if (json_value[2] >= 0 && json_value[2] <= 39) {
+            gauge.querySelector(".gauge__fill").style.background = '#ffcc00';
+        } else {
+            gauge.querySelector(".gauge__fill").style.background = '#e03b24';
+        }
+        gauge.querySelector(".gauge__fill").style.transform = `rotate(${(json_value[2]/75)*0.5}turn)`;
+        gauge.querySelector(".gauge__value").textContent = `${json_value[2]}%`;
+    }
+    gauge.querySelector(".sc-location").textContent = json_value[1];
 
 }
 
 
 async function query_data_influxdb() {
-    let location = "rack1";
+    let results = await fetch(`http://127.0.0.1:8081/Queryinfluxdb`)
+        .then(function(response) {
+            return response.json();
+        })
+        .catch(err => console.log('Request Failed', err));
+    for (let i = 0; i < results.length; i++) {
+        if (results[i].length === 4) {
+            results[i]['type'] = "temperature";
+        } else {
+            results[i]['type'] = "humidity";
+        }
+    }
+
+    return results;
+}
+
+function separate_value(all_data) {
+    let front_position = [];
+    let behind_position = [];
+    let humidity = [];
     let tmp = [];
-    let rack1_temp_front = await fetch(`http://172.30.232.114:8081/influxdb/${location}/temperature/frontrack`)
-        .then(function(response) {
-            // The response is a Response instance.
-            // You parse the data into a useable format using `.json()`
-            return response.json();
-        })
-        .catch(err => console.log('Request Failed', err));
+    for (let i = 0; i < all_data.length; i++) {
+        if (all_data[i][2] === "front rack") {
+            front_position.push(all_data[i]);
+        } else if (all_data[i][2] === "behind rack") {
+            behind_position.push(all_data[i]);
+        } else {
+            humidity.push(all_data[i]);
+        }
 
-    rack1_temp_front['type'] = "temperature";
-    let rack1_temp_back = await fetch(`http://172.30.232.114:8081/influxdb/${location}/temperature/behindrack`)
-        .then(function(response) {
-            // The response is a Response instance.
-            // You parse the data into a useable format using `.json()`
-            return response.json();
-        })
-        .catch(err => console.log('Request Failed', err));
-    rack1_temp_back['type'] = "temperature";
+    }
+    for (let i = 0; i < front_position.length; i++) {
+        tmp.push(front_position[i]);
+    }
+    for (let i = 0; i < behind_position.length; i++) {
+        tmp.push(behind_position[i]);
+    }
+    for (let i = 0; i < humidity.length; i++) {
+        tmp.push(humidity[i]);
+    }
 
-    let rack1_humidity = await fetch(`http://172.30.232.114:8081/influxdb/${location}/humidity`)
-        .then(function(response) {
-            // The response is a Response instance.
-            // You parse the data into a useable format using `.json()`
-            return response.json();
-        })
-        .catch(err => console.log('Request Failed', err));
-    rack1_humidity['type'] = "humidity";
-
-    tmp.push(rack1_temp_front);
-    tmp.push(rack1_temp_back);
-    tmp.push(rack1_humidity);
     return tmp;
 }
 
 async function relate_value() {
-    var tmp_all_Devices = [];
-    let all_Device = [];
-    let tmp_device = [];
-    let test = [];
-    all_Device = await fetchConfigDevice();
-    for (let i = 0; i < all_Device.length; i++) {
 
-        tmp_device = await query_data_influxdb();
-        //push each json 
-        for (let j = 0; j < tmp_device.length; j++) {
+    let all_data = await query_data_influxdb();
+    let tmp = separate_value(all_data);
+    // console.log("access to relate_value");
+    console.log(tmp);
+    console.log(all_data);
 
-            tmp_all_Devices.push(tmp_device[j]);
-        }
-        // console.log(all_Device[i].location);
-    }
-
-
-
-    console.log("access to relate_value");
-    console.log(tmp_all_Devices);
     const gaugeElement = document.querySelectorAll(".gauge");
+    const gaugeElement_front = infront_section.children;
     console.log(`Number of gaugeElement : ${gaugeElement.length}`);
     for (i = 0; i < gaugeElement.length; i++) {
-        setGaugeValue(gaugeElement[i], tmp_all_Devices[i]);
+        setGaugeValue(gaugeElement[i], tmp[i]);
     }
 }
 
@@ -392,7 +366,7 @@ var ip_address_device = document.getElementById("ip-address-device");
 function addDevice() {
     // var myTab = document.getElementById('table-device');
     var myTable = document.getElementsByTagName("tbody")[0];
-    console.log("access addDevice");
+    // console.log("access addDevice");
     if (device_name.value === "" || location_device.value === "" || ip_address_device.value === "") {
         if (device_name.value === "") {
             document.getElementById('alert-device-name').innerText = "Please enter Device Name";
@@ -462,7 +436,7 @@ function saveConfigDevice() {
             method: "POST",
             mode: 'cors',
             cache: 'no-cache',
-            credentials: 'omit',
+            credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -479,8 +453,6 @@ async function fetchConfigDevice() {
     let all_devices = [];
     all_devices = await fetch('http://127.0.0.1:8081/init-config-device')
         .then(function(response) {
-            // The response is a Response instance.
-            // You parse the data into a useable format using `.json()`
             return response.json();
         })
         .catch(err => console.log('Request Failed', err));
@@ -488,7 +460,7 @@ async function fetchConfigDevice() {
 }
 
 async function initConfigDevice() {
-    console.log("access to initConfigDevice function");
+    // console.log("access to initConfigDevice function");
     let all_devices = [];
     all_devices = await fetchConfigDevice();
     console.log(all_devices);
@@ -517,3 +489,28 @@ async function initConfigDevice() {
     }
 
 }
+
+// chart.js section
+
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [{
+            label: 'My First dataset',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45]
+        }],
+        // fill: false,
+    },
+
+    // Configuration options go here
+    options: {
+
+    }
+});
