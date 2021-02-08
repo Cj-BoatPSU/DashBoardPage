@@ -61,8 +61,9 @@ app.get('/Queryinfluxdb', (req, res) => {
         if (err) throw err;
         const config_device = JSON.parse(data);
         // console.log(config_device[0].location);
-        let reader = Query_influxDB(config_device);
+        let reader = Query_influxDB_Gauge(config_device);
         reader.then(data => {
+            console.info('/Queryinfluxdb');
             console.info(data);
             res.json(data);
         }).catch(err => {
@@ -72,7 +73,24 @@ app.get('/Queryinfluxdb', (req, res) => {
 
 });
 
-async function Query_influxDB(config_device) {
+app.get('/Queryinfluxdb_HistoryGraph', (req, res) => {
+    fs.readFile("config_device.json", 'utf-8', function(err, data) {
+        // Check for errors 
+        if (err) throw err;
+        const config_device = JSON.parse(data);
+        // console.log(config_device[0].location);
+        let reader = Query_influxDB_HistoryGraph(config_device);
+        reader.then(data => {
+            console.info('/Queryinfluxdb_HistoryGraph');
+            console.info(data);
+            res.json(data);
+        }).catch(err => {
+            console.error(err);
+        });
+    });
+});
+
+async function Query_influxDB_Gauge(config_device) {
     let tmp = [];
     console.log(`Config device : ${config_device.length}`);
     for (let i = 0; i < config_device.length; i++) {
@@ -106,6 +124,64 @@ async function Query_influxDB(config_device) {
         tmp.push(humidity);
     }
 
+    return tmp;
+}
+
+async function Query_influxDB_HistoryGraph(config_device) {
+    var date = new Date();
+    var date_str = date.toISOString().substr(0, 10);
+    var tmp = [];
+    for (let i = 0; i < config_device.length; i++) {
+        const reader = client.query('temperature').where('location', `${config_device[i].location}`).where('position', 'front rack');
+        reader.set({
+            format: 'json',
+            start: date_str,
+
+        });
+        var temp_front = await reader.then(data => {
+            console.info("temperature front");
+            return data.temperature;
+        }).catch(console.error);
+
+        const reader1 = client.query('temperature').where('location', `${config_device[i].location}`).where('position', 'behind rack');
+        reader1.set({
+            format: 'json',
+            start: date_str,
+
+        });
+        var temp_behind = await reader1.then(data => {
+            console.info("temperature behind");
+            return data.temperature;
+        }).catch(console.error);
+
+
+        const reader2 = client.query('humidity').where('location', `${config_device[i].location}`);
+        reader2.set({
+            format: 'json',
+            start: date_str,
+
+        });
+        var humidity = await reader2.then(data => {
+            console.info("humidity");
+            return data.humidity;
+        }).catch(console.error);
+
+        for (let i = 0; i < temp_front.length; i++) {
+            tmp.push(temp_front[i]);
+
+        }
+        for (let i = 0; i < temp_behind.length; i++) {
+            tmp.push(temp_behind[i]);
+
+        }
+        for (let i = 0; i < humidity.length; i++) {
+            tmp.push(humidity[i]);
+
+        }
+
+    }
+
+    console.log(tmp.length);
     return tmp;
 }
 

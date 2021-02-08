@@ -42,7 +42,7 @@ for (var i = 0; i < btns.length; i++) {
 
 }
 //Variable Declaration global
-
+var all_HistoryGraph = [];
 // var myTab = document.getElementById('table-device');
 // var mytable = document.getElementsByTagName("tbody")[0];
 
@@ -65,6 +65,9 @@ function toggle_contents(btn_id) {
                 initConfigDevice();
                 // console.log("Number of rows device table :" + mytable.rows.length);
                 // console.log("Value location[0] :" + mytable.rows.item(0).cells.item(0).innerHTML);
+            } else if (item.id === "item-3") {
+                initHistoryGraph();
+                // TestsetInterval();
             }
 
         } else {
@@ -275,7 +278,7 @@ function setGaugeValue(gauge, json_value) {
         }
         // full gauge is (0.5)turn
         gauge.querySelector(".gauge__fill").style.transform = `rotate(${(json_value[3]/75)*0.5}turn)`;
-        gauge.querySelector(".gauge__value").textContent = `${json_value[3].toFixed(2)}°C`;
+        gauge.querySelector(".gauge__value").textContent = `${json_value[3]}°C`; //.toFixed(2)
 
     } else { //type humidity
         if (json_value[2] == null || json_value[1] == null) {
@@ -347,7 +350,7 @@ async function relate_value() {
     let tmp = separate_value(all_data);
     // console.log("access to relate_value");
     console.log(tmp);
-    console.log(all_data);
+    console.log(tmp[0][0]);
 
     const gaugeElement = document.querySelectorAll(".gauge");
     const gaugeElement_front = infront_section.children;
@@ -422,7 +425,6 @@ function showTableData() {
         tmp_json.ip_address = objCells.item(2).innerHTML;
         tmp.push(tmp_json);
     }
-    // console.log(tmp);
     return tmp;
 }
 
@@ -464,10 +466,10 @@ async function initConfigDevice() {
     let all_devices = [];
     all_devices = await fetchConfigDevice();
     console.log(all_devices);
-    console.log(all_devices[0].device_name);
+    // console.log(all_devices[0].device_name);
     var myTable = document.getElementsByTagName("tbody")[0];
-    console.log(myTable.rows.length);
-    console.log(all_devices.length);
+    // console.log(myTable.rows.length);
+    // console.log(all_devices.length);
     if (myTable.rows.length === all_devices.length) {
         console.log("Not append table");
         return;
@@ -492,25 +494,194 @@ async function initConfigDevice() {
 
 // chart.js section
 
-var ctx = document.getElementById('myChart').getContext('2d');
-var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'line',
-
-    // The data for our dataset
-    data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45]
-        }],
-        // fill: false,
-    },
-
-    // Configuration options go here
-    options: {
-
+async function initHistoryGraph() {
+    let all_devices = [];
+    all_devices = await fetchConfigDevice();
+    let HistoryGraph_length = document.getElementsByClassName('HistoryGraph');
+    console.log(`Number of graph history : ${HistoryGraph_length.length}`);
+    if (HistoryGraph_length.length === all_devices.length) {
+        console.log("Not create graph history");
+        return;
+    } else {
+        for (let index = 0; index < all_devices.length; index++) {
+            CreateCanvas(document.getElementById('item-3'), all_devices[index].location);
+        }
+        initDataHistoryGraph();
     }
-});
+}
+
+function randomNumber(min, max) {
+    const r = Math.random() * (max - min) + min;
+    return Math.floor(r);
+}
+
+function CreateCanvas(element, location) {
+    var canvas = document.createElement("CANVAS");
+    var canvas_length = element.querySelectorAll("CANVAS");
+    canvas.setAttribute('id', `HistoryGraph${canvas_length.length+1}`);
+    canvas.setAttribute('class', `HistoryGraph`);
+    var label = document.createElement("P");
+    label.innerText = `Location : ${location}`;
+    var ctx = canvas.getContext("2d");
+    var config = {
+        // The type of chart we want to create
+        type: 'line',
+        // The data for our dataset
+        data: {
+            datasets: [{
+                    label: 'Temperature ( in front of rack )',
+                    backgroundColor: 'rgb(35, 155, 86)',
+                    borderColor: 'rgb(35, 155, 86)',
+                    borderWidth: 5,
+                    fill: 'false',
+                },
+                {
+                    label: 'Temperature ( behind of rack )',
+                    backgroundColor: 'rgb(255, 204, 0)',
+                    borderColor: 'rgb(255, 204, 0)',
+                    borderWidth: 5,
+                    fill: 'false',
+                },
+                {
+                    label: 'Humidity',
+                    backgroundColor: 'rgb(79, 129, 189)',
+                    borderColor: 'rgb(79, 129, 189)',
+                    borderWidth: 5,
+                    fill: 'false',
+                }
+            ],
+
+        },
+
+        // Configuration options go here
+        options: {
+            // responsive: true,
+            legend: {
+                labels: {
+                    // This more specific font property overrides the global property
+                    fontSize: 16,
+                }
+            },
+            scales: {
+                xAxes: {
+                    type: 'timeseries',
+                    offset: true,
+                },
+                x: {
+                    type: 'timeseries',
+                    offset: true,
+                },
+            }
+        }
+
+    };
+    var chart = new Chart(ctx, config);
+    // console.log(chart.data.datasets[0].data[0]);
+    element.appendChild(canvas);
+    element.appendChild(label);
+    label.style.marginLeft = "auto"; // set to center
+    label.style.marginRight = "auto"; // set to center
+    label.style.marginTop = "30px";
+    label.style.marginBottom = "70px";
+    label.style.width = "20%";
+    label.style.padding = "10px";
+    label.style.textAlign = "center";
+    label.style.fontSize = "20px";
+    label.style.fontWeight = "bold";
+    label.style.color = "rgb(255, 255, 255)";
+    label.style.backgroundColor = "rgb(2, 62, 125)";
+    all_HistoryGraph.push(chart);
+}
+
+async function initDataHistoryGraph() {
+    let all_devices = [];
+    let all_data_HistoryGraph = [];
+    all_devices = await fetchConfigDevice();
+    all_data_HistoryGraph = await fetch_Data_HistoryGraph();
+    console.log(all_data_HistoryGraph);
+    let index_value = 0;
+    for (let i = 0; i < all_devices.length; i++) {
+        //loop graph
+        for (let index = 0; index < (all_data_HistoryGraph.length / (all_devices.length * 3)); index++) {
+            //set y axis (time)
+            all_HistoryGraph[i].data.labels.push(randomTime(times));
+        }
+        for (let j = 0; j < 3; j++) {
+            //loop line graph
+            for (let k = 0; k < (all_data_HistoryGraph.length / (all_devices.length * 3)); k++) {
+                //loop set value
+                all_HistoryGraph[i].data.datasets[j].data.push(all_data_HistoryGraph[index_value].value);
+                index_value++;
+            }
+        }
+
+        all_HistoryGraph[i].update();
+    }
+
+
+}
+
+
+var times = ['1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM', '12PM'];
+
+async function addData() {
+    let all_devices = [];
+    let all_data_HistoryGraph = [];
+    all_devices = await fetchConfigDevice();
+    all_data_HistoryGraph = await fetch_Data_HistoryGraph();
+    console.log(all_data_HistoryGraph);
+    // console.log(all_data_HistoryGraph.length);
+    // for (let i = 0; i < all_HistoryGraph.length; i++) {
+    //     console.log(all_HistoryGraph[i].data);
+    //     console.log(all_devices[i].location);
+    //     // console.log(all_HistoryGraph[i].data.labels);
+    //     // console.log(all_HistoryGraph[i].data.datasets);
+    //     all_HistoryGraph[i].data.labels.push(randomTime(times));
+    //     all_HistoryGraph[i].data.datasets[0].data.push(randomNumber(21, 27));
+    //     all_HistoryGraph[i].data.datasets[1].data.push(randomNumber(31, 27));
+    //     all_HistoryGraph[i].data.datasets[2].data.push(randomNumber(51, 65));
+    //     all_HistoryGraph[i].update();
+    // }
+
+}
+
+
+function removeData() {
+    chart.data.labels.pop();
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.pop();
+    });
+    chart.update();
+}
+
+// call a function repeatedly every 5 seconds , setInterval is nest of nest
+function TestsetInterval() {
+    let i = 0;
+    setInterval(() => {
+
+        console.log(`I will be displayed after 5 seconds i : ${i}`)
+        i++;
+    }, 5000);
+}
+
+
+function randomTime(times) {
+    return times[Math.floor(Math.random() * times.length)];
+
+}
+
+function randomNumber(min, max) {
+    const r = Math.random() * (max - min) + min;
+    return r.toFixed(2);
+}
+
+
+async function fetch_Data_HistoryGraph() {
+    let all_HistoryData = [];
+    all_HistoryData = await fetch('http://127.0.0.1:8081/Queryinfluxdb_HistoryGraph')
+        .then(function(response) {
+            return response.json();
+        })
+        .catch(err => console.log('Request Failed', err));
+    return all_HistoryData;
+}

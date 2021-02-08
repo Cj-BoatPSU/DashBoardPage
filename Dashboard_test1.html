@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://kit.fontawesome.com/4734782259.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script src="/node_modules/chart.js/dist/Chart.js"></script>
-    <script src="/node_modules/chart.js/dist/Chart.bundle.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> -->
+    <script src="/node_modules/chart.js/dist/Chart.min.js"></script>
+    <script src="/modules/utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@0.1.1"></script>
     <script>
         $(document).ready(function() {
             $(".hamburger .hamburger__inner").click(function() {
@@ -128,7 +130,10 @@
                     <div class="humidity-section"></div>
                 </div>
                 <div class="item" id="item-3">
-                    <canvas id="myChart" width="400" height="400"></canvas>
+                    <!-- <canvas id="myChart"></canvas> -->
+                    <button type="button" id="btnadd-point" onclick="initDataHistoryGraph()" style="width: 100px;margin-top: 20px;  display: inline-block;">Add</button>
+                    <!-- <button type="button" id="btnremove-point" onclick="removeData()" style="width: 100px;margin-top: 20px;  display: inline-block;">Remove</button> -->
+                    <!-- <canvas id="myChart1"></canvas> -->
                 </div>
                 <div class="item" id="item-4">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque, molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum eligendi laudantium placeat aspernatur!
