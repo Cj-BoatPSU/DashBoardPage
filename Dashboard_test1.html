@@ -131,8 +131,16 @@
                 </div>
                 <div class="item" id="item-3">
                     <!-- <canvas id="myChart"></canvas> -->
-                    <button type="button" id="btnadd-point" onclick="initDataHistoryGraph()" style="width: 100px;margin-top: 20px;  display: inline-block;">Add</button>
-                    <!-- <button type="button" id="btnremove-point" onclick="removeData()" style="width: 100px;margin-top: 20px;  display: inline-block;">Remove</button> -->
+                    <select id="unit">
+                        <option value="second">Second</option>
+                        <option value="minute">Minute</option>
+                        <option value="hour">Hour</option>
+                        <option value="day" selected>Day</option>
+                        <option value="month">Month</option>
+                        <option value="year">Year</option>
+                    </select>
+                    <p id="label-date"></p>
+                    <!-- <button type="button" id="btnadd-point" onclick=" CheckQuery_HistoryGraph()" style="width: 100px;margin-top: 20px;  display: inline-block;">Add</button> -->
                     <!-- <canvas id="myChart1"></canvas> -->
                 </div>
                 <div class="item" id="item-4">

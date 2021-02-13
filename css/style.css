@@ -848,3 +848,23 @@ path {
     background-color: #E74C3C;
     font-weight: bold;
 }
+
+#label-date {
+    width: 40%;
+    /* text-align: center; */
+    font-size: 35px;
+    /* background-color: rgb(2, 62, 125); */
+    margin-bottom: 10px;
+    color: rgb(2, 62, 125);
+    padding: 10px;
+    font-weight: bold;
+}
+
+#unit {
+    /* border: 3px solid black; */
+    /* width: 15%; */
+    text-align: center;
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
+}

@@ -91,7 +91,7 @@ function logout() {
 
 function checkAuth() {
     console.log(`checkAuth function : ${localStorage.getItem("check-auth")}`);
-    if (localStorage.getItem("check-auth") === "false") {
+    if (localStorage.getItem("check-auth") === "false" || localStorage.getItem("check-auth") === null) {
         console.log(" no Auth");
         window.location.href = "index.html";
     }
@@ -355,6 +355,7 @@ async function relate_value() {
     const gaugeElement = document.querySelectorAll(".gauge");
     const gaugeElement_front = infront_section.children;
     console.log(`Number of gaugeElement : ${gaugeElement.length}`);
+
     for (i = 0; i < gaugeElement.length; i++) {
         setGaugeValue(gaugeElement[i], tmp[i]);
     }
@@ -495,10 +496,16 @@ async function initConfigDevice() {
 // chart.js section
 
 async function initHistoryGraph() {
+    var date = new Date();
+    var date_str_day = date.getDate();
+    var date_str_month = date.getMonth() + 1;
+    var date_str_year = date.getFullYear();
+    var label_date = document.getElementById("label-date");
     let all_devices = [];
     all_devices = await fetchConfigDevice();
     let HistoryGraph_length = document.getElementsByClassName('HistoryGraph');
     console.log(`Number of graph history : ${HistoryGraph_length.length}`);
+    label_date.innerHTML = `Date : ${date_str_day} / ${date_str_month} / ${date_str_year}`;
     if (HistoryGraph_length.length === all_devices.length) {
         console.log("Not create graph history");
         return;
@@ -506,7 +513,7 @@ async function initHistoryGraph() {
         for (let index = 0; index < all_devices.length; index++) {
             CreateCanvas(document.getElementById('item-3'), all_devices[index].location);
         }
-        initDataHistoryGraph();
+        CheckQuery_HistoryGraph();
     }
 }
 
@@ -521,7 +528,10 @@ function CreateCanvas(element, location) {
     canvas.setAttribute('id', `HistoryGraph${canvas_length.length+1}`);
     canvas.setAttribute('class', `HistoryGraph`);
     var label = document.createElement("P");
+    var label_NotFound = document.createElement("P");
     label.innerText = `Location : ${location}`;
+    label_NotFound.setAttribute('class', `label_NotFound`);
+    label_NotFound.innerText = "Not Found Data";
     var ctx = canvas.getContext("2d");
     var config = {
         // The type of chart we want to create
@@ -532,21 +542,21 @@ function CreateCanvas(element, location) {
                     label: 'Temperature ( in front of rack )',
                     backgroundColor: 'rgb(35, 155, 86)',
                     borderColor: 'rgb(35, 155, 86)',
-                    borderWidth: 5,
+                    borderWidth: 3,
                     fill: 'false',
                 },
                 {
                     label: 'Temperature ( behind of rack )',
                     backgroundColor: 'rgb(255, 204, 0)',
                     borderColor: 'rgb(255, 204, 0)',
-                    borderWidth: 5,
+                    borderWidth: 3,
                     fill: 'false',
                 },
                 {
                     label: 'Humidity',
                     backgroundColor: 'rgb(79, 129, 189)',
                     borderColor: 'rgb(79, 129, 189)',
-                    borderWidth: 5,
+                    borderWidth: 3,
                     fill: 'false',
                 }
             ],
@@ -576,7 +586,7 @@ function CreateCanvas(element, location) {
 
     };
     var chart = new Chart(ctx, config);
-    // console.log(chart.data.datasets[0].data[0]);
+    element.appendChild(label_NotFound);
     element.appendChild(canvas);
     element.appendChild(label);
     label.style.marginLeft = "auto"; // set to center
@@ -590,32 +600,48 @@ function CreateCanvas(element, location) {
     label.style.fontWeight = "bold";
     label.style.color = "rgb(255, 255, 255)";
     label.style.backgroundColor = "rgb(2, 62, 125)";
-    all_HistoryGraph.push(chart);
+    label_NotFound.style.marginLeft = "auto"; // set to center
+    label_NotFound.style.marginRight = "auto"; // set to center
+    label_NotFound.style.width = "20%";
+    label_NotFound.style.padding = "10px";
+    label_NotFound.style.textAlign = "center";
+    label_NotFound.style.fontSize = "20px";
+    label_NotFound.style.fontWeight = "bold";
+    label_NotFound.style.color = "rgb(255, 255, 255)";
+    label_NotFound.style.backgroundColor = "rgb(220, 20, 60)";
+    all_HistoryGraph.push(chart); //to fix after customize system
 }
 
-async function initDataHistoryGraph() {
-    let all_devices = [];
-    let all_data_HistoryGraph = [];
-    all_devices = await fetchConfigDevice();
-    all_data_HistoryGraph = await fetch_Data_HistoryGraph();
-    console.log(all_data_HistoryGraph);
+async function initDataHistoryGraph(this_data_HistoryGraph, this_HistoryGraph) {
+    console.log("access initDataHistoryGraph");
+    // let tmp_HistoryGraph = [];
     let index_value = 0;
-    for (let i = 0; i < all_devices.length; i++) {
-        //loop graph
-        for (let index = 0; index < (all_data_HistoryGraph.length / (all_devices.length * 3)); index++) {
-            //set y axis (time)
-            all_HistoryGraph[i].data.labels.push(randomTime(times));
-        }
+    // let index_time = 0;
+    console.log(this_data_HistoryGraph);
+    if (typeof this_data_HistoryGraph != "undefined" && this_data_HistoryGraph != null && this_data_HistoryGraph.length > 0) {
+        console.log("Found data (in function initDataHistoryGraph)");
         for (let j = 0; j < 3; j++) {
             //loop line graph
-            for (let k = 0; k < (all_data_HistoryGraph.length / (all_devices.length * 3)); k++) {
+            for (let k = 0; k < (this_data_HistoryGraph.length / 3); k++) {
                 //loop set value
-                all_HistoryGraph[i].data.datasets[j].data.push(all_data_HistoryGraph[index_value].value);
+                this_HistoryGraph.data.datasets[j].data.push(this_data_HistoryGraph[index_value].value);
                 index_value++;
             }
         }
+        for (let index = 0; index < (this_data_HistoryGraph.length / 3); index++) {
+            //set y axis (time)
+            this_HistoryGraph.data.labels.push(this_data_HistoryGraph[index].time.substr(11, 18));
+            // index_time++;
+        }
+        index_time = index_value;
+        this_HistoryGraph.update();
+        // tmp_HistoryGraph.push(this_HistoryGraph);
+        console.log(this_data_HistoryGraph[0].location);
+        CheckSetInterval(this_HistoryGraph, null, false);
 
-        all_HistoryGraph[i].update();
+    } else {
+        console.log("Not Found data (in function initDataHistoryGraph)");
+        return;
     }
 
 
@@ -623,28 +649,66 @@ async function initDataHistoryGraph() {
 
 
 var times = ['1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM', '12PM'];
+var j = 0;
 
-async function addData() {
-    let all_devices = [];
-    let all_data_HistoryGraph = [];
-    all_devices = await fetchConfigDevice();
-    all_data_HistoryGraph = await fetch_Data_HistoryGraph();
-    console.log(all_data_HistoryGraph);
-    // console.log(all_data_HistoryGraph.length);
-    // for (let i = 0; i < all_HistoryGraph.length; i++) {
-    //     console.log(all_HistoryGraph[i].data);
-    //     console.log(all_devices[i].location);
-    //     // console.log(all_HistoryGraph[i].data.labels);
-    //     // console.log(all_HistoryGraph[i].data.datasets);
-    //     all_HistoryGraph[i].data.labels.push(randomTime(times));
-    //     all_HistoryGraph[i].data.datasets[0].data.push(randomNumber(21, 27));
-    //     all_HistoryGraph[i].data.datasets[1].data.push(randomNumber(31, 27));
-    //     all_HistoryGraph[i].data.datasets[2].data.push(randomNumber(51, 65));
-    //     all_HistoryGraph[i].update();
-    // }
+function addData(this_HistoryGraph, init_Setinterval, check_setinterval) {
+
+    console.log("access to addData()");
+
+    this_HistoryGraph.data.labels.push(randomTime(times));
+    this_HistoryGraph.data.datasets[0].data.push(randomNumber(21, 27));
+    this_HistoryGraph.data.datasets[1].data.push(randomNumber(31, 27));
+    this_HistoryGraph.data.datasets[2].data.push(randomNumber(51, 65));
+    this_HistoryGraph.update();
+    CheckSetInterval(this_HistoryGraph, init_Setinterval, check_setinterval);
+    // console.log(`I will be displayed after 5 seconds i : ${j}`);
+    // j++;
 
 }
 
+
+function initSetinterval(this_HistoryGraph) {
+    var init_Setinterval;
+    var check_setinterval = false;
+    init_Setinterval = setInterval(function() {
+        check_setinterval = true;
+        addData(this_HistoryGraph, init_Setinterval, check_setinterval)
+    }, 5000);
+
+}
+
+function CheckSetInterval(this_HistoryGraph, init_Setinterval, check_setinterval) {
+    console.log("access to CheckSetInterval function");
+    // for (let i = 0; i < this_HistoryGraph.length; i++) {
+    console.log(`line graph Temperature (in front of) length : ${this_HistoryGraph.data.datasets[0].data.length}`);
+    console.log(this_HistoryGraph.data);
+    if (this_HistoryGraph.data.datasets[0].data.length >= 10 && check_setinterval === true) { //
+        // for stop setinterval() because a number of point data is full
+        console.log("for stop setinterval() because a number of point data is full");
+        clearInterval(init_Setinterval);
+        check_setinterval = false;
+    } else if (this_HistoryGraph.data.datasets[0].data.length >= 10 && check_setinterval === false) { //
+        // for see history graph in case want to see historyGraph older day
+        console.log("for see history graph in case want to see historyGraph older day");
+    } else if (check_setinterval === true) {
+        // do not someting becase a number of point data is not full
+        console.log("do not someting becase a number of point data is not full");
+        return;
+    } else { //for initSetinterval() in case a number of point data is not full
+        console.log("for initSetinterval() in case a number of point data is not full");
+        initSetinterval(this_HistoryGraph);
+    }
+    // }
+
+    // if (check_setinterval === true) {
+    //     console.log("access if");
+    //     clearInterval(init_Setinterval);
+    //     initSetinterval();
+    // } else {
+    //     console.log("access else");
+    //     initSetinterval();
+    // }
+}
 
 function removeData() {
     chart.data.labels.pop();
@@ -654,14 +718,37 @@ function removeData() {
     chart.update();
 }
 
-// call a function repeatedly every 5 seconds , setInterval is nest of nest
-function TestsetInterval() {
-    let i = 0;
-    setInterval(() => {
+async function CheckQuery_HistoryGraph() {
+    let all_devices = [];
+    let all_data_HistoryGraph = [];
+    let filter_data_HistoryGraph = [];
+    // let label_NotFound = document.querySelectorAll(".label_NotFound");
+    all_devices = await fetchConfigDevice();
+    all_data_HistoryGraph = await fetch_Data_HistoryGraph();
+    // console.log(all_devices);
+    // console.log(all_data_HistoryGraph);
+    let label_NotFound = document.querySelectorAll(".label_NotFound");
 
-        console.log(`I will be displayed after 5 seconds i : ${i}`)
-        i++;
-    }, 5000);
+    for (let i = 0; i < all_devices.length; i++) {
+
+        for (let j = 0; j < all_data_HistoryGraph.length; j++) {
+            // console.log(all_devices[i].location);
+            // console.log(all_data_HistoryGraph[j].location);
+            if (all_devices[i].location === all_data_HistoryGraph[j].location) {
+                console.log("found data");
+                label_NotFound[i].style.display = "none";
+                filter_data_HistoryGraph.push(all_data_HistoryGraph[j]);
+
+            } else {
+                console.log("not found data");
+            }
+
+        }
+        initDataHistoryGraph(filter_data_HistoryGraph, all_HistoryGraph[i]);
+        // console.log(filter_data_HistoryGraph);
+        filter_data_HistoryGraph = [];
+    }
+
 }
 
 
