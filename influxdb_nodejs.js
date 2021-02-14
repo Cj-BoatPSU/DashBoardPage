@@ -141,7 +141,9 @@ async function Query_influxDB_Gauge(config_device, date) {
 
         } else {
             console.log("not found data");
-
+            tmp.push(["", `${config_device[i].location}`, "front rack", ""])
+            tmp.push(["", `${config_device[i].location}`, "behind rack", ""])
+            tmp.push(["", `${config_device[i].location}`, ""])
         }
 
 

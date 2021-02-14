@@ -261,9 +261,6 @@ function CreateDIVChart(element) {
 
 function setGaugeValue(gauge, json_value) {
     // console.log("access to setGaugeValue");
-    // console.log(`Number of ${gauge.parentElement.className} section : ${gauge.parentElement.children.length}`);
-
-
     // check temp value for change status color
     if (json_value.type === "temperature") { //type temperature
         if (json_value[3] == null || json_value[1] == null) {
@@ -294,7 +291,6 @@ function setGaugeValue(gauge, json_value) {
         gauge.querySelector(".gauge__fill").style.transform = `rotate(${(json_value[2]/75)*0.5}turn)`;
         gauge.querySelector(".gauge__value").textContent = `${json_value[2]}%`;
     }
-    gauge.querySelector(".sc-location").textContent = json_value[1];
 
 }
 
@@ -345,20 +341,46 @@ function separate_value(all_data) {
 }
 
 async function relate_value() {
-
+    let all_devices = await fetchConfigDevice();
     let all_data = await query_data_influxdb();
     let tmp = separate_value(all_data);
-    // console.log("access to relate_value");
+    console.log(all_devices);
     console.log(tmp);
-    console.log(tmp[0][0]);
-
-    const gaugeElement = document.querySelectorAll(".gauge");
-    const gaugeElement_front = infront_section.children;
-    console.log(`Number of gaugeElement : ${gaugeElement.length}`);
-
-    for (i = 0; i < gaugeElement.length; i++) {
-        setGaugeValue(gaugeElement[i], tmp[i]);
+    for (let i = 0; i < infront_section.children.length; i++) {
+        infront_section.children[i].querySelector(".sc-location").textContent = all_devices[i].location;
+        // console.log(tmp[i][3]);
+        if (tmp[i][3] != "") {
+            setGaugeValue(infront_section.children[i], tmp[i]);
+        } else {
+            console.log("Data Not Found");
+            infront_section.children[i].querySelector(".gauge__value").textContent = "Data Not Found";
+            infront_section.children[i].querySelector(".gauge__value").style.color = "rgb(220, 20, 60)";
+            infront_section.children[i].querySelector(".gauge__value").style.fontSize = "20px";
+        }
     }
+    for (let i = 0; i < behind_section.children.length; i++) {
+        behind_section.children[i].querySelector(".sc-location").textContent = all_devices[i].location;
+        if (tmp[i + infront_section.children.length][3] != "") {
+            setGaugeValue(behind_section.children[i], tmp[i + infront_section.children.length]);
+        } else {
+            console.log("Data Not Found");
+            behind_section.children[i].querySelector(".gauge__value").textContent = "Data Not Found";
+            behind_section.children[i].querySelector(".gauge__value").style.color = "rgb(220, 20, 60)";
+            behind_section.children[i].querySelector(".gauge__value").style.fontSize = "20px";
+        }
+    }
+    for (let i = 0; i < humidity_section.children.length; i++) {
+        humidity_section.children[i].querySelector(".sc-location").textContent = all_devices[i].location;
+        if (tmp[i + infront_section.children.length + behind_section.children.length][2] != "") {
+            setGaugeValue(humidity_section.children[i], tmp[i + infront_section.children.length + behind_section.children.length]);
+        } else {
+            console.log("Data Not Found");
+            humidity_section.children[i].querySelector(".gauge__value").textContent = "Data Not Found";
+            humidity_section.children[i].querySelector(".gauge__value").style.color = "rgb(220, 20, 60)";
+            humidity_section.children[i].querySelector(".gauge__value").style.fontSize = "20px";
+        }
+    }
+
 }
 
 //config section
@@ -531,7 +553,7 @@ function CreateCanvas(element, location) {
     var label_NotFound = document.createElement("P");
     label.innerText = `Location : ${location}`;
     label_NotFound.setAttribute('class', `label_NotFound`);
-    label_NotFound.innerText = "Not Found Data";
+    label_NotFound.innerText = "Data Not Found";
     var ctx = canvas.getContext("2d");
     var config = {
         // The type of chart we want to create
@@ -625,6 +647,7 @@ async function initDataHistoryGraph(this_data_HistoryGraph, this_HistoryGraph) {
             for (let k = 0; k < (this_data_HistoryGraph.length / 3); k++) {
                 //loop set value
                 this_HistoryGraph.data.datasets[j].data.push(this_data_HistoryGraph[index_value].value);
+                // console.log(index_value);
                 index_value++;
             }
         }
@@ -637,7 +660,7 @@ async function initDataHistoryGraph(this_data_HistoryGraph, this_HistoryGraph) {
         this_HistoryGraph.update();
         // tmp_HistoryGraph.push(this_HistoryGraph);
         console.log(this_data_HistoryGraph[0].location);
-        CheckSetInterval(this_HistoryGraph, null, false);
+        // CheckSetInterval(this_HistoryGraph, null, false);
 
     } else {
         console.log("Not Found data (in function initDataHistoryGraph)");
@@ -649,7 +672,7 @@ async function initDataHistoryGraph(this_data_HistoryGraph, this_HistoryGraph) {
 
 
 var times = ['1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM', '12PM'];
-var j = 0;
+
 
 function addData(this_HistoryGraph, init_Setinterval, check_setinterval) {
 
@@ -661,8 +684,6 @@ function addData(this_HistoryGraph, init_Setinterval, check_setinterval) {
     this_HistoryGraph.data.datasets[2].data.push(randomNumber(51, 65));
     this_HistoryGraph.update();
     CheckSetInterval(this_HistoryGraph, init_Setinterval, check_setinterval);
-    // console.log(`I will be displayed after 5 seconds i : ${j}`);
-    // j++;
 
 }
 
@@ -682,12 +703,12 @@ function CheckSetInterval(this_HistoryGraph, init_Setinterval, check_setinterval
     // for (let i = 0; i < this_HistoryGraph.length; i++) {
     console.log(`line graph Temperature (in front of) length : ${this_HistoryGraph.data.datasets[0].data.length}`);
     console.log(this_HistoryGraph.data);
-    if (this_HistoryGraph.data.datasets[0].data.length >= 10 && check_setinterval === true) { //
+    if (this_HistoryGraph.data.datasets[0].data.length >= 100 && check_setinterval === true) { //
         // for stop setinterval() because a number of point data is full
         console.log("for stop setinterval() because a number of point data is full");
         clearInterval(init_Setinterval);
         check_setinterval = false;
-    } else if (this_HistoryGraph.data.datasets[0].data.length >= 10 && check_setinterval === false) { //
+    } else if (this_HistoryGraph.data.datasets[0].data.length >= 100 && check_setinterval === false) { //
         // for see history graph in case want to see historyGraph older day
         console.log("for see history graph in case want to see historyGraph older day");
     } else if (check_setinterval === true) {
@@ -698,16 +719,7 @@ function CheckSetInterval(this_HistoryGraph, init_Setinterval, check_setinterval
         console.log("for initSetinterval() in case a number of point data is not full");
         initSetinterval(this_HistoryGraph);
     }
-    // }
 
-    // if (check_setinterval === true) {
-    //     console.log("access if");
-    //     clearInterval(init_Setinterval);
-    //     initSetinterval();
-    // } else {
-    //     console.log("access else");
-    //     initSetinterval();
-    // }
 }
 
 function removeData() {
@@ -745,7 +757,8 @@ async function CheckQuery_HistoryGraph() {
 
         }
         initDataHistoryGraph(filter_data_HistoryGraph, all_HistoryGraph[i]);
-        // console.log(filter_data_HistoryGraph);
+        console.log("filter_data_HistoryGraph : ")
+        console.log(filter_data_HistoryGraph);
         filter_data_HistoryGraph = [];
     }
 
