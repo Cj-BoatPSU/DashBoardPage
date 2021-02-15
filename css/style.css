@@ -868,3 +868,45 @@ path {
     right: 0;
     margin-right: 20px;
 }
+
+#input-date {
+    margin-bottom: 10px;
+    width: 100%;
+    padding-left: 850px;
+}
+
+#input-date input {
+    padding: 10px;
+    width: 250px;
+    border-radius: 30px;
+    border: solid black 1px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#input-date button {
+    padding: 10px;
+    width: 100px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: lightblue;
+    color: #fff;
+}
+
+#input-date button:hover {
+    background-color: #023E7D;
+    color: #fff;
+}
+
+.group-date {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: top;
+}
+
+#btnadd-device {
+    margin-top: 25px;
+    position: absolute;
+    font-size: 16px;
+}

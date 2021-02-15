@@ -131,14 +131,16 @@
                 </div>
                 <div class="item" id="item-3">
                     <!-- <canvas id="myChart"></canvas> -->
-                    <select id="unit">
-                        <option value="second">Second</option>
-                        <option value="minute">Minute</option>
-                        <option value="hour">Hour</option>
-                        <option value="day" selected>Day</option>
-                        <option value="month">Month</option>
-                        <option value="year">Year</option>
-                    </select>
+                    <div id="input-date">
+                        <div class="group-date">
+                            <label for="search-history">Search History</label><br />
+                            <input type="date" id="search-history">
+                        </div>
+                        <div class="group-date">
+                            <button type="button" id="btnadd-device" onclick="SearchHistory()">Search</button>
+                        </div>
+                    </div>
+
                     <p id="label-date"></p>
                     <!-- <button type="button" id="btnadd-point" onclick=" CheckQuery_HistoryGraph()" style="width: 100px;margin-top: 20px;  display: inline-block;">Add</button> -->
                     <!-- <canvas id="myChart1"></canvas> -->
