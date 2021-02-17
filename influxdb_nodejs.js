@@ -4,12 +4,64 @@ const Influx = require('influxdb-nodejs');
 const cors = require('cors');
 const fs = require('fs');
 const { Server } = require('./modules/config.js');
-const client = new Influx(`http://mydb:cjboat@${Server.ip_address}:${Server.port}/db_version2`);
+// const client = new Influx(`http://mydb:cjboat@${Server.ip_address}:${Server.port}/db_version2`);
 // const client = new Influx(`http://mydb:cjboat@127.0.0.1:8086/db_version2`);
+const client = new Influx(`http://mydb:cjboat@192.168.1.107:8086/db_version2`);
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cors({ origin: true }));
 
+//Global variable
+var time_hours_start = ["00:00:00Z", "00:10:00Z", "00:20:00Z", "00:30:00Z", "00:40:00Z", "00:50:00Z",
+    "01:00:00Z", "01:10:00Z", "01:20:00Z", "01:30:00Z", "01:40:00Z", "01:50:00Z",
+    "02:00:00Z", "02:10:00Z", "02:20:00Z", "02:30:00Z", "02:40:00Z", "02:50:00Z",
+    "03:00:00Z", "03:10:00Z", "03:20:00Z", "03:30:00Z", "03:40:00Z", "03:50:00Z",
+    "04:00:00Z", "04:10:00Z", "04:20:00Z", "04:30:00Z", "04:40:00Z", "04:50:00Z",
+    "05:00:00Z", "05:10:00Z", "05:20:00Z", "05:30:00Z", "05:40:00Z", "05:50:00Z",
+    "06:00:00Z", "06:10:00Z", "06:20:00Z", "06:30:00Z", "06:40:00Z", "06:50:00Z",
+    "07:00:00Z", "07:10:00Z", "07:20:00Z", "07:30:00Z", "07:40:00Z", "07:50:00Z",
+    "08:00:00Z", "08:10:00Z", "08:20:00Z", "08:30:00Z", "08:40:00Z", "08:50:00Z",
+    "09:00:00Z", "09:10:00Z", "09:20:00Z", "09:30:00Z", "09:40:00Z", "09:50:00Z",
+    "10:00:00Z", "10:10:00Z", "10:20:00Z", "10:30:00Z", "10:40:00Z", "10:50:00Z",
+    "11:00:00Z", "11:10:00Z", "11:20:00Z", "11:30:00Z", "11:40:00Z", "11:50:00Z",
+    "12:00:00Z", "12:10:00Z", "12:20:00Z", "12:30:00Z", "12:40:00Z", "12:50:00Z",
+    "13:00:00Z", "13:10:00Z", "13:20:00Z", "13:30:00Z", "13:40:00Z", "13:50:00Z",
+    "14:00:00Z", "14:10:00Z", "14:20:00Z", "14:30:00Z", "14:40:00Z", "14:50:00Z",
+    "15:00:00Z", "15:10:00Z", "15:20:00Z", "15:30:00Z", "15:40:00Z", "15:50:00Z",
+    "16:00:00Z", "16:10:00Z", "16:20:00Z", "16:30:00Z", "16:40:00Z", "16:50:00Z",
+    "17:00:00Z", "17:10:00Z", "17:20:00Z", "17:30:00Z", "17:40:00Z", "17:50:00Z",
+    "18:00:00Z", "18:10:00Z", "18:20:00Z", "18:30:00Z", "18:40:00Z", "18:50:00Z",
+    "19:00:00Z", "19:10:00Z", "19:20:00Z", "19:30:00Z", "19:40:00Z", "19:50:00Z",
+    "20:00:00Z", "20:10:00Z", "20:20:00Z", "20:30:00Z", "20:40:00Z", "20:50:00Z",
+    "21:00:00Z", "21:10:00Z", "21:20:00Z", "21:30:00Z", "21:40:00Z", "21:50:00Z",
+    "22:00:00Z", "22:10:00Z", "22:20:00Z", "22:30:00Z", "22:40:00Z", "22:50:00Z",
+    "23:00:00Z", "23:10:00Z", "23:20:00Z", "23:30:00Z", "23:40:00Z", "23:50:00Z"
+];
+var time_hours_end = ["00:10:00Z", "00:20:00Z", "00:30:00Z", "00:40:00Z", "00:50:00Z",
+    "01:00:00Z", "01:10:00Z", "01:20:00Z", "01:30:00Z", "01:40:00Z", "01:50:00Z",
+    "02:00:00Z", "02:10:00Z", "02:20:00Z", "02:30:00Z", "02:40:00Z", "02:50:00Z",
+    "03:00:00Z", "03:10:00Z", "03:20:00Z", "03:30:00Z", "03:40:00Z", "03:50:00Z",
+    "04:00:00Z", "04:10:00Z", "04:20:00Z", "04:30:00Z", "04:40:00Z", "04:50:00Z",
+    "05:00:00Z", "05:10:00Z", "05:20:00Z", "05:30:00Z", "05:40:00Z", "05:50:00Z",
+    "06:00:00Z", "06:10:00Z", "06:20:00Z", "06:30:00Z", "06:40:00Z", "06:50:00Z",
+    "07:00:00Z", "07:10:00Z", "07:20:00Z", "07:30:00Z", "07:40:00Z", "07:50:00Z",
+    "08:00:00Z", "08:10:00Z", "08:20:00Z", "08:30:00Z", "08:40:00Z", "08:50:00Z",
+    "09:00:00Z", "09:10:00Z", "09:20:00Z", "09:30:00Z", "09:40:00Z", "09:50:00Z",
+    "10:00:00Z", "10:10:00Z", "10:20:00Z", "10:30:00Z", "10:40:00Z", "10:50:00Z",
+    "11:00:00Z", "11:10:00Z", "11:20:00Z", "11:30:00Z", "11:40:00Z", "11:50:00Z",
+    "12:00:00Z", "12:10:00Z", "12:20:00Z", "12:30:00Z", "12:40:00Z", "12:50:00Z",
+    "13:00:00Z", "13:10:00Z", "13:20:00Z", "13:30:00Z", "13:40:00Z", "13:50:00Z",
+    "14:00:00Z", "14:10:00Z", "14:20:00Z", "14:30:00Z", "14:40:00Z", "14:50:00Z",
+    "15:00:00Z", "15:10:00Z", "15:20:00Z", "15:30:00Z", "15:40:00Z", "15:50:00Z",
+    "16:00:00Z", "16:10:00Z", "16:20:00Z", "16:30:00Z", "16:40:00Z", "16:50:00Z",
+    "17:00:00Z", "17:10:00Z", "17:20:00Z", "17:30:00Z", "17:40:00Z", "17:50:00Z",
+    "18:00:00Z", "18:10:00Z", "18:20:00Z", "18:30:00Z", "18:40:00Z", "18:50:00Z",
+    "19:00:00Z", "19:10:00Z", "19:20:00Z", "19:30:00Z", "19:40:00Z", "19:50:00Z",
+    "20:00:00Z", "20:10:00Z", "20:20:00Z", "20:30:00Z", "20:40:00Z", "20:50:00Z",
+    "21:00:00Z", "21:10:00Z", "21:20:00Z", "21:30:00Z", "21:40:00Z", "21:50:00Z",
+    "22:00:00Z", "22:10:00Z", "22:20:00Z", "22:30:00Z", "22:40:00Z", "22:50:00Z",
+    "23:00:00Z", "23:10:00Z", "23:20:00Z", "23:30:00Z", "23:40:00Z", "23:50:00Z", "23:59:59Z"
+];
 
 fs.readFile("modules/config.js", 'utf-8', function(err, data) {
     // Check for errors 
@@ -98,7 +150,7 @@ app.get('/Queryinfluxdb_HistoryGraph_OlderDay', (req, res) => {
         if (err) throw err;
         const config_device = JSON.parse(data);
         console.info('/Queryinfluxdb_HistoryGraph_OlderDay');
-        let reader = Query_influxDB_HistoryGraph_OlderDay(config_device, "2021-02-13");
+        let reader = Query_influxDB_HistoryGraph_OlderDay(config_device, "2021-01-13");
         reader.then(data => {
             // console.info(data);
             let results = separate_value(data);
@@ -108,6 +160,25 @@ app.get('/Queryinfluxdb_HistoryGraph_OlderDay', (req, res) => {
         });
     });
 });
+
+
+app.get('/Queryinfluxdb_HistoryGraph_Month', (req, res) => {
+    fs.readFile("config_device.json", 'utf-8', function(err, data) {
+        // Check for errors 
+        if (err) throw err;
+        const config_device = JSON.parse(data);
+        console.info('/Queryinfluxdb_HistoryGraph_Month');
+        let reader = Query_influxDB_HistoryGraph_OlderDay(config_device, "2021-01-13");
+        reader.then(data => {
+            // console.info(data);
+            let results = separate_value(data);
+            res.json(results);
+        }).catch(err => {
+            console.error(err);
+        });
+    });
+});
+
 
 app.post('/search-history', (req, res) => {
     var date = req.body;
@@ -127,6 +198,42 @@ app.post('/search-history', (req, res) => {
             if (data.length > 0) {
                 console.log("Data found");
                 let results = separate_value(data);
+                res.json(results);
+            } else {
+                console.log("Data not found");
+                let message_json = { message: "Data not found" };
+                res.json(message_json);
+            }
+
+        }).catch(err => {
+            console.error(err);
+        });
+    });
+
+});
+
+app.post('/Query-of-Month', (req, res) => {
+    var date = req.body;
+    var date_json_str = JSON.stringify(date.month_history);
+    var date_str = date_json_str.slice(1, date_json_str.length - 1);
+    // var date_str = "2021-02";
+    var year = parseInt(date_str.substring(0, 4));
+    var month = parseInt(date_str.substring(6));
+    console.log("-----------------------------");
+    // console.log(year + "-" + month);
+    // console.info('/Query-of-Month');
+
+    // res.send(year + "-" + month);
+    fs.readFile("config_device.json", 'utf-8', function(err, data) {
+        // Check for errors 
+        if (err) throw err;
+        const config_device = JSON.parse(data);
+        // res.json(config_device);
+        let reader = daysInMonth(month, year, date_str, config_device);
+        reader.then(data => {
+            if (data.length > 0) {
+                console.log("Data found");
+                let results = separate_value_mean(data);
                 res.json(results);
             } else {
                 console.log("Data not found");
@@ -294,56 +401,7 @@ async function Query_influxDB_HistoryGraph_OlderDay(config_device, date) {
     console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     console.log("access to Query_influxDB_HistoryGraph_OlderDay");
     console.log(date);
-    var time_hours_start = ["00:00:00Z", "00:10:00Z", "00:20:00Z", "00:30:00Z", "00:40:00Z", "00:50:00Z",
-        "01:00:00Z", "01:10:00Z", "01:20:00Z", "01:30:00Z", "01:40:00Z", "01:50:00Z",
-        "02:00:00Z", "02:10:00Z", "02:20:00Z", "02:30:00Z", "02:40:00Z", "02:50:00Z",
-        "03:00:00Z", "03:10:00Z", "03:20:00Z", "03:30:00Z", "03:40:00Z", "03:50:00Z",
-        "04:00:00Z", "04:10:00Z", "04:20:00Z", "04:30:00Z", "04:40:00Z", "04:50:00Z",
-        "05:00:00Z", "05:10:00Z", "05:20:00Z", "05:30:00Z", "05:40:00Z", "05:50:00Z",
-        "06:00:00Z", "06:10:00Z", "06:20:00Z", "06:30:00Z", "06:40:00Z", "06:50:00Z",
-        "07:00:00Z", "07:10:00Z", "07:20:00Z", "07:30:00Z", "07:40:00Z", "07:50:00Z",
-        "08:00:00Z", "08:10:00Z", "08:20:00Z", "08:30:00Z", "08:40:00Z", "08:50:00Z",
-        "09:00:00Z", "09:10:00Z", "09:20:00Z", "09:30:00Z", "09:40:00Z", "09:50:00Z",
-        "10:00:00Z", "10:10:00Z", "10:20:00Z", "10:30:00Z", "10:40:00Z", "10:50:00Z",
-        "11:00:00Z", "11:10:00Z", "11:20:00Z", "11:30:00Z", "11:40:00Z", "11:50:00Z",
-        "12:00:00Z", "12:10:00Z", "12:20:00Z", "12:30:00Z", "12:40:00Z", "12:50:00Z",
-        "13:00:00Z", "13:10:00Z", "13:20:00Z", "13:30:00Z", "13:40:00Z", "13:50:00Z",
-        "14:00:00Z", "14:10:00Z", "14:20:00Z", "14:30:00Z", "14:40:00Z", "14:50:00Z",
-        "15:00:00Z", "15:10:00Z", "15:20:00Z", "15:30:00Z", "15:40:00Z", "15:50:00Z",
-        "16:00:00Z", "16:10:00Z", "16:20:00Z", "16:30:00Z", "16:40:00Z", "16:50:00Z",
-        "17:00:00Z", "17:10:00Z", "17:20:00Z", "17:30:00Z", "17:40:00Z", "17:50:00Z",
-        "18:00:00Z", "18:10:00Z", "18:20:00Z", "18:30:00Z", "18:40:00Z", "18:50:00Z",
-        "19:00:00Z", "19:10:00Z", "19:20:00Z", "19:30:00Z", "19:40:00Z", "19:50:00Z",
-        "20:00:00Z", "20:10:00Z", "20:20:00Z", "20:30:00Z", "20:40:00Z", "20:50:00Z",
-        "21:00:00Z", "21:10:00Z", "21:20:00Z", "21:30:00Z", "21:40:00Z", "21:50:00Z",
-        "22:00:00Z", "22:10:00Z", "22:20:00Z", "22:30:00Z", "22:40:00Z", "22:50:00Z",
-        "23:00:00Z", "23:10:00Z", "23:20:00Z", "23:30:00Z", "23:40:00Z", "23:50:00Z"
-    ];
-    var time_hours_end = ["00:10:00Z", "00:20:00Z", "00:30:00Z", "00:40:00Z", "00:50:00Z",
-        "01:00:00Z", "01:10:00Z", "01:20:00Z", "01:30:00Z", "01:40:00Z", "01:50:00Z",
-        "02:00:00Z", "02:10:00Z", "02:20:00Z", "02:30:00Z", "02:40:00Z", "02:50:00Z",
-        "03:00:00Z", "03:10:00Z", "03:20:00Z", "03:30:00Z", "03:40:00Z", "03:50:00Z",
-        "04:00:00Z", "04:10:00Z", "04:20:00Z", "04:30:00Z", "04:40:00Z", "04:50:00Z",
-        "05:00:00Z", "05:10:00Z", "05:20:00Z", "05:30:00Z", "05:40:00Z", "05:50:00Z",
-        "06:00:00Z", "06:10:00Z", "06:20:00Z", "06:30:00Z", "06:40:00Z", "06:50:00Z",
-        "07:00:00Z", "07:10:00Z", "07:20:00Z", "07:30:00Z", "07:40:00Z", "07:50:00Z",
-        "08:00:00Z", "08:10:00Z", "08:20:00Z", "08:30:00Z", "08:40:00Z", "08:50:00Z",
-        "09:00:00Z", "09:10:00Z", "09:20:00Z", "09:30:00Z", "09:40:00Z", "09:50:00Z",
-        "10:00:00Z", "10:10:00Z", "10:20:00Z", "10:30:00Z", "10:40:00Z", "10:50:00Z",
-        "11:00:00Z", "11:10:00Z", "11:20:00Z", "11:30:00Z", "11:40:00Z", "11:50:00Z",
-        "12:00:00Z", "12:10:00Z", "12:20:00Z", "12:30:00Z", "12:40:00Z", "12:50:00Z",
-        "13:00:00Z", "13:10:00Z", "13:20:00Z", "13:30:00Z", "13:40:00Z", "13:50:00Z",
-        "14:00:00Z", "14:10:00Z", "14:20:00Z", "14:30:00Z", "14:40:00Z", "14:50:00Z",
-        "15:00:00Z", "15:10:00Z", "15:20:00Z", "15:30:00Z", "15:40:00Z", "15:50:00Z",
-        "16:00:00Z", "16:10:00Z", "16:20:00Z", "16:30:00Z", "16:40:00Z", "16:50:00Z",
-        "17:00:00Z", "17:10:00Z", "17:20:00Z", "17:30:00Z", "17:40:00Z", "17:50:00Z",
-        "18:00:00Z", "18:10:00Z", "18:20:00Z", "18:30:00Z", "18:40:00Z", "18:50:00Z",
-        "19:00:00Z", "19:10:00Z", "19:20:00Z", "19:30:00Z", "19:40:00Z", "19:50:00Z",
-        "20:00:00Z", "20:10:00Z", "20:20:00Z", "20:30:00Z", "20:40:00Z", "20:50:00Z",
-        "21:00:00Z", "21:10:00Z", "21:20:00Z", "21:30:00Z", "21:40:00Z", "21:50:00Z",
-        "22:00:00Z", "22:10:00Z", "22:20:00Z", "22:30:00Z", "22:40:00Z", "22:50:00Z",
-        "23:00:00Z", "23:10:00Z", "23:20:00Z", "23:30:00Z", "23:40:00Z", "23:50:00Z", "23:59:00Z"
-    ];
+
     let tmp = [];
     for (let i = 0; i < config_device.length; i++) {
         for (let j = 0; j < time_hours_start.length; j++) {
@@ -417,7 +475,7 @@ async function Query_influxDB_HistoryGraph_OlderDay(config_device, date) {
 }
 
 function separate_value(all_data) {
-    console.log(all_data[0].position);
+    // console.log(all_data[0].position);
     let front_position = [];
     let behind_position = [];
     let humidity = [];
@@ -444,6 +502,207 @@ function separate_value(all_data) {
 
     return tmp;
 }
+
+
+async function Query_Of_Day(date, location) {
+    let temp_front = [];
+    let tmp_temp_front = [];
+    let temp_behind = [];
+    let tmp_temp_behind = [];
+    let humidity = [];
+    let tmp_humidity = [];
+    let results = [];
+    for (let i = 0; i < time_hours_start.length; i++) {
+
+        temp_front = await client.query('temperature').where('location', `${location}`).where('position', 'front rack')
+            // reader2.order = 'desc';
+            .set({
+                format: 'json',
+                start: date + "T" + time_hours_start[i],
+                end: date + "T" + time_hours_end[i],
+                limit: 1,
+            }).then(data => {
+                // console.log(data.temperature);
+                if (Object.keys(data).length > 0) {
+                    let objectLenght = Object.keys(data.temperature[0]).length;
+                    // console.log(objectLenght);
+                    if (objectLenght === 4) {
+                        // console.log("Can return");
+                        return data.temperature[0];
+                    }
+                } else {
+                    console.log("Data Not Found");
+                }
+
+            }).catch(console.error);
+
+        temp_behind = await client.query('temperature').where('location', `${location}`).where('position', 'behind rack')
+            // reader2.order = 'desc';
+            .set({
+                format: 'json',
+                start: date + "T" + time_hours_start[i],
+                end: date + "T" + time_hours_end[i],
+                limit: 1,
+            }).then(data => {
+                if (Object.keys(data).length > 0) {
+                    let objectLenght = Object.keys(data.temperature[0]).length;
+                    // console.log(objectLenght);
+                    if (objectLenght === 4) {
+                        // console.log("Can return");
+                        return data.temperature[0];
+                    }
+                } else {
+                    console.log("Data Not Found");
+                }
+
+            }).catch(console.error);
+
+
+        humidity = await client.query('humidity').where('location', `${location}`)
+            // reader2.order = 'desc';
+            .set({
+                format: 'json',
+                start: date + "T" + time_hours_start[i],
+                end: date + "T" + time_hours_end[i],
+                limit: 1,
+            }).then(data => {
+                if (Object.keys(data).length > 0) {
+                    let objectLenght = Object.keys(data.humidity[0]).length;
+                    // console.log(objectLenght);
+                    if (objectLenght === 3) {
+                        // console.log("Can return");
+                        return data.humidity[0];
+                    }
+                } else {
+                    console.log("Data Not Found");
+                }
+
+            }).catch(console.error);
+        // console.log(temp_front);
+        // console.log(typeof temp_front);
+        if (typeof temp_front != "undefined" && typeof temp_behind != "undefined" && typeof humidity != "undefined") {
+            console.log("Found data");
+            tmp_temp_front.push(parseFloat(temp_front.value));
+            tmp_temp_behind.push(parseFloat(temp_behind.value));
+            tmp_humidity.push(parseFloat(humidity.value));
+        } else {
+            console.log("Not found data");
+            tmp_temp_front.push(parseFloat(0));
+            tmp_temp_behind.push(parseFloat(0));
+            tmp_humidity.push(parseFloat(0));
+        }
+    }
+    console.log("===============================");
+    console.log(`Number of tmp_temp_front : ${tmp_temp_front.length}`);
+    console.log(`Number of temp_behind : ${tmp_temp_behind.length}`);
+    console.log(`Number of tmp_humidity : ${tmp_humidity.length}`);
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    let mean_temp_front = mean_per_day(tmp_temp_front);
+    let mean_temp_behind = mean_per_day(tmp_temp_behind);
+    let mean_humidity = mean_per_day(tmp_humidity);
+    console.log(`Mean temp front per day (${date}) : ${mean_temp_front}`);
+    console.log(`Mean temp behind per day (${date}) : ${mean_temp_behind}`);
+    console.log(`Mean humidity per day (${date}) : ${mean_humidity}`);
+    results.push({ date: `${date}`, location: location, position: "front rack", mean: `${mean_temp_front}` });
+    results.push({ date: `${date}`, location: location, position: "behind rack", mean: `${mean_temp_behind}` });
+    results.push({ date: `${date}`, location: location, mean: `${mean_humidity}` });
+    // await sleep(5000);
+
+    return results;
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function mean_per_day(arr) {
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+        sum += arr[i];
+    }
+    return (sum / arr.length).toFixed(2);
+}
+
+async function Query_of_month(num_month, month_year, config_device) {
+    let tmp = [];
+    let tmp1 = [];
+    let all_mean = [];
+    let date_1To9 = "0";
+    let date_Query = "";
+    for (var i = 1; i <= num_month; i++) {
+        if (i < 10) {
+            date_str = date_1To9.concat(i.toString());
+            tmp1.push(date_str);
+        } else {
+            date_str = i.toString();
+            tmp1.push(date_str);
+        }
+        date_Query = month_year + "-" + date_str;
+        // console.log(date_str);
+        // console.log(date_Query);
+        tmp = await Query_Of_Day(date_Query, config_device.location);
+        for (let j = 0; j < tmp.length; j++) {
+            all_mean.push(tmp[j]);
+        }
+        // await sleep(6000);
+
+    }
+    console.log(all_mean.length);
+    console.log("=======================");
+
+    return all_mean;
+}
+
+async function daysInMonth(this_month, this_year, this_month_year, config_device) {
+    let tmp = [];
+    let results = [];
+
+
+    for (let i = 0; i < config_device.length; i++) {
+        tmp = await Query_of_month(new Date(this_year, this_month, 0).getDate(), this_month_year, config_device[i]);
+
+        results.push(tmp);
+    }
+
+    console.log(results.length);
+
+
+
+    return results;
+}
+
+
+function separate_value_mean(all_data) {
+    // console.log(all_data[0].position);
+    let front_position = [];
+    let behind_position = [];
+    let humidity = [];
+    let tmp = [];
+    for (let i = 0; i < all_data.length; i++) {
+        for (let j = 0; j < all_data[i].length; j++) {
+            if (all_data[i][j].position === "front rack") {
+                front_position.push(all_data[i][j]);
+            } else if (all_data[i][j].position === "behind rack") {
+                behind_position.push(all_data[i][j]);
+            } else {
+                humidity.push(all_data[i][j]);
+            }
+        }
+    }
+    for (let i = 0; i < front_position.length; i++) {
+        tmp.push(front_position[i]);
+    }
+    for (let i = 0; i < behind_position.length; i++) {
+        tmp.push(behind_position[i]);
+    }
+    for (let i = 0; i < humidity.length; i++) {
+        tmp.push(humidity[i]);
+    }
+
+    return tmp;
+}
+
+
 app.listen(8081, function() {
     console.log("Welcome to influxdb-nodejs listen port 8081");
 })

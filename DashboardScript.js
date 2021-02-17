@@ -43,8 +43,39 @@ for (var i = 0; i < btns.length; i++) {
 }
 //Variable Declaration global
 var all_HistoryGraph = [];
-// var myTab = document.getElementById('table-device');
-// var mytable = document.getElementsByTagName("tbody")[0];
+var date_times = ["00:00", "00:10", "00:20", "00:30", "00:40", "00:50",
+    "01:00", "01:10", "01:20", "01:30", "01:40", "01:50",
+    "02:00", "02:10", "02:20", "02:30", "02:40", "02:50",
+    "03:00", "03:10", "03:20", "03:30", "03:40", "03:50",
+    "04:00", "04:10", "04:20", "04:30", "04:40", "04:50",
+    "05:00", "05:10", "05:20", "05:30", "05:40", "05:50",
+    "06:00", "06:10", "06:20", "06:30", "06:40", "06:50",
+    "07:00", "07:10", "07:20", "07:30", "07:40", "07:50",
+    "08:00", "08:10", "08:20", "08:30", "08:40", "08:50",
+    "09:00", "09:10", "09:20", "09:30", "09:40", "09:50",
+    "10:00", "10:10", "10:20", "10:30", "10:40", "10:50",
+    "11:00", "11:10", "11:20", "11:30", "11:40", "11:50",
+    "12:00", "12:10", "12:20", "12:30", "12:40", "12:50",
+    "13:00", "13:10", "13:20", "13:30", "13:40", "13:50",
+    "14:00", "14:10", "14:20", "14:30", "14:40", "14:50",
+    "15:00", "15:10", "15:20", "15:30", "15:40", "15:50",
+    "16:00", "16:10", "16:20", "16:30", "16:40", "16:50",
+    "17:00", "17:10", "17:20", "17:30", "17:40", "17:50",
+    "18:00", "18:10", "18:20", "18:30", "18:40", "18:50",
+    "19:00", "19:10", "19:20", "19:30", "19:40", "19:50",
+    "20:00", "20:10", "20:20", "20:30", "20:40", "20:50",
+    "21:00", "21:10", "21:20", "21:30", "21:40", "21:50",
+    "22:00", "22:10", "22:20", "22:30", "22:40", "22:50",
+    "23:00", "23:10", "23:20", "23:30", "23:40", "23:50"
+];
+
+var date_of_month = ["2021-01-01", "2021-01-02", "2021-01-03", "2021-01-04", "2021-01-05", "2021-01-06", "2021-01-07", "2021-01-08",
+        "2021-01-09", "2021-01-10", "2021-01-11", "2021-01-12", "2021-01-13", "2021-01-14", "2021-01-15", "2021-01-16", "2021-01-17",
+        "2021-01-18", "2021-01-19", "2021-01-20", "2021-01-21", "2021-01-22", "2021-01-23", "2021-01-24", "2021-01-25",
+        "2021-01-26", "2021-01-27", "2021-01-28", "2021-01-29", "2021-01-30", "2021-01-31",
+    ]
+    // var myTab = document.getElementById('table-device');
+    // var mytable = document.getElementsByTagName("tbody")[0];
 
 function toggle_contents(btn_id) {
     const items = document.querySelectorAll('.item');
@@ -534,6 +565,11 @@ async function initHistoryGraph() {
     let HistoryGraph_length = document.getElementsByClassName('HistoryGraph');
     console.log(`Number of graph history : ${HistoryGraph_length.length}`);
     label_date.innerHTML = `Date : ${date_str_day} / ${date_str_month} / ${date_str_year}`;
+
+    document.getElementById("select-month").disabled = true;
+    document.getElementById("select-month").style.backgroundColor = "rgb(210, 210, 210)";
+    document.getElementById("select_month").disabled = true; //button
+
     if (HistoryGraph_length.length === all_devices.length) {
         console.log("Not create graph history");
         CheckQuery_HistoryGraph();
@@ -567,31 +603,7 @@ function CreateCanvas(element, location) {
         type: 'line',
         // The data for our dataset
         data: {
-            labels: ["00:00", "00:10", "00:20", "00:30", "00:40", "00:50",
-                "01:00", "01:10", "01:20", "01:30", "01:40", "01:50",
-                "02:00", "02:10", "02:20", "02:30", "02:40", "02:50",
-                "03:00", "03:10", "03:20", "03:30", "03:40", "03:50",
-                "04:00", "04:10", "04:20", "04:30", "04:40", "04:50",
-                "05:00", "05:10", "05:20", "05:30", "05:40", "05:50",
-                "06:00", "06:10", "06:20", "06:30", "06:40", "06:50",
-                "07:00", "07:10", "07:20", "07:30", "07:40", "07:50",
-                "08:00", "08:10", "08:20", "08:30", "08:40", "08:50",
-                "09:00", "09:10", "09:20", "09:30", "09:40", "09:50",
-                "10:00", "10:10", "10:20", "10:30", "10:40", "10:50",
-                "11:00", "11:10", "11:20", "11:30", "11:40", "11:50",
-                "12:00", "12:10", "12:20", "12:30", "12:40", "12:50",
-                "13:00", "13:10", "13:20", "13:30", "13:40", "13:50",
-                "14:00", "14:10", "14:20", "14:30", "14:40", "14:50",
-                "15:00", "15:10", "15:20", "15:30", "15:40", "15:50",
-                "16:00", "16:10", "16:20", "16:30", "16:40", "16:50",
-                "17:00", "17:10", "17:20", "17:30", "17:40", "17:50",
-                "18:00", "18:10", "18:20", "18:30", "18:40", "18:50",
-                "19:00", "19:10", "19:20", "19:30", "19:40", "19:50",
-                "20:00", "20:10", "20:20", "20:30", "20:40", "20:50",
-                "21:00", "21:10", "21:20", "21:30", "21:40", "21:50",
-                "22:00", "22:10", "22:20", "22:30", "22:40", "22:50",
-                "23:00", "23:10", "23:20", "23:30", "23:40", "23:50"
-            ],
+            labels: date_times,
             datasets: [{
                     label: 'Temperature ( in front of rack )',
                     backgroundColor: 'rgb(35, 155, 86)',
@@ -672,30 +684,81 @@ function CreateCanvas(element, location) {
     all_HistoryGraph.push(chart); //to fix after customize system
 }
 
-async function initDataHistoryGraph(this_data_HistoryGraph, this_HistoryGraph) {
+async function initDataHistoryGraph(this_data_HistoryGraph, this_HistoryGraph, i) {
     console.log("access initDataHistoryGraph");
+    let label_NotFound = document.querySelectorAll(".label_NotFound");
     // let tmp_HistoryGraph = [];
     let index_value = 0;
     // let index_time = 0;
+    var sel = document.getElementById('select-units');
+    // console.log(sel.value);
     console.log(this_data_HistoryGraph);
     if (typeof this_data_HistoryGraph != "undefined" && this_data_HistoryGraph != null && this_data_HistoryGraph.length > 0) {
         console.log("Found data (in function initDataHistoryGraph)");
         console.log(`Number of this_HistoryGraph.data.datasets[0].data.length : ${this_HistoryGraph.data.datasets[0].data.length}`);
-        if (this_HistoryGraph.data.datasets[0].data.length >= 10) {
+        label_NotFound[i].style.display = "none";
+        if (this_HistoryGraph.data.labels.length === 0 && sel.value === "Day") {
+            this_HistoryGraph.data.labels = [];
+            this_HistoryGraph.update();
+            for (let i = 0; i < date_times.length; i++) { //new init labels on graph
+                this_HistoryGraph.data.labels.push(date_times[i]);
+            }
+            this_HistoryGraph.update();
+        }
+        if (this_HistoryGraph.data.labels.length === 0 && sel.value === "Month") {
+            this_HistoryGraph.data.labels = [];
+            this_HistoryGraph.update();
+            for (let i = 0; i < date_of_month.length; i++) { //new init labels on graph
+                this_HistoryGraph.data.labels.push(date_of_month[i]);
+            }
+            this_HistoryGraph.update();
+        }
+        if (this_HistoryGraph.data.datasets[0].data.length >= 0 || this_HistoryGraph.data.datasets[0].data.length === 0) {
             console.log(" new set this_data_HistoryGraph (if)");
             this_HistoryGraph.data.datasets[0].data = [];
             this_HistoryGraph.data.datasets[1].data = [];
             this_HistoryGraph.data.datasets[2].data = [];
             this_HistoryGraph.update();
-            for (let j = 0; j < 3; j++) {
-                //loop line graph
-                for (let k = 0; k < (this_data_HistoryGraph.length / 3); k++) {
-                    //loop set value
-                    this_HistoryGraph.data.datasets[j].data.push(this_data_HistoryGraph[index_value].value);
-                    // console.log(index_value);
-                    index_value++;
+            if (sel.value === "Month") {
+                console.log("sel.value === Month");
+                this_HistoryGraph.data.labels = [];
+                this_HistoryGraph.update();
+
+                for (let j = 0; j < 3; j++) {
+                    //loop line graph
+                    for (let k = 0; k < (this_data_HistoryGraph.length / 3); k++) {
+                        //loop set value
+                        this_HistoryGraph.data.datasets[j].data.push(this_data_HistoryGraph[index_value].mean);
+                        // console.log(index_value);
+                        index_value++;
+                    }
+                }
+                for (let index = 0; index < (this_data_HistoryGraph.length / 3); index++) {
+                    // set y axis (date)
+                    this_HistoryGraph.data.labels.push(this_data_HistoryGraph[index].date);
+                    // index_time++;
+                }
+                // index_time = index_value;
+            }
+            if (sel.value === "Day") {
+                console.log("sel.value === Day");
+                this_HistoryGraph.data.labels = [];
+                this_HistoryGraph.update();
+                for (let i = 0; i < date_times.length; i++) { //new init labels on graph
+                    this_HistoryGraph.data.labels.push(date_times[i]);
+                }
+                this_HistoryGraph.update();
+                for (let j = 0; j < 3; j++) {
+                    //loop line graph
+                    for (let k = 0; k < (this_data_HistoryGraph.length / 3); k++) {
+                        //loop set value
+                        this_HistoryGraph.data.datasets[j].data.push(this_data_HistoryGraph[index_value].value);
+                        // console.log(index_value);
+                        index_value++;
+                    }
                 }
             }
+
             this_HistoryGraph.update();
 
         } else {
@@ -710,7 +773,7 @@ async function initDataHistoryGraph(this_data_HistoryGraph, this_HistoryGraph) {
                 }
             }
             // for (let index = 0; index < (this_data_HistoryGraph.length / 3); index++) {
-            //     set y axis (time)
+            //     // set y axis (time)
             //     this_HistoryGraph.data.labels.push(this_data_HistoryGraph[index].time.substr(11, 18));
             //     index_time++;
             // }
@@ -720,6 +783,7 @@ async function initDataHistoryGraph(this_data_HistoryGraph, this_HistoryGraph) {
         // CheckSetInterval(this_HistoryGraph, null, false);
 
     } else {
+        label_NotFound[i].style.display = "block";
         console.log("Not Found data (in function initDataHistoryGraph)");
         this_HistoryGraph.data.datasets[0].data = [];
         this_HistoryGraph.data.datasets[1].data = [];
@@ -797,12 +861,12 @@ async function CheckQuery_HistoryGraph() {
     let all_devices = [];
     let all_data_HistoryGraph = [];
     let filter_data_HistoryGraph = [];
-    // let label_NotFound = document.querySelectorAll(".label_NotFound");
+    var spinner = document.getElementById("load_Wrapper");
+    spinner.style.display = "block";
     all_devices = await fetchConfigDevice();
     all_data_HistoryGraph = await fetch_Data_HistoryGraph();
-    // console.log(all_devices);
-    // console.log(all_data_HistoryGraph);
-    let label_NotFound = document.querySelectorAll(".label_NotFound");
+    spinner.style.display = "none";
+
 
     for (let i = 0; i < all_devices.length; i++) {
 
@@ -811,16 +875,13 @@ async function CheckQuery_HistoryGraph() {
             // console.log(all_data_HistoryGraph[j].location);
             if (all_devices[i].location === all_data_HistoryGraph[j].location) {
                 console.log(`found data (${all_devices[i].location})`);
-                label_NotFound[i].style.display = "none";
                 filter_data_HistoryGraph.push(all_data_HistoryGraph[j]);
-
             } else {
                 console.log(`not found data (${all_devices[i].location})`);
-                label_NotFound[i].style.display = "block";
             }
 
         }
-        initDataHistoryGraph(filter_data_HistoryGraph, all_HistoryGraph[i]);
+        initDataHistoryGraph(filter_data_HistoryGraph, all_HistoryGraph[i], i);
         console.log("filter_data_HistoryGraph : ")
         console.log(filter_data_HistoryGraph);
         filter_data_HistoryGraph = [];
@@ -853,6 +914,8 @@ async function fetch_Data_HistoryGraph() {
 
 async function SearchHistory() {
     console.log("access to SearchHistory()");
+    var spinner = document.getElementById("load_Wrapper");
+    spinner.style.display = "block";
     var search_history_value = document.getElementById("search-history").value;
     var date = new Date(search_history_value);
     var date_str_day = date.getDate();
@@ -885,27 +948,92 @@ async function SearchHistory() {
 
     all_devices = await fetchConfigDevice();
 
-    let label_NotFound = document.querySelectorAll(".label_NotFound");
-
+    spinner.style.display = "none";
     for (let i = 0; i < all_devices.length; i++) {
 
         for (let j = 0; j < all_data_HistoryGraph.length; j++) {
 
             if (all_devices[i].location === all_data_HistoryGraph[j].location) {
                 console.log(`found data (${all_devices[i].location})`);
-                label_NotFound[i].style.display = "none";
+                // label_NotFound[i].style.display = "none";
                 filter_data_HistoryGraph.push(all_data_HistoryGraph[j]);
 
             } else {
                 console.log(`not found data (${all_devices[i].location})`);
-                label_NotFound[i].style.display = "block";
+                // label_NotFound[i].style.display = "block";
             }
 
         }
-        initDataHistoryGraph(filter_data_HistoryGraph, all_HistoryGraph[i]);
         console.log(`filter_data_HistoryGraph : `);
         console.log(filter_data_HistoryGraph);
+        initDataHistoryGraph(filter_data_HistoryGraph, all_HistoryGraph[i], i);
         filter_data_HistoryGraph = [];
     }
 
+}
+
+function Change_Units() {
+    var sel = document.getElementById('select-units');
+    console.log(sel.value);
+    if (sel.value === "Day") {
+
+        document.getElementById("search_history").disabled = false; //button
+        document.getElementById("search-history").disabled = false;
+        document.getElementById("search-history").style.backgroundColor = "rgb(255, 255, 255)";
+        document.getElementById("select-month").disabled = true;
+        document.getElementById("select-month").style.backgroundColor = "rgb(210, 210, 210)";
+        document.getElementById("select_month").disabled = true; //button
+    } else {
+
+        document.getElementById("search_history").disabled = true; //button
+        document.getElementById("search-history").disabled = true;
+        document.getElementById("search-history").style.backgroundColor = "rgb(210, 210, 210)";
+        document.getElementById("select-month").disabled = false;
+        document.getElementById("select-month").style.backgroundColor = "rgb(255, 255, 255)";
+        document.getElementById("select_month").disabled = false; //button
+    }
+}
+
+async function SearchHistory_Month() {
+    console.log("access to SearchHistory_Month()");
+    var search_history_value = document.getElementById("select-month").value;
+    var label_date = document.getElementById("label-date");
+    var d = new Date(search_history_value);
+    var n = d.toUTCString();
+    var month_sel = n.substring(8, 16);
+    label_date.innerHTML = `Month : ${month_sel} `;
+    var spinner = document.getElementById("load_Wrapper");
+    spinner.style.display = "block";
+
+    // console.log(search_history_value);
+    var tmp_json = { month_history: search_history_value };
+    const options = {
+        method: "POST",
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(tmp_json),
+    }
+
+    let all_data_HistoryGraph = [];
+
+    all_data_HistoryGraph = await fetch('http://127.0.0.1:8081/Query-of-Month', options).then(function(response) {
+            return response.json();
+        })
+        .catch(err => console.log('Request Failed', err));
+    console.log(all_data_HistoryGraph[0]);
+    console.log(all_data_HistoryGraph[0].mean);
+    console.log(all_data_HistoryGraph.length);
+    spinner.style.display = "none";
+    for (let i = 0; i < all_HistoryGraph.length; i++) {
+        initDataHistoryGraph(all_data_HistoryGraph, all_HistoryGraph[i], i);
+    }
+
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

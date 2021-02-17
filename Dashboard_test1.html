@@ -133,15 +133,40 @@
                     <!-- <canvas id="myChart"></canvas> -->
                     <div id="input-date">
                         <div class="group-date">
-                            <label for="search-history">Search History</label><br />
+                            <label for="search-history">Search History (Day)</label><br />
                             <input type="date" id="search-history">
                         </div>
                         <div class="group-date">
-                            <button type="button" id="btnadd-device" onclick="SearchHistory()">Search</button>
+                            <button type="button" id="search_history" onclick="SearchHistory()">Search</button>
+                        </div>
+                    </div>
+                    <div id="input-unit">
+                        <div class="group-unit">
+                            <label for="select-history">Units</label><br />
+                            <select id="select-units">
+                                <option value="Day">Day</option>
+                                <option value="Month">Month</option>
+                              </select>
+                        </div>
+                        <div class="group-unit">
+                            <button type="button" id="change-unit" onclick="Change_Units()">Unit</button>
+                        </div>
+                    </div>
+                    <div id="input-month">
+                        <div class="group-month">
+                            <label for="select-month">Search History (Month)</label><br />
+                            <input type="month" id="select-month">
+                        </div>
+                        <div class="group-month">
+                            <button type="button" id="select_month" onclick="SearchHistory_Month()">Search</button>
                         </div>
                     </div>
 
                     <p id="label-date"></p>
+                    <div class="load-Wrapper" id="load_Wrapper">
+                        <div class="loader"></div>
+                        <div class="label-loader">Please Waiting for processing...</div>
+                    </div>
                     <!-- <button type="button" id="btnadd-point" onclick=" CheckQuery_HistoryGraph()" style="width: 100px;margin-top: 20px;  display: inline-block;">Add</button> -->
                     <!-- <canvas id="myChart1"></canvas> -->
                 </div>

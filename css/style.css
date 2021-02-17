@@ -860,19 +860,14 @@ path {
     font-weight: bold;
 }
 
-#unit {
-    /* border: 3px solid black; */
-    /* width: 15%; */
-    text-align: center;
-    position: absolute;
-    right: 0;
-    margin-right: 20px;
-}
+
+/* History section  */
 
 #input-date {
     margin-bottom: 10px;
-    width: 100%;
-    padding-left: 850px;
+    width: 31%;
+    /* padding-left: 850px; */
+    display: inline-block;
 }
 
 #input-date input {
@@ -905,8 +900,137 @@ path {
     vertical-align: top;
 }
 
-#btnadd-device {
+#search_history {
     margin-top: 25px;
     position: absolute;
     font-size: 16px;
+}
+
+
+/* ----------------------------------- */
+
+#input-unit {
+    margin-bottom: 10px;
+    width: 31%;
+    display: inline-block;
+    /* padding-left: 850px; */
+}
+
+#input-unit select {
+    padding: 10px;
+    width: 250px;
+    /* border-radius: 30px; */
+    border: solid black 1px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#input-unit button {
+    padding: 10px;
+    width: 100px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: lightblue;
+    color: #fff;
+}
+
+#input-unit button:hover {
+    background-color: #023E7D;
+    color: #fff;
+}
+
+.group-unit {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: top;
+}
+
+#change-unit {
+    margin-top: 25px;
+    position: absolute;
+    font-size: 16px;
+}
+
+
+/* ------------------------------------ */
+
+#input-month {
+    margin-bottom: 10px;
+    width: 31%;
+    display: inline-block;
+    /* padding-left: 850px; */
+}
+
+#input-month input {
+    padding: 10px;
+    width: 250px;
+    border-radius: 30px;
+    border: solid black 1px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#input-month button {
+    padding: 10px;
+    width: 100px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: lightblue;
+    color: #fff;
+}
+
+#input-month button:hover {
+    background-color: #023E7D;
+    color: #fff;
+}
+
+.group-month {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: top;
+}
+
+#select_month {
+    margin-top: 25px;
+    position: absolute;
+    font-size: 16px;
+}
+
+.loader {
+    border: 10px solid #f3f3f3;
+    border-top: 10px solid #3498db;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 2s linear infinite;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.label-loader {
+    margin-left: auto;
+    margin-right: auto;
+    transition-duration: 300ms;
+    color: rgb(220, 20, 60);
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+}
+
+.load-Wrapper {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
 }
