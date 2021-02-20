@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <title>Data Center Monitoring Dashboard</title>
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://kit.fontawesome.com/4734782259.js" crossorigin="anonymous"></script>
+    <script defer src="/css/all.js"></script>
+    <!-- <script src="https://kit.fontawesome.com/4734782259.js" crossorigin="anonymous"></script> -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> -->
     <script src="/node_modules/chart.js/dist/Chart.min.js"></script>
@@ -56,7 +57,7 @@
                 <div class="sidebar__inner">
                     <div class="profile">
                         <div class="img">
-                            <i class="fas fa-user" style="color: white;"></i>
+                            <i class="fas fa-user" style="color: white; font-size: 30px; margin: 10px;"></i>
                         </div>
                         <div class="profile_info">
                             <p>Welcome</p>
@@ -165,15 +166,14 @@
                     <p id="label-date"></p>
                     <div class="load-Wrapper" id="load_Wrapper">
                         <div class="loader"></div>
-                        <div class="label-loader">Please Waiting for processing...</div>
+                        <div class="label-loader" id="label_loader">Please Waiting for processing...</div>
                     </div>
-                    <!-- <button type="button" id="btnadd-point" onclick=" CheckQuery_HistoryGraph()" style="width: 100px;margin-top: 20px;  display: inline-block;">Add</button> -->
+
                     <!-- <canvas id="myChart1"></canvas> -->
                 </div>
                 <div class="item" id="item-4">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab a nesciunt doloribus. Explicabo minus cumque, molestiae tempore repellendus iusto enim maiores pariatur officiis perferendis excepturi, ut dolore laborum eligendi laudantium placeat aspernatur!
-                    Quos dolorum unde officiis labore est animi excepturi neque, provident, inventore nobis expedita facilis aspernatur, nihil in atque?
-                    <strong>item-4</strong>
+                    <button type="button" id="btnadd-point" onclick="Send_notify_Email()" style="width: 100px;margin-top: 20px;  display: inline-block;">Email</button>
+                    <button type="button" id="btnadd-point" onclick="Line_Notify()" style="width: 100px;margin-top: 20px;  display: inline-block;">Line</button>
                 </div>
                 <div class="item" id="item-5">
                     <div class="body-table">
@@ -238,9 +238,10 @@
                             </div>
 
                             <div class="form-control">
-                                <label class="header">Contact Number :</label>
-                                <input type="text" id="store_contactNumber" name="website" placeholder="PhoneNumber" id="password1" required="">
-                                <p id="alert-store_contactNumber" style="color: red ; padding-left:250px;"></p>
+                                <label class="header">Line notify Token :</label>
+                                <input type="password" id="store_line_notify_token" placeholder="Line notify Token" required="">
+                                <!-- id="store_contactNumber" id="password1" name="website"-->
+                                <p id="alert-line_notify_token" style="color: red ; padding-left:250px;"></p>
                             </div>
                             <div class="save-info-div" id="save-info">
                                 <input type="button" class="btnsave-info" value="save" onclick="updateProfile()">
@@ -260,6 +261,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js"></script>
     <script src="DashboardScript.js"></script>
 </body>
 

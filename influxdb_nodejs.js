@@ -3,10 +3,14 @@ const app = express();
 const Influx = require('influxdb-nodejs');
 const cors = require('cors');
 const fs = require('fs');
-const { Server } = require('./modules/config.js');
-// const client = new Influx(`http://mydb:cjboat@${Server.ip_address}:${Server.port}/db_version2`);
+const LineAPI = require('line-api');
+var nodemailer = require('nodemailer');
+importScripts('https://www.gstatic.com/firebasejs/8.2.8/firebase-app.js');
+
+const { Server, FIREBASE_CONFIG } = require('./modules/config.js');
+const client = new Influx(`http://mydb:cjboat@${Server.ip_address}:${Server.port}/db_version2`);
 // const client = new Influx(`http://mydb:cjboat@127.0.0.1:8086/db_version2`);
-const client = new Influx(`http://mydb:cjboat@192.168.1.107:8086/db_version2`);
+// const client = new Influx(`http://mydb:cjboat@10.100.100.200:8086/db_version2`);
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cors({ origin: true }));
@@ -63,16 +67,20 @@ var time_hours_end = ["00:10:00Z", "00:20:00Z", "00:30:00Z", "00:40:00Z", "00:50
     "23:00:00Z", "23:10:00Z", "23:20:00Z", "23:30:00Z", "23:40:00Z", "23:50:00Z", "23:59:59Z"
 ];
 
-fs.readFile("modules/config.js", 'utf-8', function(err, data) {
-    // Check for errors 
-    if (err) throw err;
-    console.log(Server.ip_address);
-    console.log(Server.port);
-    // console.log(FIREBASE_CONFIG.appId);
+console.log("Server InfluxDB IP : " + Server.ip_address);
+console.log("Server InfluxDB Port : " + Server.port);
 
-});
-
-
+const firebaseConfig = {
+    apiKey: FIREBASE_CONFIG.apiKey,
+    authDomain: FIREBASE_CONFIG.authDomain,
+    projectId: FIREBASE_CONFIG.projectId,
+    storageBucket: FIREBASE_CONFIG.storageBucket,
+    messagingSenderId: FIREBASE_CONFIG.messagingSenderId,
+    appId: FIREBASE_CONFIG.appId
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+var profileInfo = db.collection("profileUser").doc("profile-info");
 
 app.post('/save-config-device', (req, res) => {
     let all_devices = [];
@@ -99,6 +107,9 @@ app.get('/init-config-device', (req, res) => {
         // console.log(users);   
     });
 });
+
+
+
 
 
 
@@ -248,6 +259,48 @@ app.post('/Query-of-Month', (req, res) => {
 
 });
 
+app.get('/notification', (req, res) => {
+    console.log("/notification");
+    var tmp = { message: "Door is closed." };
+    console.log(req.query);
+    console.log(req.query.message);
+    if (typeof req.query.message != "undefined") {
+        console.log("Can response");
+        console.log("Send-Email");
+        Send_notify_Email();
+        console.log("Line-Notify");
+        Line_Notify();
+        res.json(req.query);
+    } else {
+        console.log("Can not response");
+        res.json(tmp);
+    }
+});
+
+app.get('/Send-Email', (req, res) => {
+    console.log("Send-Email");
+    profileInfo.get().then(function(doc) {
+        if (doc.exists) {
+
+            console.log(doc.data().LineNotifyToken);
+            Send_notify_Email(tmp_message.message, doc.data().LineNotifyToken);
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+
+    res.send("Send to Email");
+});
+
+
+app.get('/Line-Notify', (req, res) => {
+    console.log("Line-Notify");
+    Line_Notify(tmp_message.message);
+    res.send("Send to Email");
+});
 
 async function Query_influxDB_Gauge(config_device, date) {
     let tmp = [];
@@ -700,6 +753,43 @@ function separate_value_mean(all_data) {
     }
 
     return tmp;
+}
+
+async function Send_notify_Email(this_message) {
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'dcprojectdashboard@gmail.com',
+            pass: 'Boat123**'
+        }
+    });
+
+    var mailOptions = {
+        from: '',
+        to: 'Chutiwat.Boat@gmail.com',
+        subject: 'Sending Email using Node.js',
+        text: this_message
+    };
+
+    await transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}
+
+var tmp_message = { message: "tmp_message" };
+
+function Line_Notify(this_message, token) {
+    const notify = new LineAPI.Notify({
+        token: token,
+    })
+
+    notify.send({
+        message: this_message,
+    })
 }
 
 

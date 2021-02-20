@@ -496,7 +496,7 @@ label.header {
 input#store_firstname,
 input#store_lastname,
 input#store_contactEmail,
-input#store_contactNumber,
+input#store_line_notify_token,
 input#store_EmailID,
 input#store_NewPassword,
 input#store_ComfirmPassword,
@@ -522,7 +522,7 @@ input#store_CurrentPassword {
 input#store_firstname:focus,
 input#store_lastname:focus,
 input#store_contactEmail:focus,
-input#store_contactNumber:focus,
+input#store_line_notify_token:focus,
 input#store_CurrentPassword:focus {
     background-color: #f5f8fa !important;
     border: 1px solid #dadada;

@@ -13,6 +13,15 @@ firebase.initializeApp(firebaseConfig);
 const rmCheck = document.getElementById("rememberMe");
 const emailInput = document.getElementById("email_field");
 
+
+document.addEventListener("keyup", function(event) {
+    if (event.code === 'Enter') {
+        document.getElementById("btnLogin").click();
+    }
+});
+
+
+
 if (localStorage.checkbox && localStorage.checkbox !== "") {
     rmCheck.setAttribute("checked", "checked");
     emailInput.value = localStorage.username;

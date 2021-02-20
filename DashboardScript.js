@@ -24,7 +24,7 @@ const db = firebase.firestore();
 //     console.log("Error getting document:", error);
 // });
 
-firebase.auth().signInWithEmailAndPassword("Chutiwat.Boat@gmail.com", "boat123**");
+firebase.auth().signInWithEmailAndPassword("admin@dashboard.com", "test123**");
 
 
 // btn active to css
@@ -134,13 +134,13 @@ function checkAuth() {
 var firstname = document.getElementById("store_firstname");
 var lastname = document.getElementById("store_lastname");
 var contactEmail = document.getElementById("store_contactEmail");
-var contactNumber = document.getElementById("store_contactNumber");
+var lineNotifyToken = document.getElementById("store_line_notify_token");
 var profileInfo = db.collection("profileUser").doc("profile-info");
 
 
 function updateProfile() {
     // when to click save 
-    if (firstname.value === "" || lastname.value === "" || contactEmail.value === "" || contactNumber.value === "") {
+    if (firstname.value === "" || lastname.value === "" || contactEmail.value === "" || lineNotifyToken.value === "") {
         if (firstname.value === "") {
             document.getElementById('alert-store_firstname').innerText = "Please enter your FirstName";
         }
@@ -150,14 +150,14 @@ function updateProfile() {
         if (contactEmail.value === "") {
             document.getElementById('alert-store_contactEmail').innerText = "Please enter your Contact Email";
         }
-        if (contactNumber.value === "") {
-            document.getElementById('alert-store_contactNumber').innerText = "Please enter your Contact Number";
+        if (lineNotifyToken.value === "") {
+            document.getElementById('alert-line_notify_token').innerText = "Please enter your Line notify Token";
         }
     } else {
         document.getElementById('alert-store_firstname').innerText = "";
         document.getElementById('alert-store_lastname').innerText = "";
         document.getElementById('alert-store_contactEmail').innerText = "";
-        document.getElementById('alert-store_contactNumber').innerText = "";
+        document.getElementById('alert-line_notify_token').innerText = "";
         var r = confirm("Are you sure to save changes?");
         if (r == true) {
             saveProfile();
@@ -173,7 +173,7 @@ function initProfile() {
             firstname.value = doc.data().FirstName;
             lastname.value = doc.data().LastName;
             contactEmail.value = doc.data().ContactEmail;
-            contactNumber.value = doc.data().ContactNumber;
+            lineNotifyToken.value = doc.data().LineNotifyToken;
         } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
@@ -184,7 +184,7 @@ function initProfile() {
     firstname.disabled = true;
     lastname.disabled = true;
     contactEmail.disabled = true;
-    contactNumber.disabled = true;
+    lineNotifyToken.disabled = true;
 }
 
 function saveProfile() {
@@ -199,7 +199,7 @@ function saveProfile() {
         FirstName: firstname.value,
         LastName: lastname.value,
         ContactEmail: contactEmail.value,
-        ContactNumber: contactNumber.value,
+        LineNotifyToken: lineNotifyToken.value,
     });
     console.log(firstname.value);
     initProfile();
@@ -213,7 +213,7 @@ function changeProfile() {
             firstname.value = doc.data().FirstName;
             lastname.value = doc.data().LastName;
             contactEmail.value = doc.data().ContactEmail;
-            contactNumber.value = doc.data().ContactNumber;
+            lineNotifyToken.value = doc.data().LineNotifyToken;
         } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
@@ -228,7 +228,7 @@ function changeProfile() {
     firstname.disabled = false;
     lastname.disabled = false;
     contactEmail.disabled = false;
-    contactNumber.disabled = false;
+    lineNotifyToken.disabled = false;
 }
 
 // Gauge chart section
@@ -1034,6 +1034,17 @@ async function SearchHistory_Month() {
 
 }
 
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function Send_notify_Email() {
+    console.log("Access to Send_notify_Email()");
+    await fetch('http://127.0.0.1:8081/Send-Email');
+}
+
+async function Line_Notify() {
+    console.log("Access to Line_Notify()");
+    await fetch('http://127.0.0.1:8081/Line-Notify');
 }
