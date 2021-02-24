@@ -47,6 +47,7 @@ function login() {
             check_auth = true;
             localStorage.setItem("check-auth", true);
             console.log("login success!!!!");
+            localStorage.username = emailInput.value;
             window.location.href = "Dashboard_test1.html";
         })
         .catch((error) => {

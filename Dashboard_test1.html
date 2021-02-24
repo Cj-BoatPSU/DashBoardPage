@@ -61,7 +61,7 @@
                         </div>
                         <div class="profile_info">
                             <p>Welcome</p>
-                            <p class="profile_name">CjBoat</p>
+                            <p class="profile_name" id="profile_name">Admin</p>
                         </div>
                     </div>
                     <div id="item_tabs">
@@ -69,38 +69,38 @@
                             <li>
                                 <a href="#" class="btn active" id="btn-1">
                                     <!--onclick="sidemenu_click()"-->
-                                    <span class="icon"><i class="fas fa-dice-d6"></i></span>
+                                    <span class="icon"><i class="fas fa-dice-d6" style="font-size: 25px;"></i></span>
                                     <span class="title">Dashboard</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="#" class="btn" id="btn-2">
-                                    <span class="icon"><i class="fas fa-chart-pie"></i></span>
+                                    <span class="icon"><i class="fas fa-chart-pie" style="font-size: 25px;"></i></span>
                                     <span class="title">Charts</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="#" class="btn" id="btn-3">
-                                    <span class="icon"><i class="fas fa-history"></i></span>
+                                    <span class="icon"><i class="fas fa-history" style="font-size: 25px;"></i></span>
                                     <span class="title">History</span>
                                 </a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="#" class="btn" id="btn-4">
                                     <span class="icon"><i class="fas fa-bullhorn"></i></span>
-                                    <!--<i class="fab fa-delicious"></i>-->
-                                    <span class="title">Alert</span>
-                                </a>
-                            </li>
+                                    <i class="fab fa-delicious"></i>
+                            <span class="title">Alert</span>
+                            </a>
+                            </li> -->
                             <li>
                                 <a href="#" class="btn" id="btn-5">
-                                    <span class="icon"><i class="fas fa-cog"></i></span>
+                                    <span class="icon"><i class="fas fa-cog" style="font-size: 25px;"></i></span>
                                     <span class="title">Config</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="#" class="btn" id="btn-6">
-                                    <span class="icon"><i class="fas fa-user-edit"></i></span>
+                                    <span class="icon"><i class="fas fa-user-edit" style="font-size: 25px;"></i></span>
                                     <span class="title">Profile</span>
                                 </a>
                             </li>
@@ -131,7 +131,6 @@
                     <div class="humidity-section"></div>
                 </div>
                 <div class="item" id="item-3">
-                    <!-- <canvas id="myChart"></canvas> -->
                     <div id="input-date">
                         <div class="group-date">
                             <label for="search-history">Search History (Day)</label><br />
@@ -171,10 +170,10 @@
 
                     <!-- <canvas id="myChart1"></canvas> -->
                 </div>
-                <div class="item" id="item-4">
+                <!-- <div class="item" id="item-4">
                     <button type="button" id="btnadd-point" onclick="Send_notify_Email()" style="width: 100px;margin-top: 20px;  display: inline-block;">Email</button>
                     <button type="button" id="btnadd-point" onclick="Line_Notify()" style="width: 100px;margin-top: 20px;  display: inline-block;">Line</button>
-                </div>
+                </div> -->
                 <div class="item" id="item-5">
                     <div class="body-table">
                         <div class="table-agile">
@@ -261,7 +260,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js"></script> -->
     <script src="DashboardScript.js"></script>
 </body>
 

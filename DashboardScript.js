@@ -77,6 +77,9 @@ var date_of_month = ["2021-01-01", "2021-01-02", "2021-01-03", "2021-01-04", "20
     // var myTab = document.getElementById('table-device');
     // var mytable = document.getElementsByTagName("tbody")[0];
 
+var init_Setinterval = null;
+var init_Setinterval_History = null;
+
 function toggle_contents(btn_id) {
     const items = document.querySelectorAll('.item');
     var item_id = "";
@@ -99,6 +102,8 @@ function toggle_contents(btn_id) {
             } else if (item.id === "item-3") {
                 initHistoryGraph();
                 // TestsetInterval();
+            } else if (item.id === "item-1") {
+
             }
 
         } else {
@@ -107,6 +112,7 @@ function toggle_contents(btn_id) {
 
     })
 }
+
 
 function logout() {
     firebase.auth().signOut().then(function() {
@@ -126,6 +132,9 @@ function checkAuth() {
         console.log(" no Auth");
         window.location.href = "index.html";
     }
+    var tmp = localStorage.getItem("username"); //type string
+    var username = tmp.substring(0, tmp.indexOf('@')); // cut a string after a specific character
+    document.getElementById("profile_name").innerHTML = username;
 
 }
 
@@ -245,6 +254,7 @@ async function CreateGauge() {
     if (gaugeElement.length === (all_devices.length * 3)) {
         console.log("not create gaugeElement ");
         relate_value();
+        CheckSetInterval();
         return;
     } else {
         console.log("create gaugeElement");
@@ -255,6 +265,7 @@ async function CreateGauge() {
 
         }
         relate_value();
+        CheckSetInterval();
     }
     // console.log(`Number of div each section : ` + infront_section.children.length);
 
@@ -297,7 +308,7 @@ function setGaugeValue(gauge, json_value) {
         if (json_value[3] == null || json_value[1] == null) {
             return;
         }
-        if (json_value[3] >= 0 && json_value[3] < 27) {
+        if (json_value[3] >= 23 && json_value[3] < 27) {
             gauge.querySelector(".gauge__fill").style.background = '#009578';
         } else if (json_value[3] >= 27 && json_value[3] <= 30) {
             gauge.querySelector(".gauge__fill").style.background = '#ffcc00';
@@ -592,9 +603,10 @@ function CreateCanvas(element, location) {
     var canvas_length = element.querySelectorAll("CANVAS");
     canvas.setAttribute('id', `HistoryGraph${canvas_length.length+1}`);
     canvas.setAttribute('class', `HistoryGraph`);
-    var label = document.createElement("P");
+    var label_location = document.createElement("P");
     var label_NotFound = document.createElement("P");
-    label.innerText = `Location : ${location}`;
+    label_location.innerText = `Location : ${location}`;
+    label_location.setAttribute('class', `label_location`);
     label_NotFound.setAttribute('class', `label_NotFound`);
     label_NotFound.innerText = "Data Not Found";
     var ctx = canvas.getContext("2d");
@@ -660,18 +672,18 @@ function CreateCanvas(element, location) {
     var chart = new Chart(ctx, config);
     element.appendChild(label_NotFound);
     element.appendChild(canvas);
-    element.appendChild(label);
-    label.style.marginLeft = "auto"; // set to center
-    label.style.marginRight = "auto"; // set to center
-    label.style.marginTop = "30px";
-    label.style.marginBottom = "70px";
-    label.style.width = "20%";
-    label.style.padding = "10px";
-    label.style.textAlign = "center";
-    label.style.fontSize = "20px";
-    label.style.fontWeight = "bold";
-    label.style.color = "rgb(255, 255, 255)";
-    label.style.backgroundColor = "rgb(2, 62, 125)";
+    element.appendChild(label_location);
+    label_location.style.marginLeft = "auto"; // set to center
+    label_location.style.marginRight = "auto"; // set to center
+    label_location.style.marginTop = "30px";
+    label_location.style.marginBottom = "70px";
+    label_location.style.width = "20%";
+    label_location.style.padding = "10px";
+    label_location.style.textAlign = "center";
+    label_location.style.fontSize = "20px";
+    label_location.style.fontWeight = "bold";
+    label_location.style.color = "rgb(255, 255, 255)";
+    label_location.style.backgroundColor = "rgb(2, 62, 125)";
     label_NotFound.style.marginLeft = "auto"; // set to center
     label_NotFound.style.marginRight = "auto"; // set to center
     label_NotFound.style.width = "20%";
@@ -768,19 +780,11 @@ async function initDataHistoryGraph(this_data_HistoryGraph, this_HistoryGraph, i
                 for (let k = 0; k < (this_data_HistoryGraph.length / 3); k++) {
                     //loop set value
                     this_HistoryGraph.data.datasets[j].data.push(this_data_HistoryGraph[index_value].value);
-                    // console.log(index_value);
                     index_value++;
                 }
             }
-            // for (let index = 0; index < (this_data_HistoryGraph.length / 3); index++) {
-            //     // set y axis (time)
-            //     this_HistoryGraph.data.labels.push(this_data_HistoryGraph[index].time.substr(11, 18));
-            //     index_time++;
-            // }
-            // index_time = index_value;
             this_HistoryGraph.update();
         }
-        // CheckSetInterval(this_HistoryGraph, null, false);
 
     } else {
         label_NotFound[i].style.display = "block";
@@ -798,64 +802,101 @@ async function initDataHistoryGraph(this_data_HistoryGraph, this_HistoryGraph, i
 }
 
 
-var times = ['1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM', '12PM'];
-
-
-function addData(this_HistoryGraph, init_Setinterval, check_setinterval) {
-
-    console.log("access to addData()");
-
-    // this_HistoryGraph.data.labels.push(randomTime(times));
-    this_HistoryGraph.data.datasets[0].data.push(randomNumber(21, 27));
-    this_HistoryGraph.data.datasets[1].data.push(randomNumber(31, 27));
-    this_HistoryGraph.data.datasets[2].data.push(randomNumber(51, 65));
-    this_HistoryGraph.update();
-    CheckSetInterval(this_HistoryGraph, init_Setinterval, check_setinterval);
+function initSetinterval() {
+    console.log("New initSetinterval");
+    var i = 0;
+    init_Setinterval = setInterval(async function() {
+        await relate_value();
+        console.log("Number of i :" + i.toString());
+        i++;
+    }, 90000);
 
 }
 
-
-function initSetinterval(this_HistoryGraph) {
-    var init_Setinterval;
-    var check_setinterval = false;
-    init_Setinterval = setInterval(function() {
-        check_setinterval = true;
-        addData(this_HistoryGraph, init_Setinterval, check_setinterval)
-    }, 5000);
-
-}
-
-function CheckSetInterval(this_HistoryGraph, init_Setinterval, check_setinterval) {
+function CheckSetInterval() {
     console.log("access to CheckSetInterval function");
-    // for (let i = 0; i < this_HistoryGraph.length; i++) {
-    console.log(`line graph Temperature (in front of) length : ${this_HistoryGraph.data.datasets[0].data.length}`);
-    console.log(this_HistoryGraph.data);
-    if (this_HistoryGraph.data.datasets[0].data.length >= 100 && check_setinterval === true) { //
+    console.log(init_Setinterval);
+    if (init_Setinterval != null) {
         // for stop setinterval() because a number of point data is full
-        console.log("for stop setinterval() because a number of point data is full");
+        console.log("for stop setinterval() because prevent to make nested setinterval()");
         clearInterval(init_Setinterval);
-        check_setinterval = false;
-    } else if (this_HistoryGraph.data.datasets[0].data.length >= 100 && check_setinterval === false) { //
-        // for see history graph in case want to see historyGraph older day
-        console.log("for see history graph in case want to see historyGraph older day");
-    } else if (check_setinterval === true) {
-        // do not someting becase a number of point data is not full
-        console.log("do not someting becase a number of point data is not full");
-        return;
+        initSetinterval();
     } else { //for initSetinterval() in case a number of point data is not full
-        console.log("for initSetinterval() in case a number of point data is not full");
-        initSetinterval(this_HistoryGraph);
+        console.log("for initSetinterval() in case ");
+        initSetinterval();
     }
+}
+
+
+function CheckSetInterval_HistoryGraph() {
+    console.log("access to CheckSetInterval_HistoryGraph function");
+    console.log(`Number of all_HistoryGraph[0].data.datasets[0].data.length : ${all_HistoryGraph[0].data.datasets[0].data.length}`);
+    console.log(init_Setinterval_History);
+    if (all_HistoryGraph[0].data.datasets[0].data.length >= 144) {
+        console.log("for stop setinterval() because point data in graph is full");
+        if (init_Setinterval_History != null) {
+            clearInterval(init_Setinterval_History);
+        }
+    }
+    if (init_Setinterval != null) {
+        // for stop setinterval() because a number of point data is full
+        console.log("for stop setinterval() because prevent to make nested setinterval()");
+        clearInterval(init_Setinterval_History);
+        initSetinterval_History();
+    } else { //for initSetinterval() in case a number of point data is not full
+        console.log("for initSetinterval() in case ");
+        initSetinterval_History();
+    }
+}
+
+function initSetinterval_History() {
+    console.log("New initSetinterval History");
+    var j = 0;
+    // init_Setinterval_History = setInterval(async function() {
+    //     PushData_History();
+    //     console.log("Number of j :" + j.toString());
+    //     j++;
+    // }, 90000); // 90000
 
 }
 
-function removeData() {
-    chart.data.labels.pop();
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.pop();
-    });
-    chart.update();
+async function PushData_History() {
+    console.log("access to PushData_History");
+    let label_location = document.querySelectorAll(".label_location");
+    let label_NotFound = document.querySelectorAll(".label_NotFound");
+    let all_data = await query_data_influxdb();
+    let tmp = [];
+    console.log(all_data);
+    console.log(all_HistoryGraph[0].data.datasets[2].data.length);
+    for (let k = 0; k < all_HistoryGraph.length; k++) {
+        let location = label_location[k].innerHTML.substring(11);
+        if (label_NotFound[k].style.display != "block") {
+            console.log("This History is data found " + "(" + location + ")");
+            for (let i = 0; i < all_data.length; i++) { //filter data
+                if (all_data[i][1] === location) {
+                    if (all_data[i].type === "temperature") {
+                        tmp.push(all_data[i][3].toString());
+                    } else {
+                        tmp.push(all_data[i][2]);
+                    }
+                }
+
+            }
+            console.log(tmp);
+            for (let j = 0; j < tmp.length; j++) { //push data realtime HistoryGraph
+                all_HistoryGraph[k].data.datasets[j].data.push(tmp[j]);
+            }
+
+        } else {
+            console.log("This History is data not found " + "(" + location + ")");
+        }
+        all_HistoryGraph[k].update();
+    }
+    console.log("=============After to add data ===============");
+    console.log(all_HistoryGraph[0].data.datasets[2].data.length);
 }
+
+
 
 async function CheckQuery_HistoryGraph() {
     let all_devices = [];
@@ -881,12 +922,13 @@ async function CheckQuery_HistoryGraph() {
             }
 
         }
-        initDataHistoryGraph(filter_data_HistoryGraph, all_HistoryGraph[i], i);
+        await initDataHistoryGraph(filter_data_HistoryGraph, all_HistoryGraph[i], i);
+        // console.log(init_Setinterval_History);
         console.log("filter_data_HistoryGraph : ")
         console.log(filter_data_HistoryGraph);
         filter_data_HistoryGraph = [];
     }
-
+    CheckSetInterval_HistoryGraph();
 }
 
 

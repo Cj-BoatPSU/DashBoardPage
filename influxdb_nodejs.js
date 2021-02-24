@@ -5,7 +5,8 @@ const cors = require('cors');
 const fs = require('fs');
 const LineAPI = require('line-api');
 var nodemailer = require('nodemailer');
-importScripts('https://www.gstatic.com/firebasejs/8.2.8/firebase-app.js');
+const admin = require('firebase-admin');
+const serviceAccount = require('./modules/serviceAccountKey.json');
 
 const { Server, FIREBASE_CONFIG } = require('./modules/config.js');
 const client = new Influx(`http://mydb:cjboat@${Server.ip_address}:${Server.port}/db_version2`);
@@ -69,17 +70,12 @@ var time_hours_end = ["00:10:00Z", "00:20:00Z", "00:30:00Z", "00:40:00Z", "00:50
 
 console.log("Server InfluxDB IP : " + Server.ip_address);
 console.log("Server InfluxDB Port : " + Server.port);
-
-const firebaseConfig = {
-    apiKey: FIREBASE_CONFIG.apiKey,
-    authDomain: FIREBASE_CONFIG.authDomain,
-    projectId: FIREBASE_CONFIG.projectId,
-    storageBucket: FIREBASE_CONFIG.storageBucket,
-    messagingSenderId: FIREBASE_CONFIG.messagingSenderId,
-    appId: FIREBASE_CONFIG.appId
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+//initial Cloud firebase
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://datacenterdashborad-project-default-rtdb.firebaseio.com"
+});
+const db = admin.firestore();
 var profileInfo = db.collection("profileUser").doc("profile-info");
 
 app.post('/save-config-device', (req, res) => {
@@ -107,10 +103,6 @@ app.get('/init-config-device', (req, res) => {
         // console.log(users);   
     });
 });
-
-
-
-
 
 
 app.get('/Queryinfluxdb', (req, res) => {
@@ -261,29 +253,33 @@ app.post('/Query-of-Month', (req, res) => {
 
 app.get('/notification', (req, res) => {
     console.log("/notification");
-    var tmp = { message: "Door is closed." };
     console.log(req.query);
-    console.log(req.query.message);
-    if (typeof req.query.message != "undefined") {
-        console.log("Can response");
-        console.log("Send-Email");
-        Send_notify_Email();
-        console.log("Line-Notify");
-        Line_Notify();
-        res.json(req.query);
-    } else {
-        console.log("Can not response");
-        res.json(tmp);
-    }
+    var tmp_message = { message: "fffffffffffffff" };
+    profileInfo.get().then(function(doc) {
+        if (doc.exists) {
+            Line_Notify(req.query, doc.data().LineNotifyToken);
+            Send_notify_Email(req.query, doc.data().ContactEmail);
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+    res.send("Notification");
+    // if (typeof req.query.message != "undefined") {
+    // } else {
+    // }
 });
+
 
 app.get('/Send-Email', (req, res) => {
     console.log("Send-Email");
+    var tmp_message = { message: "fffffffffffffff" };
     profileInfo.get().then(function(doc) {
         if (doc.exists) {
-
-            console.log(doc.data().LineNotifyToken);
-            Send_notify_Email(tmp_message.message, doc.data().LineNotifyToken);
+            console.log(doc.data().ContactEmail);
+            Send_notify_Email(tmp_message, doc.data().ContactEmail);
         } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
@@ -298,9 +294,21 @@ app.get('/Send-Email', (req, res) => {
 
 app.get('/Line-Notify', (req, res) => {
     console.log("Line-Notify");
-    Line_Notify(tmp_message.message);
+    var tmp_message = { message: "fffffffffffffff" };
+    profileInfo.get().then(function(doc) {
+        if (doc.exists) {
+            console.log(doc.data().LineNotifyToken);
+            Line_Notify(tmp_message, doc.data().LineNotifyToken);
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
     res.send("Send to Email");
 });
+
 
 async function Query_influxDB_Gauge(config_device, date) {
     let tmp = [];
@@ -755,7 +763,7 @@ function separate_value_mean(all_data) {
     return tmp;
 }
 
-async function Send_notify_Email(this_message) {
+async function Send_notify_Email(res, email) {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -766,9 +774,9 @@ async function Send_notify_Email(this_message) {
 
     var mailOptions = {
         from: '',
-        to: 'Chutiwat.Boat@gmail.com',
-        subject: 'Sending Email using Node.js',
-        text: this_message
+        to: email,
+        subject: res.subject,
+        text: res.message + "\n" + "Date : " + res.date + "\n" + "time : " + res.time + "\n" + "location : " + res.location,
     };
 
     await transporter.sendMail(mailOptions, function(error, info) {
@@ -780,15 +788,15 @@ async function Send_notify_Email(this_message) {
     });
 }
 
-var tmp_message = { message: "tmp_message" };
 
-function Line_Notify(this_message, token) {
+function Line_Notify(res, token) {
     const notify = new LineAPI.Notify({
         token: token,
     })
 
     notify.send({
-        message: this_message,
+        message: "\n" + res.message + "\n" + "Date : " + res.date + "\n" + "time : " + res.time + "\n" + "location : " + res.location,
+
     })
 }
 
