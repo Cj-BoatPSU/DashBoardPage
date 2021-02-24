@@ -338,7 +338,7 @@ function setGaugeValue(gauge, json_value) {
 
 
 async function query_data_influxdb() {
-    let results = await fetch(`http://127.0.0.1:8081/Queryinfluxdb`)
+    let results = await fetch(`http://172.30.232.114:8081/Queryinfluxdb`)
         .then(function(response) {
             return response.json();
         })
@@ -515,7 +515,7 @@ function saveConfigDevice() {
             },
             body: JSON.stringify(tmp),
         }
-        fetch('http://127.0.0.1:8081/save-config-device', options);
+        fetch('http://172.30.232.114:8081/save-config-device', options);
     } else {
         console.log("click cancel");
     }
@@ -524,7 +524,7 @@ function saveConfigDevice() {
 
 async function fetchConfigDevice() {
     let all_devices = [];
-    all_devices = await fetch('http://127.0.0.1:8081/init-config-device')
+    all_devices = await fetch('http://172.30.232.114:8081/init-config-device')
         .then(function(response) {
             return response.json();
         })
@@ -852,11 +852,11 @@ function CheckSetInterval_HistoryGraph() {
 function initSetinterval_History() {
     console.log("New initSetinterval History");
     var j = 0;
-    // init_Setinterval_History = setInterval(async function() {
-    //     PushData_History();
-    //     console.log("Number of j :" + j.toString());
-    //     j++;
-    // }, 90000); // 90000
+    init_Setinterval_History = setInterval(async function() {
+        PushData_History();
+        console.log("Number of j :" + j.toString());
+        j++;
+    }, 90000); // 90000
 
 }
 
@@ -945,7 +945,7 @@ function randomNumber(min, max) {
 
 async function fetch_Data_HistoryGraph() {
     let all_HistoryData = [];
-    all_HistoryData = await fetch('http://127.0.0.1:8081/Queryinfluxdb_HistoryGraph')
+    all_HistoryData = await fetch('http://172.30.232.114:8081/Queryinfluxdb_HistoryGraph')
         .then(function(response) {
             return response.json();
         })
@@ -981,7 +981,7 @@ async function SearchHistory() {
     let all_data_HistoryGraph = [];
     let filter_data_HistoryGraph = [];
 
-    all_data_HistoryGraph = await fetch('http://127.0.0.1:8081/search-history', options).then(function(response) {
+    all_data_HistoryGraph = await fetch('http://172.30.232.114:8081/search-history', options).then(function(response) {
             return response.json();
         })
         .catch(err => console.log('Request Failed', err));
@@ -1062,7 +1062,7 @@ async function SearchHistory_Month() {
 
     let all_data_HistoryGraph = [];
 
-    all_data_HistoryGraph = await fetch('http://127.0.0.1:8081/Query-of-Month', options).then(function(response) {
+    all_data_HistoryGraph = await fetch('http://172.30.232.114:8081/Query-of-Month', options).then(function(response) {
             return response.json();
         })
         .catch(err => console.log('Request Failed', err));
@@ -1083,10 +1083,10 @@ function sleep(ms) {
 
 async function Send_notify_Email() {
     console.log("Access to Send_notify_Email()");
-    await fetch('http://127.0.0.1:8081/Send-Email');
+    await fetch('http://172.30.232.114:8081/Send-Email');
 }
 
 async function Line_Notify() {
     console.log("Access to Line_Notify()");
-    await fetch('http://127.0.0.1:8081/Line-Notify');
+    await fetch('http://172.30.232.114:8081/Line-Notify');
 }
