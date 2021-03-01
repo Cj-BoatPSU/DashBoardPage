@@ -1,36 +1,40 @@
-var c = document.getElementById("myCanvas");
-var context = c.getContext("2d");
+var config = {
+    container: document.getElementById('myCanvas'),
+    radius: 10,
+    maxOpacity: .5,
+    minOpacity: 0,
+    blur: .75,
+    gradient: {
+        // enter n keys between 0 and 1 here
+        // for gradient color customization
+        '.5': 'blue',
+        '.8': 'red',
+        '.95': 'white'
+    }
+};
+// create heatmap with configuration
+window.onload = function() {
+    var heatmapInstance = h337.create(config);
+    var dataPoint = {
+        max: 90,
+        data: [
+            { x: 100, y: 100, count: 80 },
+            { x: 120, y: 120, count: 60 },
+            { x: 100, y: 80, count: 90 },
+            { x: 111, y: 110, count: 60 },
+            { x: 201, y: 150, count: 90 },
+            { x: 311, y: 110, count: 60 },
+            { x: 121, y: 510, count: 70 },
+            { x: 511, y: 110, count: 60 },
+            { x: 211, y: 110, count: 50 },
+            { x: 191, y: 110, count: 20 },
+            { x: 511, y: 110, count: 40 }
+        ]
+    };
+    heatmapInstance.addData(dataPoint);
 
-// Create gradient
-var grd = context.createRadialGradient(0,0,c.width/2,c.width,c.height,c.width/2);
-grd.addColorStop(0, 'blue');
-grd.addColorStop(0.25, 'white');
-grd.addColorStop(0.5, 'purple');
-grd.addColorStop(0.75, 'red');
-grd.addColorStop(1, 'yellow');
-
-
-// Fill with gradient
-
-// ctx.fillStyle = grd;
-// ctx.rect(0, 0, 50, 256);
-// ctx.arc(100, 200, 60, 1 * Math.PI, 0);
-// ctx.globalAlpha = 0.1;
-// ctx.beginPath();
-// ctx.arc(100, 75, 60, 1 * Math.PI, 0);
-// ctx.arc(120, 75, 50, 1 * Math.PI, 0);
-// ctx.fill();
-
-
-// draw blue rectangle
-context.beginPath();
-context.rect(200, 20, 100, 100);
-context.fillStyle = 'blue';
-context.fill();
-
-// draw transparent red circle
-context.globalAlpha = 0.1;
-context.beginPath();
-context.arc(320, 120, 60, 0, 2 * Math.PI, false);
-context.fillStyle = 'yellow';
-context.fill();
+    // multiple datapoints (for data initialization use setData!!)
+    var dataPoints = [dataPoint, dataPoint, dataPoint, dataPoint];
+    heatmapInstance.addData(dataPoints);
+};
+// a single datapoint

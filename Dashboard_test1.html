@@ -13,6 +13,7 @@
     <script src="/modules/utils.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@0.1.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@0.1.1"></script>
     <script>
         $(document).ready(function() {
             $(".hamburger .hamburger__inner").click(function() {
@@ -26,6 +27,8 @@
         });
     </script>
     <script type="text/javascript" src="modules/config_firebase.js"></script>
+    <script type="text/javascript" src="modules/heatmap.js"></script>
+    <script type="text/javascript" src="canvas_heatmap.js"></script>
 </head>
 
 <body>
@@ -85,13 +88,12 @@
                                     <span class="title">History</span>
                                 </a>
                             </li>
-                            <!-- <li>
+                            <li>
                                 <a href="#" class="btn" id="btn-4">
-                                    <span class="icon"><i class="fas fa-bullhorn"></i></span>
-                                    <i class="fab fa-delicious"></i>
-                            <span class="title">Alert</span>
-                            </a>
-                            </li> -->
+                                    <span class="icon"><i class="fas fa-bullhorn" style="font-size: 25px;" ></i></span>
+                                    <span class="title">Alert</span>
+                                </a>
+                            </li>
                             <li>
                                 <a href="#" class="btn" id="btn-5">
                                     <span class="icon"><i class="fas fa-cog" style="font-size: 25px;"></i></span>
@@ -170,10 +172,49 @@
 
                     <!-- <canvas id="myChart1"></canvas> -->
                 </div>
-                <!-- <div class="item" id="item-4">
-                    <button type="button" id="btnadd-point" onclick="Send_notify_Email()" style="width: 100px;margin-top: 20px;  display: inline-block;">Email</button>
-                    <button type="button" id="btnadd-point" onclick="Line_Notify()" style="width: 100px;margin-top: 20px;  display: inline-block;">Line</button>
-                </div> -->
+                <div class="item" id="item-4">
+                    <!-- <button type="button" id="btnadd-point" onclick="Send_notify_Email()" style="width: 100px;margin-top: 20px;  display: inline-block;">Email</button>
+                    <button type="button" id="btnadd-point" onclick="Line_Notify()" style="width: 100px;margin-top: 20px;  display: inline-block;">Line</button> -->
+                    <div class="body-alert-section">
+                        <div class="alert-section-agile">
+                            <h1>Temperature Thresholds</h1>
+                            <div class="form-control">
+                                <label class="header">Maximum :</label>
+                                <input type="text" id="maximum-alert-temp" placeholder="[0 to 75]">
+                                <label class="footer">°C</label>
+                                <p id="alert-temp_maximum" style="color: red; padding-left:230px;"></p>
+                            </div>
+                            <div class="form-control">
+                                <label class="header">Minimum :</label>
+                                <input type="text" id="minimum-alert-temp" placeholder="[0 to 75]">
+                                <label class="footer">°C</label>
+                                <p id="alert-temp_minimum" style="color: red ; padding-left:230px;"></p>
+                            </div>
+                            <input type="button" class="btnsave-info" id="save_temp_thresholds" value="save" onclick="save_temp_Thresholds()">
+                            <input type="button" class="btnchange-info" id="change_temp_thresholds" value="change" onclick="change_temp_Thresholds()">
+                            <!-- <input type="button" class="btnchange-info" value="check" onclick="check_for_notification()"> -->
+                        </div>
+                        <div class="alert-section-agile">
+                            <h1>Humidity Thresholds</h1>
+                            <div id="set-temp">
+                                <div class="form-control">
+                                    <label class="header">Maximum :</label>
+                                    <input type="text" id="maximum-alert-humidity" placeholder="[0 to 75]">
+                                    <label class="footer">%</label>
+                                    <p id="alert-humidity_maximum" style="color: red; padding-left:230px;"></p>
+                                </div>
+                                <div class="form-control">
+                                    <label class="header">Minimum :</label>
+                                    <input type="text" id="minimum-alert-humidity" placeholder="[0 to 75]">
+                                    <label class="footer">%</label>
+                                    <p id="alert-humidity_minimum" style="color: red ; padding-left:230px;"></p>
+                                </div>
+                            </div>
+                            <input type="button" class="btnsave-info" id="save_humidity_thresholds" value="save" onclick="save_humidity_Thresholds()">
+                            <input type="button" class="btnchange-info" id="change_humidity_thresholds" value="change" onclick="change_humidity_Thresholds()">
+                        </div>
+                    </div>
+                </div>
                 <div class="item" id="item-5">
                     <div class="body-table">
                         <div class="table-agile">

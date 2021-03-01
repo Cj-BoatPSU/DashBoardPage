@@ -482,13 +482,13 @@ body {
 }
 
 label.header {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
     width: 215px;
     margin-right: 10px;
     text-align: justify;
     letter-spacing: 1px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     display: inline-block;
     font-family: 'Nunito', sans-serif;
 }
@@ -849,6 +849,9 @@ path {
     font-weight: bold;
 }
 
+
+/* History section  */
+
 #label-date {
     width: 40%;
     /* text-align: center; */
@@ -859,9 +862,6 @@ path {
     padding: 10px;
     font-weight: bold;
 }
-
-
-/* History section  */
 
 #input-date {
     margin-bottom: 10px;
@@ -1033,4 +1033,102 @@ path {
     margin-left: auto;
     margin-right: auto;
     display: none;
+}
+
+
+/* Alert section */
+
+.body-alert-section {
+    width: 50%;
+    margin: 70px 15% 80%;
+    padding: 0;
+    display: table;
+    position: absolute;
+}
+
+.alert-section-agile {
+    width: 100%;
+    float: center;
+    margin-bottom: 30px;
+}
+
+.alert-section-agile input {
+    margin-top: 20px;
+    width: 35%;
+}
+
+.body-alert-section .alert-section-agile h1 {
+    font-size: 30px;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 5px solid #002855;
+}
+
+#set-temp {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+#set-temp input {
+    padding: 10px;
+    width: 250px;
+    border-radius: 30px;
+    border: solid black 1px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#set-temp button {
+    padding: 10px;
+    width: 50px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: lightblue;
+    color: #fff;
+}
+
+#set-temp button:hover {
+    background-color: #023E7D;
+    color: #fff;
+}
+
+.group {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: top;
+}
+
+input#maximum-alert-temp,
+input#minimum-alert-temp,
+input#maximum-alert-humidity,
+input#minimum-alert-humidity {
+    padding: 0 40px;
+    width: 20%;
+    height: 55px;
+    border: 1px solid #dadada;
+    color: black;
+    text-align: center;
+    outline: none;
+    letter-spacing: 1px;
+    font-size: 16px;
+    font-weight: normal;
+    font-family: 'Muli', sans-serif;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -o-border-radius: 30px;
+    -ms-border-radius: 30px;
+}
+
+label.footer {
+    font-size: 18px;
+    font-weight: 500;
+    width: 215px;
+    margin-right: 10px;
+    text-align: justify;
+    letter-spacing: 1px;
+    /* text-transform: uppercase; */
+    display: inline-block;
+    font-family: 'Nunito', sans-serif;
 }

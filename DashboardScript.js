@@ -104,6 +104,8 @@ function toggle_contents(btn_id) {
                 // TestsetInterval();
             } else if (item.id === "item-1") {
 
+            } else if (item.id === "item-4") {
+                initConfigThresholds();
             }
 
         } else {
@@ -210,7 +212,6 @@ function saveProfile() {
         ContactEmail: contactEmail.value,
         LineNotifyToken: lineNotifyToken.value,
     });
-    console.log(firstname.value);
     initProfile();
 }
 
@@ -385,7 +386,8 @@ function separate_value(all_data) {
 async function relate_value() {
     let all_devices = await fetchConfigDevice();
     let all_data = await query_data_influxdb();
-    let tmp = separate_value(all_data);
+    let tmp = separate_value(all_data); //for separate set same position on difference location
+    check_for_notification(tmp);
     console.log(all_devices);
     console.log(tmp);
     for (let i = 0; i < infront_section.children.length; i++) {
@@ -1008,7 +1010,7 @@ async function SearchHistory() {
         }
         console.log(`filter_data_HistoryGraph : `);
         console.log(filter_data_HistoryGraph);
-        initDataHistoryGraph(filter_data_HistoryGraph, all_HistoryGraph[i], i);
+        await initDataHistoryGraph(filter_data_HistoryGraph, all_HistoryGraph[i], i);
         filter_data_HistoryGraph = [];
     }
 
@@ -1071,7 +1073,7 @@ async function SearchHistory_Month() {
     console.log(all_data_HistoryGraph.length);
     spinner.style.display = "none";
     for (let i = 0; i < all_HistoryGraph.length; i++) {
-        initDataHistoryGraph(all_data_HistoryGraph, all_HistoryGraph[i], i);
+        await initDataHistoryGraph(all_data_HistoryGraph, all_HistoryGraph[i], i);
     }
 
 }
@@ -1089,4 +1091,174 @@ async function Send_notify_Email() {
 async function Line_Notify() {
     console.log("Access to Line_Notify()");
     await fetch('http://172.30.232.114:8081/Line-Notify');
+}
+
+
+var btnChange_temp_thresholds = document.getElementById("change_temp_thresholds");
+var btnSave_temp_thresholds = document.getElementById("save_temp_thresholds");
+var btnChange_humidity_thresholds = document.getElementById("change_humidity_thresholds");
+var btnSave_humidity_thresholds = document.getElementById("save_humidity_thresholds");
+var maximum_temp = document.getElementById("maximum-alert-temp");
+var minimum_temp = document.getElementById("minimum-alert-temp");
+var maximum_humidity = document.getElementById("maximum-alert-humidity");
+var minimum_humidity = document.getElementById("minimum-alert-humidity");
+
+async function initConfigThresholds() {
+    let results = await fetch(`http://172.30.232.114:8081/init-config-thresholds`)
+        .then(function(response) {
+            return response.json();
+        })
+        .catch(err => console.log('Request Failed', err));
+    maximum_temp.value = results[0].maximum;
+    minimum_temp.value = results[0].minimum;
+    maximum_humidity.value = results[1].maximum;
+    minimum_humidity.value = results[1].minimum;
+    maximum_temp.disabled = true;
+    minimum_temp.disabled = true;
+    maximum_humidity.disabled = true;
+    minimum_humidity.disabled = true;
+
+    btnChange_temp_thresholds.style.display = "block";
+    btnSave_temp_thresholds.style.display = "none";
+    btnChange_humidity_thresholds.style.display = "block";
+    btnSave_humidity_thresholds.style.display = "none";
+}
+
+function change_temp_Thresholds() {
+    btnChange_temp_thresholds.style.display = "none";
+    btnSave_temp_thresholds.style.display = "block";
+    maximum_temp.disabled = false;
+    minimum_temp.disabled = false;
+}
+
+function change_humidity_Thresholds() {
+    btnChange_humidity_thresholds.style.display = "none";
+    btnSave_humidity_thresholds.style.display = "block";
+    maximum_humidity.disabled = false;
+    minimum_humidity.disabled = false;
+}
+
+async function save_temp_Thresholds() {
+
+    if (maximum_temp.value === "" || minimum_temp.value === "") {
+        if (maximum_temp.value === "") {
+            document.getElementById('alert-temp_maximum').innerText = "Please enter Maximum Temperature Thresholds";
+        }
+        if (minimum_temp.value === "") {
+            document.getElementById('alert-temp_minimum').innerText = "Please enter Minimum Temperature Thresholds";
+        }
+    } else {
+        document.getElementById('alert-temp_maximum').innerText = "";
+        document.getElementById('alert-temp_minimum').innerText = "";
+        var tmp_json = { maximum: "", minimum: "" };
+        tmp_json.maximum = maximum_temp.value;
+        tmp_json.minimum = minimum_temp.value;
+        var r = confirm("Are you sure to save temperature thresholds?");
+        if (r == true) {
+            const options = {
+                method: "POST",
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(tmp_json),
+            }
+            await fetch('http://172.30.232.114:8081/save-config-temp-thresholds', options);
+
+            maximum_temp.disabled = true;
+            minimum_temp.disabled = true;
+
+            btnChange_temp_thresholds.style.display = "block";
+            btnSave_temp_thresholds.style.display = "none";
+            let results = await fetch(`http://172.30.232.114:8081/init-config-thresholds`)
+                .then(function(response) {
+                    return response.json();
+                })
+                .catch(err => console.log('Request Failed', err));
+            maximum_temp.value = results[0].maximum;
+            minimum_temp.value = results[0].minimum;
+        }
+    }
+
+}
+
+
+async function save_humidity_Thresholds() {
+    if (maximum_humidity.value === "" || minimum_humidity.value === "") {
+
+        if (maximum_humidity.value === "") {
+            document.getElementById('alert-humidity_maximum').innerText = "Please enter Maximum Humidity Thresholds";
+        }
+        if (minimum_humidity.value === "") {
+            document.getElementById('alert-humidity_minimum').innerText = "Please enter Minimum Humidity Thresholds";
+        }
+    } else {
+        document.getElementById('alert-humidity_maximum').innerText = "";
+        document.getElementById('alert-humidity_minimum').innerText = "";
+        var tmp_json = { maximum: "", minimum: "" };
+        tmp_json.maximum = maximum_humidity.value;
+        tmp_json.minimum = minimum_humidity.value;
+        var r = confirm("Are you sure to save humidity thresholds?");
+        if (r == true) {
+            const options = {
+                method: "POST",
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(tmp_json),
+            }
+            await fetch('http://172.30.232.114:8081/save-config-humidity-thresholds', options);
+
+            maximum_humidity.disabled = true;
+            minimum_humidity.disabled = true;
+
+            btnChange_humidity_thresholds.style.display = "block";
+            btnSave_humidity_thresholds.style.display = "none";
+            let results = await fetch(`http://172.30.232.114:8081/init-config-thresholds`)
+                .then(function(response) {
+                    return response.json();
+                })
+                .catch(err => console.log('Request Failed', err));
+            maximum_humidity.value = results[1].maximum;
+            minimum_humidity.value = results[1].minimum;
+        }
+    }
+
+}
+
+
+async function check_for_notification(tmp) {
+    console.log("access to check_for_notification");
+    let payload = { date: "", time: "", location: "", message: "", subject: "Notification Data Center (Temperature and Himidity)" };
+    for (let i = 0; i < tmp.length; i++) {
+        if (tmp[i].type === "temperature") {
+            if (tmp[i][2] === "front rack") {
+                if (tmp[i][3] > parseFloat(minimum_temp.value)) {
+                    payload.message = "Temperature (in front of rack) : " + tmp[i][3];
+                    payload.location = tmp[i][1];
+                    await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
+                }
+            } else {
+                if (tmp[i][3] > parseFloat(maximum_temp.value)) {
+                    payload.message = "Temperature (behind rack) : " + tmp[i][3];
+                    payload.location = tmp[i][1];
+                    await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
+                }
+            }
+
+        } else {
+            // notification humidity
+            if (parseFloat(tmp[i][2]) > parseFloat(maximum_humidity.value) || parseFloat(tmp[i][2]) < parseFloat(minimum_humidity.value)) {
+                payload.message = "Humidity : " + tmp[i][2];
+                payload.location = tmp[i][1];
+                await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
+            }
+        }
+
+    }
 }

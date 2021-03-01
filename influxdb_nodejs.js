@@ -100,7 +100,6 @@ app.get('/init-config-device', (req, res) => {
         // Converting to JSON 
         const users = JSON.parse(data);
         res.json(users);
-        // console.log(users);   
     });
 });
 
@@ -112,9 +111,6 @@ app.get('/Queryinfluxdb', (req, res) => {
         const config_device = JSON.parse(data);
         var date = new Date();
         var date_str = date.toISOString().substr(0, 10);
-        // var date_str1 = date.toISOString().substring(0, 10);
-        // console.log(date_str1);
-        // console.log(config_device[0].location);
         let reader = Query_influxDB_Gauge(config_device, date_str);
         reader.then(data => {
             console.info('/Queryinfluxdb');
@@ -134,8 +130,6 @@ app.get('/Queryinfluxdb_HistoryGraph', (req, res) => {
         const config_device = JSON.parse(data);
         var date = new Date();
         var date_str = date.toISOString().substr(0, 10);
-        // var date_str1 = date.toISOString().substring(0, 11);
-        // console.log(date_str1);
         console.info('/Queryinfluxdb_HistoryGraph');
         let reader = Query_influxDB_HistoryGraph_OlderDay(config_device, date_str);
         reader.then(data => {
@@ -155,7 +149,6 @@ app.get('/Queryinfluxdb_HistoryGraph_OlderDay', (req, res) => {
         console.info('/Queryinfluxdb_HistoryGraph_OlderDay');
         let reader = Query_influxDB_HistoryGraph_OlderDay(config_device, "2021-01-13");
         reader.then(data => {
-            // console.info(data);
             let results = separate_value(data);
             res.json(results);
         }).catch(err => {
@@ -173,7 +166,6 @@ app.get('/Queryinfluxdb_HistoryGraph_Month', (req, res) => {
         console.info('/Queryinfluxdb_HistoryGraph_Month');
         let reader = Query_influxDB_HistoryGraph_OlderDay(config_device, "2021-01-13");
         reader.then(data => {
-            // console.info(data);
             let results = separate_value(data);
             res.json(results);
         }).catch(err => {
@@ -219,19 +211,14 @@ app.post('/Query-of-Month', (req, res) => {
     var date = req.body;
     var date_json_str = JSON.stringify(date.month_history);
     var date_str = date_json_str.slice(1, date_json_str.length - 1);
-    // var date_str = "2021-02";
     var year = parseInt(date_str.substring(0, 4));
     var month = parseInt(date_str.substring(6));
     console.log("-----------------------------");
-    // console.log(year + "-" + month);
-    // console.info('/Query-of-Month');
 
-    // res.send(year + "-" + month);
     fs.readFile("config_device.json", 'utf-8', function(err, data) {
         // Check for errors 
         if (err) throw err;
         const config_device = JSON.parse(data);
-        // res.json(config_device);
         let reader = daysInMonth(month, year, date_str, config_device);
         reader.then(data => {
             if (data.length > 0) {
@@ -254,7 +241,6 @@ app.post('/Query-of-Month', (req, res) => {
 app.get('/notification', (req, res) => {
     console.log("/notification");
     console.log(req.query);
-    var tmp_message = { message: "fffffffffffffff" };
     profileInfo.get().then(function(doc) {
         if (doc.exists) {
             Line_Notify(req.query, doc.data().LineNotifyToken);
@@ -267,9 +253,29 @@ app.get('/notification', (req, res) => {
         console.log("Error getting document:", error);
     });
     res.send("Notification");
-    // if (typeof req.query.message != "undefined") {
-    // } else {
-    // }
+
+});
+app.get('/notification-1', (req, res) => {
+    var date_TH = new Date();
+    date_TH.setHours(date_TH.getHours() + 7);
+    var date_str_day = date_TH.toISOString().substring(0, 10);
+    var date_str_time = date_TH.toISOString().substring(11, 16);
+    console.log("/notification-1");
+    req.query.date = date_str_day;
+    req.query.time = date_str_time;
+    console.log(req.query);
+    profileInfo.get().then(function(doc) {
+        if (doc.exists) {
+            Line_Notify(req.query, doc.data().LineNotifyToken);
+            // Send_notify_Email(req.query, doc.data().ContactEmail);
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+    res.send("Notification");
 });
 
 
@@ -310,6 +316,56 @@ app.get('/Line-Notify', (req, res) => {
 });
 
 
+app.get('/init-config-thresholds', (req, res) => {
+    let tmp = [];
+    fs.readFile("temperature_thresholds.json", 'utf-8', function(err, data) {
+        // Check for errors 
+        if (err) throw err;
+        // Converting to JSON 
+        const data_json = JSON.parse(data);
+        tmp.push(data_json);
+        fs.readFile("humidity_thresholds.json", 'utf-8', function(err, data) {
+            // Check for errors 
+            if (err) throw err;
+            // Converting to JSON 
+            const data_json = JSON.parse(data);
+            tmp.push(data_json);
+            console.log(tmp);
+            res.json(tmp);
+        });
+
+    });
+});
+
+
+app.post('/save-config-temp-thresholds', (req, res) => {
+    let thresholds = {};
+    thresholds = req.body;
+    fs.writeFile("temperature_thresholds.json", JSON.stringify(thresholds), err => {
+
+        // Checking for errors 
+        if (err) throw err;
+
+        console.log("Done writing"); // Success 
+    });
+    res.send('save temperature_thresholds.json success!!');
+});
+
+app.post('/save-config-humidity-thresholds', (req, res) => {
+    let thresholds = {};
+    thresholds = req.body;
+    fs.writeFile("humidity_thresholds.json", JSON.stringify(thresholds), err => {
+
+        // Checking for errors 
+        if (err) throw err;
+
+        console.log("Done writing"); // Success 
+    });
+    res.send('save temperature_thresholds.json success!!');
+});
+
+
+
 async function Query_influxDB_Gauge(config_device, date) {
     let tmp = [];
     let temp_front = [];
@@ -325,10 +381,7 @@ async function Query_influxDB_Gauge(config_device, date) {
             limit: 1,
         });
         temp_front = await reader.then(function(data) {
-                // The response is a Response instance.
-                // You parse the data into a useable format using `.json()`
                 objectLenght = Object.keys(data.results[0]).length;
-                // console.log(objectLenght);
                 if (objectLenght === 2) {
                     return data.results[0].series[0].values[0];
                 }
@@ -342,7 +395,6 @@ async function Query_influxDB_Gauge(config_device, date) {
         });
         temp_behind = await reader1.then(function(data) {
                 objectLenght = Object.keys(data.results[0]).length;
-                // console.log(objectLenght);
                 if (objectLenght === 2) {
                     return data.results[0].series[0].values[0];
                 }
@@ -356,7 +408,6 @@ async function Query_influxDB_Gauge(config_device, date) {
         });
         humidity = await reader2.then(function(data) {
                 objectLenght = Object.keys(data.results[0]).length;
-                // console.log(objectLenght);
                 if (objectLenght === 2) {
                     return data.results[0].series[0].values[0];
                 }
@@ -399,8 +450,6 @@ async function Query_influxDB_HistoryGraph(config_device, date) {
 
         });
         var temp_front = await reader.then(data => {
-            // console.info("temperature front");
-            // console.info(data.temperature);
             return data.temperature;
         }).catch(console.error);
 
@@ -412,7 +461,6 @@ async function Query_influxDB_HistoryGraph(config_device, date) {
 
         });
         var temp_behind = await reader1.then(data => {
-            // console.info("temperature behind");
             return data.temperature;
         }).catch(console.error);
 
@@ -425,11 +473,9 @@ async function Query_influxDB_HistoryGraph(config_device, date) {
 
         });
         var humidity = await reader2.then(data => {
-            // console.info("humidity");
             return data.humidity;
         }).catch(console.error);
         console.log("=========================");
-        // console.log(temp_front);
         if (typeof temp_front != "undefined" && temp_front != null && temp_front.length > 0) {
             console.log(`found data (${config_device[i].location})`)
             for (let i = 0; i < temp_front.length; i++) {
@@ -451,7 +497,6 @@ async function Query_influxDB_HistoryGraph(config_device, date) {
 
     }
 
-    // console.log(tmp[tmp.length / 3]);
     console.log(tmp.length);
 
     return tmp;
@@ -475,8 +520,6 @@ async function Query_influxDB_HistoryGraph_OlderDay(config_device, date) {
 
             });
             var temp_front = await reader.then(data => {
-                // console.info("temperature front");
-                // console.info(data.temperature);
                 return data.temperature;
             }).catch(console.error);
 
@@ -489,7 +532,6 @@ async function Query_influxDB_HistoryGraph_OlderDay(config_device, date) {
 
             });
             var temp_behind = await reader1.then(data => {
-                // console.info("temperature behind");
                 return data.temperature;
             }).catch(console.error);
 
@@ -503,11 +545,8 @@ async function Query_influxDB_HistoryGraph_OlderDay(config_device, date) {
 
             });
             var humidity = await reader2.then(data => {
-                // console.info("humidity");
                 return data.humidity;
             }).catch(console.error);
-            // console.log("=========================");
-            // console.log(temp_front);
             if (typeof temp_front != "undefined" && temp_front != null && temp_front.length > 0) {
                 console.log(`found data (${config_device[i].location})`);
                 for (let i = 0; i < temp_front.length; i++) {
@@ -529,14 +568,12 @@ async function Query_influxDB_HistoryGraph_OlderDay(config_device, date) {
         }
     }
 
-    // console.log(tmp[tmp.length / 3]);
     console.log(tmp.length);
 
     return tmp;
 }
 
 function separate_value(all_data) {
-    // console.log(all_data[0].position);
     let front_position = [];
     let behind_position = [];
     let humidity = [];
@@ -583,12 +620,9 @@ async function Query_Of_Day(date, location) {
                 end: date + "T" + time_hours_end[i],
                 limit: 1,
             }).then(data => {
-                // console.log(data.temperature);
                 if (Object.keys(data).length > 0) {
                     let objectLenght = Object.keys(data.temperature[0]).length;
-                    // console.log(objectLenght);
                     if (objectLenght === 4) {
-                        // console.log("Can return");
                         return data.temperature[0];
                     }
                 } else {
@@ -598,7 +632,6 @@ async function Query_Of_Day(date, location) {
             }).catch(console.error);
 
         temp_behind = await client.query('temperature').where('location', `${location}`).where('position', 'behind rack')
-            // reader2.order = 'desc';
             .set({
                 format: 'json',
                 start: date + "T" + time_hours_start[i],
@@ -607,9 +640,7 @@ async function Query_Of_Day(date, location) {
             }).then(data => {
                 if (Object.keys(data).length > 0) {
                     let objectLenght = Object.keys(data.temperature[0]).length;
-                    // console.log(objectLenght);
                     if (objectLenght === 4) {
-                        // console.log("Can return");
                         return data.temperature[0];
                     }
                 } else {
@@ -620,7 +651,6 @@ async function Query_Of_Day(date, location) {
 
 
         humidity = await client.query('humidity').where('location', `${location}`)
-            // reader2.order = 'desc';
             .set({
                 format: 'json',
                 start: date + "T" + time_hours_start[i],
@@ -629,9 +659,7 @@ async function Query_Of_Day(date, location) {
             }).then(data => {
                 if (Object.keys(data).length > 0) {
                     let objectLenght = Object.keys(data.humidity[0]).length;
-                    // console.log(objectLenght);
                     if (objectLenght === 3) {
-                        // console.log("Can return");
                         return data.humidity[0];
                     }
                 } else {
@@ -639,8 +667,6 @@ async function Query_Of_Day(date, location) {
                 }
 
             }).catch(console.error);
-        // console.log(temp_front);
-        // console.log(typeof temp_front);
         if (typeof temp_front != "undefined" && typeof temp_behind != "undefined" && typeof humidity != "undefined") {
             console.log("Found data");
             tmp_temp_front.push(parseFloat(temp_front.value));
@@ -667,7 +693,6 @@ async function Query_Of_Day(date, location) {
     results.push({ date: `${date}`, location: location, position: "front rack", mean: `${mean_temp_front}` });
     results.push({ date: `${date}`, location: location, position: "behind rack", mean: `${mean_temp_behind}` });
     results.push({ date: `${date}`, location: location, mean: `${mean_humidity}` });
-    // await sleep(5000);
 
     return results;
 }
@@ -699,8 +724,6 @@ async function Query_of_month(num_month, month_year, config_device) {
             tmp1.push(date_str);
         }
         date_Query = month_year + "-" + date_str;
-        // console.log(date_str);
-        // console.log(date_Query);
         tmp = await Query_Of_Day(date_Query, config_device.location);
         for (let j = 0; j < tmp.length; j++) {
             all_mean.push(tmp[j]);
@@ -734,7 +757,6 @@ async function daysInMonth(this_month, this_year, this_month_year, config_device
 
 
 function separate_value_mean(all_data) {
-    // console.log(all_data[0].position);
     let front_position = [];
     let behind_position = [];
     let humidity = [];
