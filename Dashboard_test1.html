@@ -28,7 +28,7 @@
     </script>
     <script type="text/javascript" src="modules/config_firebase.js"></script>
     <script type="text/javascript" src="modules/heatmap.js"></script>
-    <script type="text/javascript" src="canvas_heatmap.js"></script>
+    <!-- <script type="text/javascript" src="canvas_heatmap.js"></script> -->
 </head>
 
 <body>
@@ -112,7 +112,9 @@
             </div>
             <div class="container">
                 <div class="item" id="item-1">
-                    <canvas id="myCanvas"></canvas>
+                    <div id="heatmapContainer">
+                        <div id="heatmapArea"></div>
+                    </div>
                 </div>
                 <div class="item" id="item-2">
                     <div id="status-color" style="text-align:right">
@@ -279,7 +281,7 @@
 
                             <div class="form-control">
                                 <label class="header">Line notify Token :</label>
-                                <input type="password" id="store_line_notify_token" placeholder="Line notify Token" required="">
+                                <input type="text" id="store_line_notify_token" placeholder="Line notify Token" required="">
                                 <!-- id="store_contactNumber" id="password1" name="website"-->
                                 <p id="alert-line_notify_token" style="color: red ; padding-left:250px;"></p>
                             </div>

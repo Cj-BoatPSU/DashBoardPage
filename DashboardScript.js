@@ -103,11 +103,10 @@ function toggle_contents(btn_id) {
                 initHistoryGraph();
                 // TestsetInterval();
             } else if (item.id === "item-1") {
-
+                initHeatmap();
             } else if (item.id === "item-4") {
                 initConfigThresholds();
             }
-
         } else {
             item.style.display = "none";
         }
@@ -137,7 +136,7 @@ function checkAuth() {
     var tmp = localStorage.getItem("username"); //type string
     var username = tmp.substring(0, tmp.indexOf('@')); // cut a string after a specific character
     document.getElementById("profile_name").innerHTML = username;
-
+    initHeatmap();
 }
 
 // Profile section
@@ -1259,6 +1258,353 @@ async function check_for_notification(tmp) {
                 await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
             }
         }
+
+    }
+}
+
+// Heatmap section
+
+async function initHeatmap() {
+    console.log("access to initHeatmap");
+    let all_data = await query_data_influxdb();
+    console.log(all_data);
+    var heatmapArea = document.getElementById("heatmapArea");
+    var data = {
+        "max": 30,
+        "data": [],
+    };
+    initData(data.data, all_data);
+    var cfg = {
+        "element": heatmapArea,
+        "opacity": 0.1,
+        "radius": 25,
+        "visible": true,
+        "maxOpacity": 1,
+        "minOpacity": 0,
+        // "legend": {
+        //     "title": "Temperature (c°)",
+        //     "position": "bl",
+        //     "offset": 10
+
+        // },
+    }
+    var heatmapInstance = h337.create(cfg);
+
+    heatmapInstance.store.setDataSet(data);
+    PushData_Heatmap(data.data, all_data);
+    heatmapInstance.store.setDataSet(data);
+    console.log("Heatmap data array length :" + data.data.length);
+    var currentData = heatmapInstance.store;
+    console.log(currentData);
+    // heatmapInstance.store.generateRandomDataSet(100);
+}
+
+function PushData_Heatmap(data, tmp) {
+    data.push(
+        // {
+        //         "x": 370 - 100,
+        //         "y": 60,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack 
+        //     {
+        //         "x": 390 - 100,
+        //         "y": 60,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 410 - 100,
+        //         "y": 60,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 430 - 100,
+        //         "y": 60,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 350 - 100,
+        //         "y": 60,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 330 - 100,
+        //         "y": 60,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 310 - 100,
+        //         "y": 60,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack -----
+        //     {
+        //         "x": 370 - 100,
+        //         "y": 40,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack 
+        //     {
+        //         "x": 390 - 100,
+        //         "y": 40,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 410 - 100,
+        //         "y": 40,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 430 - 100,
+        //         "y": 40,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 350 - 100,
+        //         "y": 40,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 330 - 100,
+        //         "y": 40,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 310 - 100,
+        //         "y": 40,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 290 - 100,
+        //         "y": 40,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 450 - 100,
+        //         "y": 40,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack -------
+        //     {
+        //         "x": 370 - 100,
+        //         "y": 20,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack 
+        //     {
+        //         "x": 390 - 100,
+        //         "y": 20,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 410 - 100,
+        //         "y": 20,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 430 - 100,
+        //         "y": 20,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 350 - 100,
+        //         "y": 20,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 330 - 100,
+        //         "y": 20,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 310 - 100,
+        //         "y": 20,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 290 - 100,
+        //         "y": 20,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 450 - 100,
+        //         "y": 20,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 470 - 100,
+        //         "y": 20,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //     {
+        //         "x": 270 - 100,
+        //         "y": 20,
+        //         "count": (tmp[0][3] / 3)
+        //     }, //front rack
+        //------------------------------
+        {
+            "x": 370 - 100,
+            "y": 60 + 180,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack 
+        {
+            "x": 390 - 100,
+            "y": 60 + 180,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 410 - 100,
+            "y": 60 + 180,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 430 - 100,
+            "y": 60 + 180,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 350 - 100,
+            "y": 60 + 180,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 330 - 100,
+            "y": 60 + 180,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 310 - 100,
+            "y": 60 + 180,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack -----
+        {
+            "x": 370 - 100,
+            "y": 40 + 180 + 40,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack 
+        {
+            "x": 390 - 100,
+            "y": 40 + 180 + 40,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 410 - 100,
+            "y": 40 + 180 + 40,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 430 - 100,
+            "y": 40 + 180 + 40,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 350 - 100,
+            "y": 40 + 180 + 40,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 330 - 100,
+            "y": 40 + 180 + 40,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 310 - 100,
+            "y": 40 + 180 + 40,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 290 - 100,
+            "y": 40 + 180 + 40,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 450 - 100,
+            "y": 40 + 180 + 40,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack -------
+        {
+            "x": 370 - 100,
+            "y": 20 + 180 + 40,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack 
+        {
+            "x": 390 - 100,
+            "y": 20 + 180 + 90,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 410 - 100,
+            "y": 20 + 180 + 90,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 430 - 100,
+            "y": 20 + 180 + 90,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 350 - 100,
+            "y": 20 + 180 + 90,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 330 - 100,
+            "y": 20 + 180 + 90,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 310 - 100,
+            "y": 20 + 180 + 90,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 290 - 100,
+            "y": 20 + 180 + 90,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 450 - 100,
+            "y": 20 + 180 + 90,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 470 - 100,
+            "y": 20 + 180 + 90,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+        {
+            "x": 270 - 100,
+            "y": 20 + 180 + 90,
+            "count": (tmp[0][3] / 3)
+        }, //behind rack
+    );
+}
+
+function initData(data, all_data) {
+    var heatmapArea = document.getElementById("heatmapArea");
+    console.log("Width : " + heatmapArea.offsetWidth);
+    console.log("Height : " + heatmapArea.offsetHeight);
+    console.log("access to initData");
+    temp_only(all_data);
+    for (let j = 0; j < heatmapArea.offsetHeight; j += 20) {
+        for (let i = 0; i < heatmapArea.offsetWidth; i += 20) {
+            data.push({
+                "x": i,
+                "y": j,
+                "count": all_data[0][3] / 3,
+            });
+        }
+    }
+
+}
+
+function temp_only(all_data) {
+    for (let i = 0; i < all_data.length; i++) {
+        if (all_data[i].length === 3) {
+            all_data.splice(i, 1);
+        }
+
+    }
+}
+
+function setHeatmap_Data(data, x, y) {
+    for (let i = 0; i < array.length; i++) {
+
 
     }
 }
