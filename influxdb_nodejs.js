@@ -9,8 +9,8 @@ const admin = require('firebase-admin');
 const serviceAccount = require('./modules/serviceAccountKey.json');
 
 const { Server, FIREBASE_CONFIG } = require('./modules/config.js');
-const client = new Influx(`http://mydb:cjboat@${Server.ip_address}:${Server.port}/db_version2`);
-// const client = new Influx(`http://mydb:cjboat@127.0.0.1:8086/db_version2`);
+// const client = new Influx(`http://mydb:cjboat@${Server.ip_address}:${Server.port}/db_version2`);
+const client = new Influx(`http://mydb:cjboat@127.0.0.1:8086/db_version2`);
 // const client = new Influx(`http://mydb:cjboat@10.100.100.200:8086/db_version2`);
 app.use(express.static('public'));
 app.use(express.json());

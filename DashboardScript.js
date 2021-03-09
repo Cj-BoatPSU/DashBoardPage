@@ -308,9 +308,9 @@ function setGaugeValue(gauge, json_value) {
         if (json_value[3] == null || json_value[1] == null) {
             return;
         }
-        if (json_value[3] >= 23 && json_value[3] < 27) {
+        if (json_value[3] >= 21 && json_value[3] < 24 || json_value[3] >= 29 && json_value[3] < 32) {
             gauge.querySelector(".gauge__fill").style.background = '#009578';
-        } else if (json_value[3] >= 27 && json_value[3] <= 30) {
+        } else if (json_value[3] >= 25 && json_value[3] <= 30 || json_value[3] >= 32 && json_value[3] <= 35) {
             gauge.querySelector(".gauge__fill").style.background = '#ffcc00';
         } else {
             gauge.querySelector(".gauge__fill").style.background = '#e03b24';
@@ -338,7 +338,7 @@ function setGaugeValue(gauge, json_value) {
 
 
 async function query_data_influxdb() {
-    let results = await fetch(`http://172.30.232.114:8081/Queryinfluxdb`)
+    let results = await fetch(`http://127.0.0.1:8081/Queryinfluxdb`)
         .then(function(response) {
             return response.json();
         })
@@ -516,7 +516,7 @@ function saveConfigDevice() {
             },
             body: JSON.stringify(tmp),
         }
-        fetch('http://172.30.232.114:8081/save-config-device', options);
+        fetch('http://127.0.0.1:8081/save-config-device', options);
     } else {
         console.log("click cancel");
     }
@@ -525,7 +525,7 @@ function saveConfigDevice() {
 
 async function fetchConfigDevice() {
     let all_devices = [];
-    all_devices = await fetch('http://172.30.232.114:8081/init-config-device')
+    all_devices = await fetch('http://127.0.0.1:8081/init-config-device')
         .then(function(response) {
             return response.json();
         })
@@ -946,7 +946,7 @@ function randomNumber(min, max) {
 
 async function fetch_Data_HistoryGraph() {
     let all_HistoryData = [];
-    all_HistoryData = await fetch('http://172.30.232.114:8081/Queryinfluxdb_HistoryGraph')
+    all_HistoryData = await fetch('http://127.0.0.1:8081/Queryinfluxdb_HistoryGraph')
         .then(function(response) {
             return response.json();
         })
@@ -982,7 +982,7 @@ async function SearchHistory() {
     let all_data_HistoryGraph = [];
     let filter_data_HistoryGraph = [];
 
-    all_data_HistoryGraph = await fetch('http://172.30.232.114:8081/search-history', options).then(function(response) {
+    all_data_HistoryGraph = await fetch('http://127.0.0.1:8081/search-history', options).then(function(response) {
             return response.json();
         })
         .catch(err => console.log('Request Failed', err));
@@ -1063,7 +1063,7 @@ async function SearchHistory_Month() {
 
     let all_data_HistoryGraph = [];
 
-    all_data_HistoryGraph = await fetch('http://172.30.232.114:8081/Query-of-Month', options).then(function(response) {
+    all_data_HistoryGraph = await fetch('http://127.0.0.1:8081/Query-of-Month', options).then(function(response) {
             return response.json();
         })
         .catch(err => console.log('Request Failed', err));
@@ -1084,12 +1084,12 @@ function sleep(ms) {
 
 async function Send_notify_Email() {
     console.log("Access to Send_notify_Email()");
-    await fetch('http://172.30.232.114:8081/Send-Email');
+    await fetch('http://127.0.0.1:8081/Send-Email');
 }
 
 async function Line_Notify() {
     console.log("Access to Line_Notify()");
-    await fetch('http://172.30.232.114:8081/Line-Notify');
+    await fetch('http://127.0.0.1:8081/Line-Notify');
 }
 
 
@@ -1103,7 +1103,7 @@ var maximum_humidity = document.getElementById("maximum-alert-humidity");
 var minimum_humidity = document.getElementById("minimum-alert-humidity");
 
 async function initConfigThresholds() {
-    let results = await fetch(`http://172.30.232.114:8081/init-config-thresholds`)
+    let results = await fetch(`http://127.0.0.1:8081/init-config-thresholds`)
         .then(function(response) {
             return response.json();
         })
@@ -1164,14 +1164,14 @@ async function save_temp_Thresholds() {
                 },
                 body: JSON.stringify(tmp_json),
             }
-            await fetch('http://172.30.232.114:8081/save-config-temp-thresholds', options);
+            await fetch('http://127.0.0.1:8081/save-config-temp-thresholds', options);
 
             maximum_temp.disabled = true;
             minimum_temp.disabled = true;
 
             btnChange_temp_thresholds.style.display = "block";
             btnSave_temp_thresholds.style.display = "none";
-            let results = await fetch(`http://172.30.232.114:8081/init-config-thresholds`)
+            let results = await fetch(`http://127.0.0.1:8081/init-config-thresholds`)
                 .then(function(response) {
                     return response.json();
                 })
@@ -1211,14 +1211,14 @@ async function save_humidity_Thresholds() {
                 },
                 body: JSON.stringify(tmp_json),
             }
-            await fetch('http://172.30.232.114:8081/save-config-humidity-thresholds', options);
+            await fetch('http://127.0.0.1:8081/save-config-humidity-thresholds', options);
 
             maximum_humidity.disabled = true;
             minimum_humidity.disabled = true;
 
             btnChange_humidity_thresholds.style.display = "block";
             btnSave_humidity_thresholds.style.display = "none";
-            let results = await fetch(`http://172.30.232.114:8081/init-config-thresholds`)
+            let results = await fetch(`http://127.0.0.1:8081/init-config-thresholds`)
                 .then(function(response) {
                     return response.json();
                 })
@@ -1240,13 +1240,13 @@ async function check_for_notification(tmp) {
                 if (tmp[i][3] > parseFloat(minimum_temp.value)) {
                     payload.message = "Temperature (in front of rack) : " + tmp[i][3];
                     payload.location = tmp[i][1];
-                    await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
+                    await fetch('http://127.0.0.1:8081/notification-1?' + new URLSearchParams(payload));
                 }
             } else {
                 if (tmp[i][3] > parseFloat(maximum_temp.value)) {
                     payload.message = "Temperature (behind rack) : " + tmp[i][3];
                     payload.location = tmp[i][1];
-                    await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
+                    await fetch('http://127.0.0.1:8081/notification-1?' + new URLSearchParams(payload));
                 }
             }
 
@@ -1255,7 +1255,7 @@ async function check_for_notification(tmp) {
             if (parseFloat(tmp[i][2]) > parseFloat(maximum_humidity.value) || parseFloat(tmp[i][2]) < parseFloat(minimum_humidity.value)) {
                 payload.message = "Humidity : " + tmp[i][2];
                 payload.location = tmp[i][1];
-                await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
+                await fetch('http://127.0.0.1:8081/notification-1?' + new URLSearchParams(payload));
             }
         }
 
@@ -1267,17 +1267,24 @@ async function check_for_notification(tmp) {
 async function initHeatmap() {
     console.log("access to initHeatmap");
     let all_data = await query_data_influxdb();
-    console.log(all_data);
+    let tmp = [];
     var heatmapArea = document.getElementById("heatmapArea");
     var data = {
         "max": 30,
         "data": [],
     };
-    initData(data.data, all_data);
+    // initDataPoint(data.data, all_data);
+    temp_only(all_data);
+    // initData(data.data, all_data);
+    // console.log(all_data);
+    tmp = separate_value(all_data);
+    console.log(tmp);
+    data.data = initDataPointV2(tmp);
+    console.log(data.data);
     var cfg = {
         "element": heatmapArea,
         "opacity": 0.1,
-        "radius": 25,
+        "radius": 20,
         "visible": true,
         "maxOpacity": 1,
         "minOpacity": 0,
@@ -1291,287 +1298,149 @@ async function initHeatmap() {
     var heatmapInstance = h337.create(cfg);
 
     heatmapInstance.store.setDataSet(data);
-    PushData_Heatmap(data.data, all_data);
+    // PushData_Heatmap(data.data, all_data);
     heatmapInstance.store.setDataSet(data);
     console.log("Heatmap data array length :" + data.data.length);
-    var currentData = heatmapInstance.store;
-    console.log(currentData);
     // heatmapInstance.store.generateRandomDataSet(100);
 }
 
 function PushData_Heatmap(data, tmp) {
-    data.push(
-        // {
-        //         "x": 370 - 100,
-        //         "y": 60,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack 
-        //     {
-        //         "x": 390 - 100,
-        //         "y": 60,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 410 - 100,
-        //         "y": 60,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 430 - 100,
-        //         "y": 60,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 350 - 100,
-        //         "y": 60,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 330 - 100,
-        //         "y": 60,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 310 - 100,
-        //         "y": 60,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack -----
-        //     {
-        //         "x": 370 - 100,
-        //         "y": 40,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack 
-        //     {
-        //         "x": 390 - 100,
-        //         "y": 40,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 410 - 100,
-        //         "y": 40,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 430 - 100,
-        //         "y": 40,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 350 - 100,
-        //         "y": 40,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 330 - 100,
-        //         "y": 40,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 310 - 100,
-        //         "y": 40,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 290 - 100,
-        //         "y": 40,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 450 - 100,
-        //         "y": 40,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack -------
-        //     {
-        //         "x": 370 - 100,
-        //         "y": 20,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack 
-        //     {
-        //         "x": 390 - 100,
-        //         "y": 20,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 410 - 100,
-        //         "y": 20,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 430 - 100,
-        //         "y": 20,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 350 - 100,
-        //         "y": 20,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 330 - 100,
-        //         "y": 20,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 310 - 100,
-        //         "y": 20,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 290 - 100,
-        //         "y": 20,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 450 - 100,
-        //         "y": 20,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 470 - 100,
-        //         "y": 20,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //     {
-        //         "x": 270 - 100,
-        //         "y": 20,
-        //         "count": (tmp[0][3] / 3)
-        //     }, //front rack
-        //------------------------------
-        {
+    data.push({
             "x": 370 - 100,
-            "y": 60 + 180,
+            "y": 60,
             "count": (tmp[0][3] / 3)
-        }, //behind rack 
+        }, //front rack 
         {
             "x": 390 - 100,
-            "y": 60 + 180,
+            "y": 60,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 410 - 100,
-            "y": 60 + 180,
+            "y": 60,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 430 - 100,
-            "y": 60 + 180,
+            "y": 60,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 350 - 100,
-            "y": 60 + 180,
+            "y": 60,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 330 - 100,
-            "y": 60 + 180,
+            "y": 60,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 310 - 100,
-            "y": 60 + 180,
+            "y": 60,
             "count": (tmp[0][3] / 3)
-        }, //behind rack -----
+        }, //front rack -----
         {
             "x": 370 - 100,
-            "y": 40 + 180 + 40,
+            "y": 40,
             "count": (tmp[0][3] / 3)
-        }, //behind rack 
+        }, //front rack 
         {
             "x": 390 - 100,
-            "y": 40 + 180 + 40,
+            "y": 40,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 410 - 100,
-            "y": 40 + 180 + 40,
+            "y": 40,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 430 - 100,
-            "y": 40 + 180 + 40,
+            "y": 40,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 350 - 100,
-            "y": 40 + 180 + 40,
+            "y": 40,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 330 - 100,
-            "y": 40 + 180 + 40,
+            "y": 40,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 310 - 100,
-            "y": 40 + 180 + 40,
+            "y": 40,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 290 - 100,
-            "y": 40 + 180 + 40,
+            "y": 40,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 450 - 100,
-            "y": 40 + 180 + 40,
+            "y": 40,
             "count": (tmp[0][3] / 3)
-        }, //behind rack -------
+        }, //front rack -------
         {
             "x": 370 - 100,
-            "y": 20 + 180 + 40,
+            "y": 20,
             "count": (tmp[0][3] / 3)
-        }, //behind rack 
+        }, //front rack 
         {
             "x": 390 - 100,
-            "y": 20 + 180 + 90,
+            "y": 20,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 410 - 100,
-            "y": 20 + 180 + 90,
+            "y": 20,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 430 - 100,
-            "y": 20 + 180 + 90,
+            "y": 20,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 350 - 100,
-            "y": 20 + 180 + 90,
+            "y": 20,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 330 - 100,
-            "y": 20 + 180 + 90,
+            "y": 20,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 310 - 100,
-            "y": 20 + 180 + 90,
+            "y": 20,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 290 - 100,
-            "y": 20 + 180 + 90,
+            "y": 20,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 450 - 100,
-            "y": 20 + 180 + 90,
+            "y": 20,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 470 - 100,
-            "y": 20 + 180 + 90,
+            "y": 20,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
         {
             "x": 270 - 100,
-            "y": 20 + 180 + 90,
+            "y": 20,
             "count": (tmp[0][3] / 3)
-        }, //behind rack
+        }, //front rack
+        //------------------------------
     );
 }
 
@@ -1580,9 +1449,8 @@ function initData(data, all_data) {
     console.log("Width : " + heatmapArea.offsetWidth);
     console.log("Height : " + heatmapArea.offsetHeight);
     console.log("access to initData");
-    temp_only(all_data);
-    for (let j = 0; j < heatmapArea.offsetHeight; j += 20) {
-        for (let i = 0; i < heatmapArea.offsetWidth; i += 20) {
+    for (let j = 0; j < heatmapArea.offsetHeight; j += 15) {
+        for (let i = 0; i < heatmapArea.offsetWidth; i += 15) {
             data.push({
                 "x": i,
                 "y": j,
@@ -1593,18 +1461,171 @@ function initData(data, all_data) {
 
 }
 
+function initDataPointV2(all_data) {
+    console.log("access to initDataPointV2");
+    let i = 0;
+    let tmp2 = [];
+
+    for (let k = 0; k < (all_data.length / 5); k++) { // 5 เอามาจาก config 
+        let x1 = 270;
+        for (let j = 0; j < (all_data.length / 4); j++) {
+            tmp2.push({
+                "x": x1,
+            });
+            x1 += 115;
+
+        }
+    }
+    let i1 = 0;
+    let y1 = 60;
+    for (let k = 0; k < (all_data.length / 10); k++) { // set y point rack1 to rack5
+        for (let j = 0; j < (all_data.length / 4); j++) {
+            tmp2[i1].y = y1;
+            if (k < 1) {
+                tmp2[i1].position = "front rack";
+            } else {
+                tmp2[i1].position = "behind rack";
+            }
+            i1++;
+        }
+        y1 += 170;
+    }
+    y1 = 300;
+    for (let k = 0; k < (all_data.length / 10); k++) { // set y point rack6 to rack7
+        for (let j = 0; j < (all_data.length / 4); j++) {
+            tmp2[i1].y = y1;
+            if (k < 1) {
+                tmp2[i1].position = "behind rack";
+            } else {
+                tmp2[i1].position = "front rack";
+            }
+            i1++;
+        }
+        y1 += 170;
+    }
+    console.log(tmp2);
+    let tmp = seperate_front_and_behind(tmp2);
+    console.log("after separate_value");
+    console.log(tmp);
+    for (let i = 0; i < all_data.length; i++) {
+        tmp[i].count = all_data[i][3];
+    }
+    console.log("---------------------------");
+    return tmp;
+}
+
+function seperate_front_and_behind(all_data) {
+    let tmp = [];
+    for (let i = 0; i < all_data.length; i++) {
+        if (all_data[i].position === "front rack") {
+            tmp.push(all_data[i]);
+        }
+
+    }
+    for (let i = 0; i < all_data.length; i++) {
+        if (all_data[i].position === "behind rack") {
+            tmp.push(all_data[i]);
+        }
+
+    }
+    return tmp;
+}
+
+function initDataPoint(data, all_data) {
+    console.log("access to initDataPoint");
+    data.push({
+            "x": 270,
+            "y": 60,
+            "count": (all_data[0][3]) //rack1 front(+120)
+        }, {
+            "x": 270,
+            "y": 230,
+            "count": (all_data[1][3]) //rack1 behind (+170) down side
+        }, {
+            "x": 390,
+            "y": 60,
+            "count": (all_data[2][3]) //rack2 front
+        }, {
+            "x": 390,
+            "y": 230,
+            "count": (all_data[3][3]) //rack2 behind
+        }, {
+            "x": 500,
+            "y": 60,
+            "count": (all_data[4][3]) //rack3 front
+        }, {
+            "x": 500,
+            "y": 230,
+            "count": (all_data[5][3]) //rack3 behind
+        }, {
+            "x": 610,
+            "y": 60,
+            "count": (all_data[6][3]) //rack4 front
+        }, {
+            "x": 610,
+            "y": 230,
+            "count": (all_data[7][3]) //rack4 behind
+        }, {
+            "x": 720,
+            "y": 60,
+            "count": (all_data[8][3]) //rack5 front
+        }, {
+            "x": 720,
+            "y": 230,
+            "count": (all_data[9][3]) //rack5 behind
+        },
+        // ------------------------------------------
+        {
+            "x": 270,
+            "y": 470,
+            "count": (all_data[10][3]) //rack6 front
+        }, {
+            "x": 270,
+            "y": 300,
+            "count": (all_data[11][3]) //rack6 behind up side
+        }, {
+            "x": 390,
+            "y": 470,
+            "count": (all_data[12][3]) //rack7 front
+        }, {
+            "x": 390,
+            "y": 300,
+            "count": (all_data[13][3]) //rack7 behind up side
+        }, {
+            "x": 500,
+            "y": 470,
+            "count": (all_data[14][3]) //rack8 front
+        }, {
+            "x": 500,
+            "y": 300,
+            "count": (all_data[15][3]) //rack8 behind up side
+        }, {
+            "x": 610,
+            "y": 470,
+            "count": (all_data[16][3]) //rack9 front
+        }, {
+            "x": 610,
+            "y": 300,
+            "count": (all_data[17][3]) //rack9 behind up side
+        }, {
+            "x": 720,
+            "y": 470,
+            "count": (all_data[18][3]) //rack10 front
+        }, {
+            "x": 720,
+            "y": 300,
+            "count": (all_data[19][3]) //rack10 behind up side
+        },
+
+    );
+
+}
+
 function temp_only(all_data) {
     for (let i = 0; i < all_data.length; i++) {
         if (all_data[i].length === 3) {
             all_data.splice(i, 1);
         }
-
-    }
-}
-
-function setHeatmap_Data(data, x, y) {
-    for (let i = 0; i < array.length; i++) {
-
 
     }
 }
