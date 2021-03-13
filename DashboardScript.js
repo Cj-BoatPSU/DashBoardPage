@@ -251,7 +251,7 @@ async function CreateGauge() {
     let all_devices = [];
     all_devices = await fetchConfigDevice();
     console.log(`Number of all device (in CreateGauge function) : ${all_devices.length}`);
-    if (gaugeElement.length === (all_devices.length * 3)) {
+    if (gaugeElement.length >= (all_devices.length * 3)) {
         console.log("not create gaugeElement ");
         relate_value();
         CheckSetInterval();
@@ -1267,20 +1267,24 @@ async function check_for_notification(tmp) {
 async function initHeatmap() {
     console.log("access to initHeatmap");
     let all_data = await query_data_influxdb();
+    let all_devices = await fetchConfigDevice();
     let tmp = [];
     var heatmapArea = document.getElementById("heatmapArea");
     var data = {
-        "max": 30,
-        "data": [],
+        "max": 33,
+        "data": [
+            // {
+            //     "x": 125,
+            //     "y": 75,
+            //     "count": 22,
+            // },
+            // {
+            //     "x": 75,
+            //     "y": 75,
+            //     "count": 22,
+            // }
+        ],
     };
-    // initDataPoint(data.data, all_data);
-    temp_only(all_data);
-    // initData(data.data, all_data);
-    // console.log(all_data);
-    tmp = separate_value(all_data);
-    console.log(tmp);
-    data.data = initDataPointV2(tmp);
-    console.log(data.data);
     var cfg = {
         "element": heatmapArea,
         "opacity": 0.1,
@@ -1294,332 +1298,138 @@ async function initHeatmap() {
         //     "offset": 10
 
         // },
+        // "debug": true,
+        // "premultiplyAlpha": true,
     }
     var heatmapInstance = h337.create(cfg);
+    heatmapInstance.store.setDataSet(data);
+    console.log("Heatmap data array length (before PushData_Heatmap):" + data.data.length);
+    temp_only(all_data);
+    all_data.sort(function(a, b) { //sort array location rack
+        if (a[1] < b[1]) { return -1; }
+        if (a[1] > b[1]) { return 1; }
+        return 0;
+    });
+    tmp = separate_value(all_data);
 
+    initDataPoint(tmp, all_devices, data.data);
+    console.log("after initDataPoint");
+    console.log(data.data);
     heatmapInstance.store.setDataSet(data);
-    // PushData_Heatmap(data.data, all_data);
+    // initDataHeatmap(data.data, all_data);
+    TemperatureDistributionUP(data.data);
     heatmapInstance.store.setDataSet(data);
-    console.log("Heatmap data array length :" + data.data.length);
     // heatmapInstance.store.generateRandomDataSet(100);
 }
 
-function PushData_Heatmap(data, tmp) {
-    data.push({
-            "x": 370 - 100,
-            "y": 60,
-            "count": (tmp[0][3] / 3)
-        }, //front rack 
-        {
-            "x": 390 - 100,
-            "y": 60,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 410 - 100,
-            "y": 60,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 430 - 100,
-            "y": 60,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 350 - 100,
-            "y": 60,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 330 - 100,
-            "y": 60,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 310 - 100,
-            "y": 60,
-            "count": (tmp[0][3] / 3)
-        }, //front rack -----
-        {
-            "x": 370 - 100,
-            "y": 40,
-            "count": (tmp[0][3] / 3)
-        }, //front rack 
-        {
-            "x": 390 - 100,
-            "y": 40,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 410 - 100,
-            "y": 40,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 430 - 100,
-            "y": 40,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 350 - 100,
-            "y": 40,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 330 - 100,
-            "y": 40,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 310 - 100,
-            "y": 40,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 290 - 100,
-            "y": 40,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 450 - 100,
-            "y": 40,
-            "count": (tmp[0][3] / 3)
-        }, //front rack -------
-        {
-            "x": 370 - 100,
-            "y": 20,
-            "count": (tmp[0][3] / 3)
-        }, //front rack 
-        {
-            "x": 390 - 100,
-            "y": 20,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 410 - 100,
-            "y": 20,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 430 - 100,
-            "y": 20,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 350 - 100,
-            "y": 20,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 330 - 100,
-            "y": 20,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 310 - 100,
-            "y": 20,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 290 - 100,
-            "y": 20,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 450 - 100,
-            "y": 20,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 470 - 100,
-            "y": 20,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        {
-            "x": 270 - 100,
-            "y": 20,
-            "count": (tmp[0][3] / 3)
-        }, //front rack
-        //------------------------------
-    );
+function TemperatureDistributionUP(data) {
+
+    console.log("access to TemperatureDistributionUP");
+    for (let i = 0; i < data.length; i++) {
+        let inc = 30;
+        let dec = 30;
+        if (data[i].position === "front rack") {
+            // console.log();
+            for (let j = 0; j < 2; j++) {
+                data.push({
+                    "x": data[i].x + inc,
+                    "y": data[i].y,
+                    "count": data[i].count,
+                }, {
+                    "x": data[i].x - dec,
+                    "y": data[i].y,
+                    "count": data[i].count,
+                }, );
+                inc += 30;
+                dec += 30;
+            }
+        }
+
+    }
 }
 
-function initData(data, all_data) {
+async function initDataPoint(all_data, all_devices, data) {
+    console.log("access to initDataPoint");
+    console.log(all_data);
+    let location = ["rack1", "rack2", "rack3", "rack4", "rack5"];
+    for (let i = 0; i < 2; i++) { //follow number of row rack in picture 
+        let x = 250;
+        for (let j = 0; j < 5; j++) { //follow number of rack in picture //set x point
+            data.push({
+                "x": x,
+                "location": location[j],
+                "status": "",
+            });
+
+            x += 135;
+        }
+
+
+    }
+    let index = 0;
+    let y = 160;
+    for (let i = 0; i < 2; i++) { //follow number of row rack in picture
+        for (let j = 0; j < 5; j++) { //follow number of rack in picture //set y point
+            data[index].y = y;
+            if (i < 1) {
+                data[index].position = "front rack";
+            } else {
+                data[index].position = "behind rack";
+            }
+            index++
+        }
+
+        y += 240;
+    }
+
+
+    for (let j = 0; j < data.length; j++) {
+
+        for (let k = 0; k < all_devices.length; k++) {
+            if (data[j].location === all_devices[k].location) {
+                data[j].status = "found data";
+            }
+        }
+    }
+    console.log("after initPointData data length : " + data.length);
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].status === "") {
+            data.splice(i, 1);
+            i = 0;
+        }
+    }
+    console.log("after splice data length : " + data.length);
+    for (let i = 0; i < all_data.length; i++) { //set value
+        data[i].count = all_data[i][3];
+    }
+    console.log("----------------------------");
+    console.log(data);
+}
+
+
+
+function initDataHeatmap(data, all_data) {
     var heatmapArea = document.getElementById("heatmapArea");
     console.log("Width : " + heatmapArea.offsetWidth);
     console.log("Height : " + heatmapArea.offsetHeight);
     console.log("access to initData");
-    for (let j = 0; j < heatmapArea.offsetHeight; j += 15) {
-        for (let i = 0; i < heatmapArea.offsetWidth; i += 15) {
-            data.push({
-                "x": i,
-                "y": j,
-                "count": all_data[0][3] / 3,
-            });
-        }
-    }
-
-}
-
-function initDataPointV2(all_data) {
-    console.log("access to initDataPointV2");
+    console.log(data);
     let i = 0;
-    let tmp2 = [];
-
-    for (let k = 0; k < (all_data.length / 5); k++) { // 5 เอามาจาก config 
-        let x1 = 270;
-        for (let j = 0; j < (all_data.length / 4); j++) {
-            tmp2.push({
-                "x": x1,
-            });
-            x1 += 115;
-
-        }
-    }
-    let i1 = 0;
-    let y1 = 60;
-    for (let k = 0; k < (all_data.length / 10); k++) { // set y point rack1 to rack5
-        for (let j = 0; j < (all_data.length / 4); j++) {
-            tmp2[i1].y = y1;
-            if (k < 1) {
-                tmp2[i1].position = "front rack";
-            } else {
-                tmp2[i1].position = "behind rack";
+    for (let j = 0; j < heatmapArea.offsetHeight; j += 15) { //y
+        for (i = 0; i < heatmapArea.offsetWidth; i += 15) { //x
+            if (!((i >= (180 - 20) && i <= (870 + 20)) && (j >= (175 - 20) && j <= (380 + 20)))) {
+                data.push({
+                    "x": i,
+                    "y": j,
+                    "count": 10,
+                });
             }
-            i1++;
+
         }
-        y1 += 170;
     }
-    y1 = 300;
-    for (let k = 0; k < (all_data.length / 10); k++) { // set y point rack6 to rack7
-        for (let j = 0; j < (all_data.length / 4); j++) {
-            tmp2[i1].y = y1;
-            if (k < 1) {
-                tmp2[i1].position = "behind rack";
-            } else {
-                tmp2[i1].position = "front rack";
-            }
-            i1++;
-        }
-        y1 += 170;
-    }
-    console.log(tmp2);
-    let tmp = seperate_front_and_behind(tmp2);
-    console.log("after separate_value");
-    console.log(tmp);
-    for (let i = 0; i < all_data.length; i++) {
-        tmp[i].count = all_data[i][3];
-    }
-    console.log("---------------------------");
-    return tmp;
+    console.log(data);
 }
 
-function seperate_front_and_behind(all_data) {
-    let tmp = [];
-    for (let i = 0; i < all_data.length; i++) {
-        if (all_data[i].position === "front rack") {
-            tmp.push(all_data[i]);
-        }
-
-    }
-    for (let i = 0; i < all_data.length; i++) {
-        if (all_data[i].position === "behind rack") {
-            tmp.push(all_data[i]);
-        }
-
-    }
-    return tmp;
-}
-
-function initDataPoint(data, all_data) {
-    console.log("access to initDataPoint");
-    data.push({
-            "x": 270,
-            "y": 60,
-            "count": (all_data[0][3]) //rack1 front(+120)
-        }, {
-            "x": 270,
-            "y": 230,
-            "count": (all_data[1][3]) //rack1 behind (+170) down side
-        }, {
-            "x": 390,
-            "y": 60,
-            "count": (all_data[2][3]) //rack2 front
-        }, {
-            "x": 390,
-            "y": 230,
-            "count": (all_data[3][3]) //rack2 behind
-        }, {
-            "x": 500,
-            "y": 60,
-            "count": (all_data[4][3]) //rack3 front
-        }, {
-            "x": 500,
-            "y": 230,
-            "count": (all_data[5][3]) //rack3 behind
-        }, {
-            "x": 610,
-            "y": 60,
-            "count": (all_data[6][3]) //rack4 front
-        }, {
-            "x": 610,
-            "y": 230,
-            "count": (all_data[7][3]) //rack4 behind
-        }, {
-            "x": 720,
-            "y": 60,
-            "count": (all_data[8][3]) //rack5 front
-        }, {
-            "x": 720,
-            "y": 230,
-            "count": (all_data[9][3]) //rack5 behind
-        },
-        // ------------------------------------------
-        {
-            "x": 270,
-            "y": 470,
-            "count": (all_data[10][3]) //rack6 front
-        }, {
-            "x": 270,
-            "y": 300,
-            "count": (all_data[11][3]) //rack6 behind up side
-        }, {
-            "x": 390,
-            "y": 470,
-            "count": (all_data[12][3]) //rack7 front
-        }, {
-            "x": 390,
-            "y": 300,
-            "count": (all_data[13][3]) //rack7 behind up side
-        }, {
-            "x": 500,
-            "y": 470,
-            "count": (all_data[14][3]) //rack8 front
-        }, {
-            "x": 500,
-            "y": 300,
-            "count": (all_data[15][3]) //rack8 behind up side
-        }, {
-            "x": 610,
-            "y": 470,
-            "count": (all_data[16][3]) //rack9 front
-        }, {
-            "x": 610,
-            "y": 300,
-            "count": (all_data[17][3]) //rack9 behind up side
-        }, {
-            "x": 720,
-            "y": 470,
-            "count": (all_data[18][3]) //rack10 front
-        }, {
-            "x": 720,
-            "y": 300,
-            "count": (all_data[19][3]) //rack10 behind up side
-        },
-
-    );
-
-}
 
 function temp_only(all_data) {
     for (let i = 0; i < all_data.length; i++) {

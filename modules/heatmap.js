@@ -52,7 +52,8 @@
                     data[x][y] = 0;
 
                 // if count parameter is set increment by count otherwise by 1
-                data[x][y] += (arguments.length < 3) ? 1 : arguments[2];
+                // data[x][y] += (arguments.length < 3) ? 1 : arguments[2];
+                data[x][y] += 1;
 
                 me.set("data", data);
                 // do we have a new maximum?
@@ -420,7 +421,7 @@
                 testData.data[1] = testData.data[2] = 0; // 0% blue & green
                 ctx.putImageData(testData, 0, 0);
                 testData = ctx.getImageData(0, 0, 1, 1);
-                me.set("premultiplyAlpha", (testData.data[0] < 60 || testData.data[0] > 70));
+                // me.set("premultiplyAlpha", (testData.data[0] < 60 || testData.data[0] > 70));
 
                 for (var x in gradient) {
                     grad.addColorStop(x, gradient[x]);
