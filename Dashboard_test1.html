@@ -28,7 +28,6 @@
     </script>
     <script type="text/javascript" src="modules/config_firebase.js"></script>
     <script type="text/javascript" src="modules/heatmap.js"></script>
-    <!-- <script type="text/javascript" src="canvas_heatmap.js"></script> -->
 </head>
 
 <body>
@@ -112,6 +111,23 @@
             </div>
             <div class="container">
                 <div class="item" id="item-1">
+                    <div id="input-date">
+                        <div class="group-date">
+                            <label for="search-history">Search History Heatmap</label><br />
+                            <input type="date" id="search-history">
+                        </div>
+
+                    </div>
+                    <div id="input-time">
+                        <div class="group-unit">
+                            <label for="select-time">Select a time:</label><br />
+                            <input type="time" id="select-time">
+                        </div>
+                        <div class="group-date">
+                            <button type="button" id="search_history" onclick="">Search</button>
+                        </div>
+                    </div>
+                    <p id="label-date"></p>
                     <div id="heatmapContainer">
                         <div id="heatmapArea"></div>
                     </div>

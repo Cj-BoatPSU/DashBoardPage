@@ -1151,3 +1151,34 @@ label.footer {
     display: inline-block;
     font-family: 'Nunito', sans-serif;
 }
+
+#input-time {
+    margin-bottom: 10px;
+    width: 31%;
+    /* padding-left: 850px; */
+    display: inline-block;
+}
+
+#input-time input {
+    padding: 10px;
+    width: 250px;
+    border-radius: 30px;
+    border: solid black 1px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#input-time button {
+    padding: 10px;
+    width: 100px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: lightblue;
+    color: #fff;
+}
+
+#input-time button:hover {
+    background-color: #023E7D;
+    color: #fff;
+}

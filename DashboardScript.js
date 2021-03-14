@@ -1265,11 +1265,18 @@ async function check_for_notification(tmp) {
 // Heatmap section
 
 async function initHeatmap() {
+    var date = new Date();
+    var date_str_day = date.getDate();
+    var date_str_month = date.getMonth() + 1;
+    var date_str_year = date.getFullYear();
+    var label_date = document.getElementById("label-date");
+    label_date.innerHTML = `Date : ${date_str_day} / ${date_str_month} / ${date_str_year}`;
     console.log("access to initHeatmap");
     let all_data = await query_data_influxdb();
     let all_devices = await fetchConfigDevice();
     let tmp = [];
     var heatmapArea = document.getElementById("heatmapArea");
+    var HeatmapArray = [];
     var data = {
         "max": 33,
         "data": [
@@ -1301,8 +1308,10 @@ async function initHeatmap() {
         // "debug": true,
         // "premultiplyAlpha": true,
     }
-    var heatmapInstance = h337.create(cfg);
-    heatmapInstance.store.setDataSet(data);
+    for (let i = 0; i < all_devices.length; i++) {
+        var heatmapInstance = h337.create(cfg);
+        HeatmapArray.push(heatmapInstance);
+    }
     console.log("Heatmap data array length (before PushData_Heatmap):" + data.data.length);
     temp_only(all_data);
     all_data.sort(function(a, b) { //sort array location rack
@@ -1311,15 +1320,28 @@ async function initHeatmap() {
         return 0;
     });
     tmp = separate_value(all_data);
+    CreateHeatmap(HeatmapArray, tmp, all_devices);
 
-    initDataPoint(tmp, all_devices, data.data);
-    console.log("after initDataPoint");
-    console.log(data.data);
-    heatmapInstance.store.setDataSet(data);
-    // initDataHeatmap(data.data, all_data);
-    TemperatureDistributionUP(data.data);
-    heatmapInstance.store.setDataSet(data);
-    // heatmapInstance.store.generateRandomDataSet(100);
+}
+
+async function CreateHeatmap(HeatmapArray, all_data, all_devices) {
+    console.log("access to CreateHeatmap");
+    var tmp = [];
+    tmp = await initDataPoint(all_data, all_devices, tmp);
+    console.log(tmp);
+    for (let i = 0; i < HeatmapArray.length; i++) { //front rack
+        var data = {
+            max: 33,
+            min: 0,
+            data: [],
+        };
+        data.data.push(tmp[i]);
+        // console.log(data.data);
+        //     // console.log(data.data);
+        TemperatureDistributionUP(data.data);
+        // HeatmapArray[i].setDataMax(33);
+        HeatmapArray[i].store.setDataSet(data);
+    }
 }
 
 function TemperatureDistributionUP(data) {
@@ -1330,7 +1352,7 @@ function TemperatureDistributionUP(data) {
         let dec = 30;
         if (data[i].position === "front rack") {
             // console.log();
-            for (let j = 0; j < 2; j++) {
+            for (let j = 0; j < 2; j++) { //frist row
                 data.push({
                     "x": data[i].x + inc,
                     "y": data[i].y,
@@ -1340,8 +1362,8 @@ function TemperatureDistributionUP(data) {
                     "y": data[i].y,
                     "count": data[i].count,
                 }, );
-                inc += 30;
-                dec += 30;
+                inc += inc;
+                dec += dec;
             }
         }
 
@@ -1404,6 +1426,7 @@ async function initDataPoint(all_data, all_devices, data) {
     }
     console.log("----------------------------");
     console.log(data);
+    return data;
 }
 
 
