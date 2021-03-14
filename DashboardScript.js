@@ -1349,22 +1349,142 @@ function TemperatureDistributionUP(data) {
     console.log("access to TemperatureDistributionUP");
     for (let i = 0; i < data.length; i++) {
         let inc = 30;
-        let dec = 30;
         if (data[i].position === "front rack") {
-            // console.log();
+            console.log(data[i].y);
             for (let j = 0; j < 2; j++) { //frist row
                 data.push({
                     "x": data[i].x + inc,
                     "y": data[i].y,
                     "count": data[i].count,
                 }, {
-                    "x": data[i].x - dec,
+                    "x": data[i].x - inc,
                     "y": data[i].y,
                     "count": data[i].count,
                 }, );
                 inc += inc;
-                dec += dec;
             }
+            inc = 28;
+            data.push({
+                "x": data[i].x - 15,
+                "y": data[i].y - 26,
+                "count": data[i].count,
+            }, {
+                "x": data[i].x + 15,
+                "y": data[i].y - 26,
+                "count": data[i].count,
+            });
+            for (let j = 0; j < 2; j++) { //second row
+                data.push({
+                    "x": data[i].x + inc + 15,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, {
+                    "x": data[i].x - inc - 15,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, );
+                inc += inc;
+            }
+            inc = 28;
+            data.push({
+                "x": data[i].x,
+                "y": data[i].y - 52,
+                "count": data[i].count,
+            }, );
+            // console.log(data[data.length - 1]);
+            for (let j = 0; j < 2; j++) { //thrid row
+                data.push({
+                    "x": data[i].x + inc,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, {
+                    "x": data[i].x - inc,
+                    "y": data[data.length - 1].y,
+                    "count": data[data.length - 1].count,
+                }, );
+                inc += inc;
+            }
+            inc = 28;
+            data.push({
+                "x": data[i].x - 15,
+                "y": data[i].y - 78,
+                "count": data[i].count,
+            }, {
+                "x": data[i].x + 15,
+                "y": data[i].y - 78,
+                "count": data[i].count,
+            });
+            for (let j = 0; j < 2; j++) { //fourth row
+                data.push({
+                    "x": data[i].x + inc + 15,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, {
+                    "x": data[i].x - inc - 15,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, );
+                inc += inc;
+            }
+            inc = 28;
+            data.push({
+                "x": data[i].x,
+                "y": data[i].y - 104,
+                "count": data[i].count,
+            }, );
+            for (let j = 0; j < 2; j++) { //fifth row
+                data.push({
+                    "x": data[i].x + inc,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, {
+                    "x": data[i].x - inc,
+                    "y": data[data.length - 1].y,
+                    "count": data[data.length - 1].count,
+                }, );
+                inc += inc;
+            }
+            inc = 28;
+            data.push({
+                "x": data[i].x - 15,
+                "y": data[i].y - 130,
+                "count": data[i].count,
+            }, {
+                "x": data[i].x + 15,
+                "y": data[i].y - 130,
+                "count": data[i].count,
+            });
+            for (let j = 0; j < 2; j++) { //sixth row
+                data.push({
+                    "x": data[i].x + inc + 15,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, {
+                    "x": data[i].x - inc - 15,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, );
+                inc += inc;
+            }
+            inc = 28;
+            data.push({
+                "x": data[i].x,
+                "y": data[i].y - 156,
+                "count": data[i].count,
+            }, );
+            for (let j = 0; j < 2; j++) { //seventh row
+                data.push({
+                    "x": data[i].x + inc,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, {
+                    "x": data[i].x - inc,
+                    "y": data[data.length - 1].y,
+                    "count": data[data.length - 1].count,
+                }, );
+                inc += inc;
+            }
+
         }
 
     }
@@ -1422,7 +1542,7 @@ async function initDataPoint(all_data, all_devices, data) {
     }
     console.log("after splice data length : " + data.length);
     for (let i = 0; i < all_data.length; i++) { //set value
-        data[i].count = all_data[i][3];
+        data[i].count = parseFloat(all_data[i][3]); //parseFloat Don't forget
     }
     console.log("----------------------------");
     console.log(data);
