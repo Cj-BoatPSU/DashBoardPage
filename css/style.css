@@ -1182,3 +1182,14 @@ label.footer {
     background-color: #023E7D;
     color: #fff;
 }
+
+#label-date-Heatmap {
+    width: 40%;
+    /* text-align: center; */
+    font-size: 35px;
+    /* background-color: rgb(2, 62, 125); */
+    margin-bottom: 10px;
+    color: rgb(2, 62, 125);
+    padding: 10px;
+    font-weight: bold;
+}

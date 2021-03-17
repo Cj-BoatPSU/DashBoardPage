@@ -946,7 +946,7 @@ function randomNumber(min, max) {
 
 async function fetch_Data_HistoryGraph() {
     let all_HistoryData = [];
-    all_HistoryData = await fetch('http://127.0.0.1:8081/Queryinfluxdb_HistoryGraph')
+    all_HistoryData = await fetch('http://172.30.232.114:8081/Queryinfluxdb_HistoryGraph')
         .then(function(response) {
             return response.json();
         })
@@ -982,7 +982,7 @@ async function SearchHistory() {
     let all_data_HistoryGraph = [];
     let filter_data_HistoryGraph = [];
 
-    all_data_HistoryGraph = await fetch('http://127.0.0.1:8081/search-history', options).then(function(response) {
+    all_data_HistoryGraph = await fetch('http://172.30.232.114:8081/search-history', options).then(function(response) {
             return response.json();
         })
         .catch(err => console.log('Request Failed', err));
@@ -1063,7 +1063,7 @@ async function SearchHistory_Month() {
 
     let all_data_HistoryGraph = [];
 
-    all_data_HistoryGraph = await fetch('http://127.0.0.1:8081/Query-of-Month', options).then(function(response) {
+    all_data_HistoryGraph = await fetch('http://172.30.232.114:8081/Query-of-Month', options).then(function(response) {
             return response.json();
         })
         .catch(err => console.log('Request Failed', err));
@@ -1269,7 +1269,7 @@ async function initHeatmap() {
     var date_str_day = date.getDate();
     var date_str_month = date.getMonth() + 1;
     var date_str_year = date.getFullYear();
-    var label_date = document.getElementById("label-date");
+    var label_date = document.getElementById("label-date-Heatmap");
     label_date.innerHTML = `Date : ${date_str_day} / ${date_str_month} / ${date_str_year}`;
     console.log("access to initHeatmap");
     let all_data = await query_data_influxdb();
@@ -1279,39 +1279,26 @@ async function initHeatmap() {
     var HeatmapArray = [];
     var data = {
         "max": 33,
-        "data": [
-            // {
-            //     "x": 125,
-            //     "y": 75,
-            //     "count": 22,
-            // },
-            // {
-            //     "x": 75,
-            //     "y": 75,
-            //     "count": 22,
-            // }
-        ],
+        "data": [],
     };
     var cfg = {
-        "element": heatmapArea,
-        "opacity": 0.1,
-        "radius": 20,
-        "visible": true,
-        "maxOpacity": 1,
-        "minOpacity": 0,
-        // "legend": {
-        //     "title": "Temperature (c°)",
-        //     "position": "bl",
-        //     "offset": 10
-
-        // },
-        // "debug": true,
-        // "premultiplyAlpha": true,
-    }
-    for (let i = 0; i < all_devices.length; i++) {
-        var heatmapInstance = h337.create(cfg);
-        HeatmapArray.push(heatmapInstance);
-    }
+            "element": heatmapArea,
+            "opacity": 0.1,
+            "radius": 80,
+            "visible": true,
+            "maxOpacity": 1,
+            "minOpacity": 0,
+            // "legend": {
+            //     "title": "Temperature (c°)",
+            //     "position": "bl",
+            //     "offset": 10
+            // },
+            // "gradient": { 0.25: "rgb(0,0,255)", 0.35: "rgb(0,255,255)", 0.65: "rgb(0,255,0)" },
+        }
+        // for (let i = 0; i < all_devices.length; i++) {
+        //     var heatmapInstance = h337.create(cfg);
+        //     HeatmapArray.push(heatmapInstance);
+        // }
     console.log("Heatmap data array length (before PushData_Heatmap):" + data.data.length);
     temp_only(all_data);
     all_data.sort(function(a, b) { //sort array location rack
@@ -1320,10 +1307,328 @@ async function initHeatmap() {
         return 0;
     });
     tmp = separate_value(all_data);
-    CreateHeatmap(HeatmapArray, tmp, all_devices);
+    // CreateHeatmap(HeatmapArray, tmp, all_devices)
+    // if (tmp[0]) {
 
+    // }
+    cfg.gradient = { 0.25: "rgb(0,0,255)", 0.35: "rgb(0,255,255)", 0.65: "rgb(0,255,0)" };
+    var heatmapInstance_front = h337.create(cfg);
+    var heatmapInstance_behind = h337.create(cfg);
+    var heatmapInstance = h337.create(cfg);
+    tmp = await initDataPoint(tmp, all_devices, []);
+    console.log(heatmapInstance.get("gradient"));
+    var data = {
+        max: 33,
+        min: 0,
+        data: [],
+    };
+    var data1 = {
+        max: 33,
+        min: 0,
+        data: [],
+    };
+    var data2 = {
+        max: 33,
+        min: 0,
+        data: [],
+    };
+    for (let i = 0; i < (tmp.length / 2); i++) { //front
+        data.data.push(tmp[i]);
+    }
+    for (let i = (tmp.length / 2); i < tmp.length; i++) { //behind
+        data1.data.push(tmp[i]);
+    }
+    for (let i = 0; i < tmp.length; i++) {
+        data2.data.push(tmp[i]);
+    }
+    console.log(data2);
+    // TemperatureDistributionUP(data.data);
+    // fillHeatmap(data.data, tmp);
+    // TemperatureDistributionDown(data.data, tmp);
+    // heatmapInstance_front.store.setDataSet(data);
+    // heatmapInstance_behind.store.setDataSet(data1);
+    heatmapInstance.store.setDataSet(data);
+    cfg.radius = 100;
+    cfg.gradient = { 0.80: "yellow", 0.85: "rgb(255,165,0)", 0.95: "rgb(255,0,0)" };
+    heatmapInstance = h337.create(cfg);
+    heatmapInstance.store.setDataSet(data1);
 }
 
+function TemperatureDistributionDown(data, all_data) {
+    console.log("access to TemperatureDistributionDown");
+    console.log(all_data);
+    for (let i = 0; i < all_data.length; i++) {
+        let inc = 25;
+        if (all_data[i].position === "behind rack") {
+            for (let j = 0; j < 2; j++) { //frist row
+                data.push({
+                    "x": data[i].x + inc,
+                    "y": data[i].y,
+                    "count": data[i].count,
+                }, {
+                    "x": data[i].x - inc,
+                    "y": data[i].y,
+                    "count": data[i].count,
+                }, );
+                inc += inc;
+            }
+            // data[data.length - 2].count -= 15; //decrement count point edge
+            // data[data.length - 1].count -= 15; //decrement count point edge
+            inc = 25;
+            data.push({
+                "x": data[i].x + 15,
+                "y": data[i].y + 20,
+                "count": data[i].count,
+            }, {
+                "x": data[i].x - 15,
+                "y": data[i].y + 20,
+                "count": data[i].count,
+            });
+            for (let j = 0; j < 2; j++) { //second row
+                data.push({
+                    "x": data[data.length - 2].x + inc,
+                    "y": data[data.length - 2].y,
+                    "count": data[i].count,
+                }, {
+                    "x": data[data.length - 1].x - inc,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, );
+                // inc += inc;
+            }
+            // data[data.length - 2].count -= 15; //decrement count point edge
+            // data[data.length - 1].count -= 15; //decrement count point edge
+            inc = 25;
+            data.push({
+                "x": data[i].x,
+                "y": data[i].y + 40,
+                "count": data[i].count,
+            }, );
+            for (let j = 0; j < 3; j++) { //third row
+
+                if (j > 0) {
+                    data.push({
+                        "x": data[data.length - 2].x + inc,
+                        "y": data[data.length - 2].y,
+                        "count": data[i].count,
+                    }, {
+                        "x": data[data.length - 1].x - inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[i].count,
+                    }, );
+                } else {
+                    data.push({
+                        "x": data[data.length - 1].x + inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[i].count,
+                    }, {
+                        "x": data[data.length - 1].x - inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[data.length - 1].count,
+                    }, );
+                }
+            }
+            // data[data.length - 2].count -= 15; //decrement count point edge
+            // data[data.length - 1].count -= 15; //decrement count point edge
+            inc = 25;
+            data.push({
+                "x": data[i].x + 15,
+                "y": data[i].y + 60,
+                "count": data[i].count,
+            }, {
+                "x": data[i].x - 15,
+                "y": data[i].y + 60,
+                "count": data[i].count,
+            });
+            for (let j = 0; j < 3; j++) { //fourth row
+                data.push({
+                    "x": data[data.length - 2].x + inc,
+                    "y": data[data.length - 2].y,
+                    "count": data[i].count,
+                }, {
+                    "x": data[data.length - 1].x - inc,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, );
+            }
+            // data[data.length - 2].count -= 15; //decrement count point edge
+            // data[data.length - 1].count -= 15; //decrement count point edge
+            inc = 25;
+            data.push({
+                "x": data[i].x,
+                "y": data[i].y + 80,
+                "count": data[i].count,
+            }, );
+            for (let j = 0; j < 4; j++) { //fifth row
+                if (j > 0) {
+                    data.push({
+                        "x": data[data.length - 2].x + inc,
+                        "y": data[data.length - 2].y,
+                        "count": data[i].count,
+                    }, {
+                        "x": data[data.length - 1].x - inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[i].count,
+                    }, );
+                } else {
+                    data.push({
+                        "x": data[data.length - 1].x + inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[i].count,
+                    }, {
+                        "x": data[data.length - 1].x - inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[data.length - 1].count,
+                    }, );
+                }
+            }
+            // data[data.length - 2].count -= 15; //decrement count point edge
+            // data[data.length - 1].count -= 15; //decrement count point edge
+            inc = 25;
+            data.push({
+                "x": data[i].x + 15,
+                "y": data[i].y + 100,
+                "count": data[i].count,
+            }, {
+                "x": data[i].x - 15,
+                "y": data[i].y + 100,
+                "count": data[i].count,
+            });
+            for (let j = 0; j < 4; j++) { //sixth row
+                data.push({
+                    "x": data[data.length - 2].x + inc,
+                    "y": data[data.length - 2].y,
+                    "count": data[i].count,
+                }, {
+                    "x": data[data.length - 1].x - inc,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, );
+            }
+            // data[data.length - 2].count -= 15; //decrement count point edge
+            // data[data.length - 1].count -= 15; //decrement count point edge
+            inc = 25;
+            data.push({
+                "x": data[i].x,
+                "y": data[i].y + 120,
+                "count": data[i].count,
+            }, );
+            for (let j = 0; j < 5; j++) { //seventh row
+                if (j > 0) {
+                    data.push({
+                        "x": data[data.length - 2].x + inc,
+                        "y": data[data.length - 2].y,
+                        "count": data[i].count,
+                    }, {
+                        "x": data[data.length - 1].x - inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[i].count,
+                    }, );
+                } else {
+                    data.push({
+                        "x": data[data.length - 1].x + inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[i].count,
+                    }, {
+                        "x": data[data.length - 1].x - inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[data.length - 1].count,
+                    }, );
+                }
+            }
+            // data[data.length - 2].count -= 15; //decrement count point edge
+            // data[data.length - 1].count -= 15; //decrement count point edge
+            inc = 28;
+            data.push({
+                "x": data[i].x + 15,
+                "y": data[i].y + 140,
+                "count": data[i].count,
+            }, {
+                "x": data[i].x - 15,
+                "y": data[i].y + 140,
+                "count": data[i].count,
+            });
+            for (let j = 0; j < 4; j++) { //eight th row
+                data.push({
+                    "x": data[data.length - 2].x + inc,
+                    "y": data[data.length - 2].y,
+                    "count": data[i].count,
+                }, {
+                    "x": data[data.length - 1].x - inc,
+                    "y": data[data.length - 1].y,
+                    "count": data[i].count,
+                }, );
+            }
+            // data[data.length - 2].count -= 15; //decrement count point edge
+            // data[data.length - 1].count -= 15; //decrement count point edge
+        }
+
+    }
+}
+
+function fillHeatmap(data, tmp) {
+    var heatmapArea = document.getElementById("heatmapArea");
+    console.log("access to fillHeatmap");
+    console.log("Height : " + heatmapArea.offsetHeight);
+    console.log("Width : " + heatmapArea.offsetWidth);
+    console.log(tmp[(tmp.length / 2) - 1]); //last value in group front rack
+    for (let i = 0; i <= heatmapArea.offsetHeight; i += 20) { // y axis     //side left
+        for (let j = 0; j <= 175; j += 20) { // x axis
+            data.push({
+                "x": j,
+                "y": i,
+                "count": 8,
+            });
+
+        }
+    }
+    for (let i = 0; i <= heatmapArea.offsetHeight; i += 20) { // y axis   //side right
+        for (let j = 875; j < heatmapArea.offsetWidth; j += 20) { // x axis
+            data.push({
+                "x": j,
+                "y": i,
+                "count": 8,
+            });
+
+        }
+
+    }
+
+    // data.push({
+    //     "x": 180,
+    //     "y": 0,
+    //     "count": 8,
+    // });
+    // data.push({
+    //     "x": 180,
+    //     "y": 40,
+    //     "count": 8,
+    // });
+    // data.push({
+    //     "x": 180,
+    //     "y": 60,
+    //     "count": 8,
+    // });
+
+    // data.push({
+    //     "x": 180,
+    //     "y": 80,
+    //     "count": 8,
+    // });
+    // data.push({
+    //     "x": 180,
+    //     "y": 100,
+    //     "count": 8,
+    // });
+    // data.push({
+    //     "x": 180,
+    //     "y": 170,
+    //     "count": 8,
+    // });
+
+
+
+}
 async function CreateHeatmap(HeatmapArray, all_data, all_devices) {
     console.log("access to CreateHeatmap");
     var tmp = [];
@@ -1345,12 +1650,10 @@ async function CreateHeatmap(HeatmapArray, all_data, all_devices) {
 }
 
 function TemperatureDistributionUP(data) {
-
     console.log("access to TemperatureDistributionUP");
     for (let i = 0; i < data.length; i++) {
-        let inc = 30;
+        let inc = 28;
         if (data[i].position === "front rack") {
-            console.log(data[i].y);
             for (let j = 0; j < 2; j++) { //frist row
                 data.push({
                     "x": data[i].x + inc,
@@ -1363,69 +1666,87 @@ function TemperatureDistributionUP(data) {
                 }, );
                 inc += inc;
             }
+            data[data.length - 2].count -= 15; //decrement count point edge
+            data[data.length - 1].count -= 15; //decrement count point edge
             inc = 28;
             data.push({
-                "x": data[i].x - 15,
+                "x": data[i].x + 15,
                 "y": data[i].y - 26,
                 "count": data[i].count,
             }, {
-                "x": data[i].x + 15,
+                "x": data[i].x - 15,
                 "y": data[i].y - 26,
                 "count": data[i].count,
             });
             for (let j = 0; j < 2; j++) { //second row
                 data.push({
-                    "x": data[i].x + inc + 15,
-                    "y": data[data.length - 1].y,
+                    "x": data[data.length - 2].x + inc,
+                    "y": data[data.length - 2].y,
                     "count": data[i].count,
                 }, {
-                    "x": data[i].x - inc - 15,
+                    "x": data[data.length - 1].x - inc,
                     "y": data[data.length - 1].y,
                     "count": data[i].count,
                 }, );
-                inc += inc;
+                // inc += inc;
             }
+            data[data.length - 2].count -= 15; //decrement count point edge
+            data[data.length - 1].count -= 15; //decrement count point edge
             inc = 28;
             data.push({
                 "x": data[i].x,
                 "y": data[i].y - 52,
                 "count": data[i].count,
             }, );
-            // console.log(data[data.length - 1]);
             for (let j = 0; j < 2; j++) { //thrid row
-                data.push({
-                    "x": data[i].x + inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[i].count,
-                }, {
-                    "x": data[i].x - inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[data.length - 1].count,
-                }, );
-                inc += inc;
+
+                if (j > 0) {
+                    data.push({
+                        "x": data[data.length - 2].x + inc,
+                        "y": data[data.length - 2].y,
+                        "count": data[i].count,
+                    }, {
+                        "x": data[data.length - 1].x - inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[i].count,
+                    }, );
+                } else {
+                    data.push({
+                        "x": data[data.length - 1].x + inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[i].count,
+                    }, {
+                        "x": data[data.length - 1].x - inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[data.length - 1].count,
+                    }, );
+                }
             }
+            data[data.length - 2].count -= 15; //decrement count point edge
+            data[data.length - 1].count -= 15; //decrement count point edge
             inc = 28;
             data.push({
-                "x": data[i].x - 15,
+                "x": data[i].x + 15,
                 "y": data[i].y - 78,
                 "count": data[i].count,
             }, {
-                "x": data[i].x + 15,
+                "x": data[i].x - 15,
                 "y": data[i].y - 78,
                 "count": data[i].count,
             });
             for (let j = 0; j < 2; j++) { //fourth row
                 data.push({
-                    "x": data[i].x + inc + 15,
-                    "y": data[data.length - 1].y,
+                    "x": data[data.length - 2].x + inc,
+                    "y": data[data.length - 2].y,
                     "count": data[i].count,
                 }, {
-                    "x": data[i].x - inc - 15,
+                    "x": data[data.length - 1].x - inc,
                     "y": data[data.length - 1].y,
                     "count": data[i].count,
                 }, );
-                inc += inc;
             }
+            data[data.length - 2].count -= 15; //decrement count point edge
+            data[data.length - 1].count -= 15; //decrement count point edge
             inc = 28;
             data.push({
                 "x": data[i].x,
@@ -1433,39 +1754,53 @@ function TemperatureDistributionUP(data) {
                 "count": data[i].count,
             }, );
             for (let j = 0; j < 2; j++) { //fifth row
-                data.push({
-                    "x": data[i].x + inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[i].count,
-                }, {
-                    "x": data[i].x - inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[data.length - 1].count,
-                }, );
-                inc += inc;
+                if (j > 0) {
+                    data.push({
+                        "x": data[data.length - 2].x + inc,
+                        "y": data[data.length - 2].y,
+                        "count": data[i].count,
+                    }, {
+                        "x": data[data.length - 1].x - inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[i].count,
+                    }, );
+                } else {
+                    data.push({
+                        "x": data[data.length - 1].x + inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[i].count,
+                    }, {
+                        "x": data[data.length - 1].x - inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[data.length - 1].count,
+                    }, );
+                }
             }
+            data[data.length - 2].count -= 15; //decrement count point edge
+            data[data.length - 1].count -= 15; //decrement count point edge
             inc = 28;
             data.push({
-                "x": data[i].x - 15,
+                "x": data[i].x + 15,
                 "y": data[i].y - 130,
                 "count": data[i].count,
             }, {
-                "x": data[i].x + 15,
+                "x": data[i].x - 15,
                 "y": data[i].y - 130,
                 "count": data[i].count,
             });
             for (let j = 0; j < 2; j++) { //sixth row
                 data.push({
-                    "x": data[i].x + inc + 15,
-                    "y": data[data.length - 1].y,
+                    "x": data[data.length - 2].x + inc,
+                    "y": data[data.length - 2].y,
                     "count": data[i].count,
                 }, {
-                    "x": data[i].x - inc - 15,
+                    "x": data[data.length - 1].x - inc,
                     "y": data[data.length - 1].y,
                     "count": data[i].count,
                 }, );
-                inc += inc;
             }
+            data[data.length - 2].count -= 15; //decrement count point edge
+            data[data.length - 1].count -= 15; //decrement count point edge
             inc = 28;
             data.push({
                 "x": data[i].x,
@@ -1473,17 +1808,30 @@ function TemperatureDistributionUP(data) {
                 "count": data[i].count,
             }, );
             for (let j = 0; j < 2; j++) { //seventh row
-                data.push({
-                    "x": data[i].x + inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[i].count,
-                }, {
-                    "x": data[i].x - inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[data.length - 1].count,
-                }, );
-                inc += inc;
+                if (j > 0) {
+                    data.push({
+                        "x": data[data.length - 2].x + inc,
+                        "y": data[data.length - 2].y,
+                        "count": data[i].count,
+                    }, {
+                        "x": data[data.length - 1].x - inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[i].count,
+                    }, );
+                } else {
+                    data.push({
+                        "x": data[data.length - 1].x + inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[i].count,
+                    }, {
+                        "x": data[data.length - 1].x - inc,
+                        "y": data[data.length - 1].y,
+                        "count": data[data.length - 1].count,
+                    }, );
+                }
             }
+            data[data.length - 2].count -= 15; //decrement count point edge
+            data[data.length - 1].count -= 15; //decrement count point edge
 
         }
 
@@ -1509,7 +1857,7 @@ async function initDataPoint(all_data, all_devices, data) {
 
     }
     let index = 0;
-    let y = 160;
+    let y = 170; //160
     for (let i = 0; i < 2; i++) { //follow number of row rack in picture
         for (let j = 0; j < 5; j++) { //follow number of rack in picture //set y point
             data[index].y = y;
@@ -1522,6 +1870,13 @@ async function initDataPoint(all_data, all_devices, data) {
         }
 
         y += 240;
+    }
+
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].position == "behind rack") {
+            data[i].y = 390;
+        }
+
     }
 
 

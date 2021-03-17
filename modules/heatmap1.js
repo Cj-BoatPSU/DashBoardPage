@@ -567,12 +567,7 @@
                 ctx.shadowBlur = 15;
 
                 ctx.beginPath();
-                if (count >= 0 && count <= 24) {
-                    ctx.arc(x - 15000, y - 15000, radius, 1 * Math.PI, 2 * Math.PI); //front
-                } else {
-                    ctx.arc(x - 15000, y - 15000, radius * 2, 1 * Math.PI, 2 * Math.PI, true); //behind
-                }
-                // ctx.arc(x - 15000, y - 15000, radius, 1 * Math.PI, 2 * Math.PI); //0, 2 * Math.PI
+                ctx.arc(x - 15000, y - 15000, radius, 1 * Math.PI, 2 * Math.PI, true); //0, 2 * Math.PI
                 ctx.closePath();
                 ctx.fill();
                 if (colorize) {
@@ -661,5 +656,5 @@
             }
         };
     })();
-    w.h337 = w.heatmapFactory = heatmapFactory;
+    w.h338 = w.heatmapFactory = heatmapFactory;
 })(window);
