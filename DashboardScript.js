@@ -1276,6 +1276,7 @@ async function initHeatmap() {
     let all_devices = await fetchConfigDevice();
     let tmp = [];
     var heatmapArea = document.getElementById("heatmapArea");
+    var heatmapArea1 = document.getElementById("test");
     var HeatmapArray = [];
     var data = {
         "max": 33,
@@ -1284,15 +1285,14 @@ async function initHeatmap() {
     var cfg = {
             "element": heatmapArea,
             "opacity": 0.1,
-            "radius": 80,
+            "radius": 70,
             "visible": true,
             "maxOpacity": 1,
             "minOpacity": 0,
-            // "legend": {
-            //     "title": "Temperature (c°)",
-            //     "position": "bl",
-            //     "offset": 10
-            // },
+            "legend": {
+                "title": "Temperature (c°)",
+                "position": "bl",
+            },
             // "gradient": { 0.25: "rgb(0,0,255)", 0.35: "rgb(0,255,255)", 0.65: "rgb(0,255,0)" },
         }
         // for (let i = 0; i < all_devices.length; i++) {
@@ -1308,10 +1308,7 @@ async function initHeatmap() {
     });
     tmp = separate_value(all_data);
     // CreateHeatmap(HeatmapArray, tmp, all_devices)
-    // if (tmp[0]) {
-
-    // }
-    cfg.gradient = { 0.25: "rgb(0,0,255)", 0.35: "rgb(0,255,255)", 0.65: "rgb(0,255,0)" };
+    // cfg.gradient = { 0.25: "rgb(0,0,255)", 0.35: "rgb(0,255,255)", 0.65: "rgb(0,255,0)" }; // 0.25: "rgb(0,0,255)", 0.35: "rgb(0,255,255)", 2: "rgb(255,165,0)"
     var heatmapInstance_front = h337.create(cfg);
     var heatmapInstance_behind = h337.create(cfg);
     var heatmapInstance = h337.create(cfg);
@@ -1343,15 +1340,222 @@ async function initHeatmap() {
     }
     console.log(data2);
     // TemperatureDistributionUP(data.data);
-    // fillHeatmap(data.data, tmp);
+    // fillHeatmap(data2.data, tmp);
+    fillHeatmapV1(data2.data, tmp);
     // TemperatureDistributionDown(data.data, tmp);
     // heatmapInstance_front.store.setDataSet(data);
     // heatmapInstance_behind.store.setDataSet(data1);
-    heatmapInstance.store.setDataSet(data);
-    cfg.radius = 100;
-    cfg.gradient = { 0.80: "yellow", 0.85: "rgb(255,165,0)", 0.95: "rgb(255,0,0)" };
-    heatmapInstance = h337.create(cfg);
-    heatmapInstance.store.setDataSet(data1);
+    heatmapInstance.store.setDataSet(data2);
+    console.log(data2);
+    // cfg.gradient = { 0.65: "rgb(0,255,0)", 0.80: "yellow", 0.85: "rgb(255,165,0)", 0.95: "rgb(255,0,0)" };
+    // heatmapInstance = h337.create(cfg);
+    // fillHeatmap(data1.data, tmp);
+    // heatmapInstance.store.setDataSet(data1);
+}
+
+function fillHeatmapV1(data, tmp) {
+    data.push({
+        "x": 50,
+        "y": 50,
+        "count": 22,
+    }, {
+        "x": 160,
+        "y": 50,
+        "count": 22,
+    });
+}
+
+
+function fillHeatmap(data, tmp) {
+    var heatmapArea = document.getElementById("heatmapArea");
+    console.log("access to fillHeatmap");
+    console.log("Height : " + heatmapArea.offsetHeight);
+    console.log("Width : " + heatmapArea.offsetWidth);
+    console.log(tmp[(tmp.length / 2) - 1]); //last value in group front rack
+    // for (let i = 0; i <= heatmapArea.offsetHeight; i += 20) { // y axis     //side left
+    //     for (let j = 0; j < 175; j += 20) { // x axis
+    //         data.push({
+    //             "x": j,
+    //             "y": i,
+    //             "count": 8,
+    //         });
+
+    //     }
+    // }
+    // console.log(data[data.length - 1]);
+    // for (let i = 0; i <= heatmapArea.offsetHeight; i += 20) { // y axis   //side right
+    //     for (let j = 860; j < heatmapArea.offsetWidth; j += 20) { // x axis
+    //         data.push({
+    //             "x": j,
+    //             "y": i,
+    //             "count": 8,
+    //         });
+
+    //     }
+
+
+    // }
+    // for (let i = 0; i < 140; i += 20) { // y axis     top side
+    //     for (let j = 180; j <= 840; j += 20) { // x axis
+    //         data.push({
+    //             "x": j,
+    //             "y": i,
+    //             "count": 8,
+    //         });
+
+    //     }
+    // }
+
+    if (data[0].count >= 22 && data[0].count <= 24) {
+        console.log("access to if");
+        for (let i = 0; i <= heatmapArea.offsetHeight; i += 20) { // y axis     //side left
+            for (let j = 0; j < heatmapArea.offsetWidth; j += 20) { // x axis
+                data.push({
+                    "x": j,
+                    "y": i,
+                    "count": 2,
+                });
+
+            }
+        }
+        console.log(data.length);
+    }
+    if (data[0].count >= 29 && data[0].count <= 33) { //behind rack
+        console.log("access to if1");
+        for (let i = (heatmapArea.offsetHeight / 2); i <= heatmapArea.offsetHeight; i += 20) { // y axis     //side left
+            for (let j = 0; j < heatmapArea.offsetWidth; j += 20) { // x axis
+                data.push({
+                    "x": j,
+                    "y": i,
+                    "count": 9,
+                });
+
+            }
+        }
+    }
+
+
+}
+async function CreateHeatmap(HeatmapArray, all_data, all_devices) {
+    console.log("access to CreateHeatmap");
+    var tmp = [];
+    tmp = await initDataPoint(all_data, all_devices, tmp);
+    console.log(tmp);
+    for (let i = 0; i < HeatmapArray.length; i++) { //front rack
+        var data = {
+            max: 33,
+            min: 0,
+            data: [],
+        };
+        data.data.push(tmp[i]);
+        // console.log(data.data);
+        //     // console.log(data.data);
+        TemperatureDistributionUP(data.data);
+        // HeatmapArray[i].setDataMax(33);
+        HeatmapArray[i].store.setDataSet(data);
+    }
+}
+
+
+
+async function initDataPoint(all_data, all_devices, data) {
+    console.log("access to initDataPoint");
+    console.log(all_data);
+    let location = ["rack1", "rack2", "rack3", "rack4", "rack5"];
+    for (let i = 0; i < 2; i++) { //follow number of row rack in picture 
+        let x = 240;
+        for (let j = 0; j < 5; j++) { //follow number of rack in picture //set x point
+            data.push({
+                "x": x,
+                "location": location[j],
+                "status": "",
+            });
+
+            x += 135;
+        }
+
+
+    }
+    let index = 0;
+    let y = 170; //160
+    for (let i = 0; i < 2; i++) { //follow number of row rack in picture
+        for (let j = 0; j < 5; j++) { //follow number of rack in picture //set y point
+            data[index].y = y;
+            if (i < 1) {
+                data[index].position = "front rack";
+            } else {
+                data[index].position = "behind rack";
+            }
+            index++
+        }
+
+        y += 240;
+    }
+
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].position == "behind rack") {
+            data[i].y = 380;
+        }
+
+    }
+
+
+    for (let j = 0; j < data.length; j++) {
+
+        for (let k = 0; k < all_devices.length; k++) {
+            if (data[j].location === all_devices[k].location) {
+                data[j].status = "found data";
+            }
+        }
+    }
+    console.log("after initPointData data length : " + data.length);
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].status === "") {
+            data.splice(i, 1);
+            i = 0;
+        }
+    }
+    console.log("after splice data length : " + data.length);
+    for (let i = 0; i < all_data.length; i++) { //set value
+        data[i].count = parseFloat(all_data[i][3]); //parseFloat Don't forget
+    }
+    console.log("----------------------------");
+    console.log(data);
+    return data;
+}
+
+
+
+function initDataHeatmap(data, all_data) {
+    var heatmapArea = document.getElementById("heatmapArea");
+    console.log("Width : " + heatmapArea.offsetWidth);
+    console.log("Height : " + heatmapArea.offsetHeight);
+    console.log("access to initData");
+    console.log(data);
+    let i = 0;
+    for (let j = 0; j < heatmapArea.offsetHeight; j += 15) { //y
+        for (i = 0; i < heatmapArea.offsetWidth; i += 15) { //x
+            if (!((i >= (180 - 20) && i <= (870 + 20)) && (j >= (175 - 20) && j <= (380 + 20)))) {
+                data.push({
+                    "x": i,
+                    "y": j,
+                    "count": 10,
+                });
+            }
+
+        }
+    }
+    console.log(data);
+}
+
+
+function temp_only(all_data) {
+    for (let i = 0; i < all_data.length; i++) {
+        if (all_data[i].length === 3) {
+            all_data.splice(i, 1);
+        }
+
+    }
 }
 
 function TemperatureDistributionDown(data, all_data) {
@@ -1566,89 +1770,6 @@ function TemperatureDistributionDown(data, all_data) {
     }
 }
 
-function fillHeatmap(data, tmp) {
-    var heatmapArea = document.getElementById("heatmapArea");
-    console.log("access to fillHeatmap");
-    console.log("Height : " + heatmapArea.offsetHeight);
-    console.log("Width : " + heatmapArea.offsetWidth);
-    console.log(tmp[(tmp.length / 2) - 1]); //last value in group front rack
-    for (let i = 0; i <= heatmapArea.offsetHeight; i += 20) { // y axis     //side left
-        for (let j = 0; j <= 175; j += 20) { // x axis
-            data.push({
-                "x": j,
-                "y": i,
-                "count": 8,
-            });
-
-        }
-    }
-    for (let i = 0; i <= heatmapArea.offsetHeight; i += 20) { // y axis   //side right
-        for (let j = 875; j < heatmapArea.offsetWidth; j += 20) { // x axis
-            data.push({
-                "x": j,
-                "y": i,
-                "count": 8,
-            });
-
-        }
-
-    }
-
-    // data.push({
-    //     "x": 180,
-    //     "y": 0,
-    //     "count": 8,
-    // });
-    // data.push({
-    //     "x": 180,
-    //     "y": 40,
-    //     "count": 8,
-    // });
-    // data.push({
-    //     "x": 180,
-    //     "y": 60,
-    //     "count": 8,
-    // });
-
-    // data.push({
-    //     "x": 180,
-    //     "y": 80,
-    //     "count": 8,
-    // });
-    // data.push({
-    //     "x": 180,
-    //     "y": 100,
-    //     "count": 8,
-    // });
-    // data.push({
-    //     "x": 180,
-    //     "y": 170,
-    //     "count": 8,
-    // });
-
-
-
-}
-async function CreateHeatmap(HeatmapArray, all_data, all_devices) {
-    console.log("access to CreateHeatmap");
-    var tmp = [];
-    tmp = await initDataPoint(all_data, all_devices, tmp);
-    console.log(tmp);
-    for (let i = 0; i < HeatmapArray.length; i++) { //front rack
-        var data = {
-            max: 33,
-            min: 0,
-            data: [],
-        };
-        data.data.push(tmp[i]);
-        // console.log(data.data);
-        //     // console.log(data.data);
-        TemperatureDistributionUP(data.data);
-        // HeatmapArray[i].setDataMax(33);
-        HeatmapArray[i].store.setDataSet(data);
-    }
-}
-
 function TemperatureDistributionUP(data) {
     console.log("access to TemperatureDistributionUP");
     for (let i = 0; i < data.length; i++) {
@@ -1833,106 +1954,6 @@ function TemperatureDistributionUP(data) {
             data[data.length - 2].count -= 15; //decrement count point edge
             data[data.length - 1].count -= 15; //decrement count point edge
 
-        }
-
-    }
-}
-
-async function initDataPoint(all_data, all_devices, data) {
-    console.log("access to initDataPoint");
-    console.log(all_data);
-    let location = ["rack1", "rack2", "rack3", "rack4", "rack5"];
-    for (let i = 0; i < 2; i++) { //follow number of row rack in picture 
-        let x = 250;
-        for (let j = 0; j < 5; j++) { //follow number of rack in picture //set x point
-            data.push({
-                "x": x,
-                "location": location[j],
-                "status": "",
-            });
-
-            x += 135;
-        }
-
-
-    }
-    let index = 0;
-    let y = 170; //160
-    for (let i = 0; i < 2; i++) { //follow number of row rack in picture
-        for (let j = 0; j < 5; j++) { //follow number of rack in picture //set y point
-            data[index].y = y;
-            if (i < 1) {
-                data[index].position = "front rack";
-            } else {
-                data[index].position = "behind rack";
-            }
-            index++
-        }
-
-        y += 240;
-    }
-
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].position == "behind rack") {
-            data[i].y = 390;
-        }
-
-    }
-
-
-    for (let j = 0; j < data.length; j++) {
-
-        for (let k = 0; k < all_devices.length; k++) {
-            if (data[j].location === all_devices[k].location) {
-                data[j].status = "found data";
-            }
-        }
-    }
-    console.log("after initPointData data length : " + data.length);
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].status === "") {
-            data.splice(i, 1);
-            i = 0;
-        }
-    }
-    console.log("after splice data length : " + data.length);
-    for (let i = 0; i < all_data.length; i++) { //set value
-        data[i].count = parseFloat(all_data[i][3]); //parseFloat Don't forget
-    }
-    console.log("----------------------------");
-    console.log(data);
-    return data;
-}
-
-
-
-function initDataHeatmap(data, all_data) {
-    var heatmapArea = document.getElementById("heatmapArea");
-    console.log("Width : " + heatmapArea.offsetWidth);
-    console.log("Height : " + heatmapArea.offsetHeight);
-    console.log("access to initData");
-    console.log(data);
-    let i = 0;
-    for (let j = 0; j < heatmapArea.offsetHeight; j += 15) { //y
-        for (i = 0; i < heatmapArea.offsetWidth; i += 15) { //x
-            if (!((i >= (180 - 20) && i <= (870 + 20)) && (j >= (175 - 20) && j <= (380 + 20)))) {
-                data.push({
-                    "x": i,
-                    "y": j,
-                    "count": 10,
-                });
-            }
-
-        }
-    }
-    console.log(data);
-}
-
-
-function temp_only(all_data) {
-    for (let i = 0; i < all_data.length; i++) {
-        if (all_data[i].length === 3) {
-            all_data.splice(i, 1);
         }
 
     }

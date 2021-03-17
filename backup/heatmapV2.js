@@ -52,7 +52,8 @@
                     data[x][y] = 0;
 
                 // if count parameter is set increment by count otherwise by 1
-                data[x][y] += (arguments.length < 3) ? 1 : arguments[2];
+                // data[x][y] += (arguments.length < 3) ? 1 : arguments[2];
+                data[x][y] += 1;
 
                 me.set("data", data);
                 // do we have a new maximum?
@@ -228,12 +229,13 @@
                     gradArr = me.get("gradientArr"),
                     length = gradArr.length,
                     canvas = document.createElement("canvas"),
+
                     ctx = canvas.getContext("2d"),
                     grad;
                 // the gradient in the legend including the ticks will be 256x15px
                 canvas.width = "256";
                 canvas.height = "15";
-
+                canvas.setAttribute('id', 'myCanvas');
                 grad = ctx.createLinearGradient(0, 5, 256, 10);
 
                 for (var i = 0; i < length; i++) {
@@ -340,8 +342,8 @@
                 me.set("radius", config["radius"] || 40);
                 me.set("element", (config.element instanceof Object) ? config.element : document.getElementById(config.element));
                 me.set("visible", (config.visible != null) ? config.visible : true);
-                me.set("max", config.max || false);
-                me.set("gradient", config.gradient || { 0.45: "rgb(0,0,255)", 0.55: "rgb(0,255,255)", 0.65: "rgb(0,255,0)", 0.95: "yellow", 1.0: "rgb(255,0,0)" }); // default is the common blue to red gradient
+                me.set("max", config.max || false); //          //blue                  //light blue            //green                             //orange
+                me.set("gradient", config.gradient || { 0.25: "rgb(0,0,255)", 0.35: "rgb(0,255,255)", 0.65: "rgb(0,255,0)", 0.80: "yellow", 0.85: "rgb(255,165,0)", 0.95: "rgb(255,0,0)" }); // default is the common blue to red gradient
                 me.set("opacity", parseInt(255 / (100 / config.opacity), 10) || 180);
                 me.set("width", config.width || 0);
                 me.set("height", config.height || 0);
@@ -420,7 +422,7 @@
                 testData.data[1] = testData.data[2] = 0; // 0% blue & green
                 ctx.putImageData(testData, 0, 0);
                 testData = ctx.getImageData(0, 0, 1, 1);
-                me.set("premultiplyAlpha", (testData.data[0] < 60 || testData.data[0] > 70));
+                // me.set("premultiplyAlpha", (testData.data[0] < 60 || testData.data[0] > 70));
 
                 for (var x in gradient) {
                     grad.addColorStop(x, gradient[x]);
@@ -554,19 +556,26 @@
                     ctx = me.get("actx"),
                     max = me.get("max"),
                     bounds = me.get("bounds"),
-                    xb = x - (1.5 * radius) >> 0,
-                    yb = y - (1.5 * radius) >> 0,
-                    xc = x + (1.5 * radius) >> 0,
-                    yc = y + (1.5 * radius) >> 0;
+                    xb = x - (5.5 * radius) >> 0,
+                    yb = y - (5.5 * radius) >> 0,
+                    xc = x + (5.5 * radius) >> 0,
+                    yc = y + (5.5 * radius) >> 0;
 
-                ctx.shadowColor = ('rgba(0,0,0,' + ((count) ? (count / me.store.max) : '0.1') + ')');
+                ctx.shadowColor = ('rgba(0,0,0,' + ((count / me.store.max) ? (count / me.store.max) : '0.1') + ')'); //(count) ? (count / me.store.max) //(count ? (count / me.store.max) : '0.1')
 
                 ctx.shadowOffsetX = 15000;
                 ctx.shadowOffsetY = 15000;
                 ctx.shadowBlur = 15;
 
                 ctx.beginPath();
-                ctx.arc(x - 15000, y - 15000, radius, 0, Math.PI * 2, true);
+                if (count >= 0 && count <= 20) {
+                    ctx.arc(x - 15000, y - 15000, 20, 1 * Math.PI, 2 * Math.PI)
+                } else if (count >= 22 && count <= 24) {
+                    ctx.arc(x - 15000, y - 15000, radius, 0, 2 * Math.PI); //front
+                } else if (count >= 29 && count <= 33) {
+                    ctx.arc(x - 15000, y - 15000, radius + 20, 0, 2 * Math.PI, true); //behind
+                }
+                // ctx.arc(x - 15000, y - 15000, radius, 1 * Math.PI, 2 * Math.PI); //0, 2 * Math.PI
                 ctx.closePath();
                 ctx.fill();
                 if (colorize) {
@@ -618,7 +627,10 @@
             cleanup: function() {
                 var me = this;
                 me.get("element").removeChild(me.get("canvas"));
-            }
+            },
+            getData: function() {
+                return this._store.getData();
+            },
         };
 
         return {
