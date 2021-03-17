@@ -338,7 +338,7 @@ function setGaugeValue(gauge, json_value) {
 
 
 async function query_data_influxdb() {
-    let results = await fetch(`http://127.0.0.1:8081/Queryinfluxdb`)
+    let results = await fetch(`http://172.30.232.114:8081/Queryinfluxdb`)
         .then(function(response) {
             return response.json();
         })
@@ -516,7 +516,7 @@ function saveConfigDevice() {
             },
             body: JSON.stringify(tmp),
         }
-        fetch('http://127.0.0.1:8081/save-config-device', options);
+        fetch('http://172.30.232.114:8081/save-config-device', options);
     } else {
         console.log("click cancel");
     }
@@ -525,7 +525,7 @@ function saveConfigDevice() {
 
 async function fetchConfigDevice() {
     let all_devices = [];
-    all_devices = await fetch('http://127.0.0.1:8081/init-config-device')
+    all_devices = await fetch('http://172.30.232.114:8081/init-config-device')
         .then(function(response) {
             return response.json();
         })
@@ -1084,12 +1084,12 @@ function sleep(ms) {
 
 async function Send_notify_Email() {
     console.log("Access to Send_notify_Email()");
-    await fetch('http://127.0.0.1:8081/Send-Email');
+    await fetch('http://172.30.232.114:8081/Send-Email');
 }
 
 async function Line_Notify() {
     console.log("Access to Line_Notify()");
-    await fetch('http://127.0.0.1:8081/Line-Notify');
+    await fetch('http://172.30.232.114:8081/Line-Notify');
 }
 
 
@@ -1103,7 +1103,7 @@ var maximum_humidity = document.getElementById("maximum-alert-humidity");
 var minimum_humidity = document.getElementById("minimum-alert-humidity");
 
 async function initConfigThresholds() {
-    let results = await fetch(`http://127.0.0.1:8081/init-config-thresholds`)
+    let results = await fetch(`http://172.30.232.114:8081/init-config-thresholds`)
         .then(function(response) {
             return response.json();
         })
@@ -1164,14 +1164,14 @@ async function save_temp_Thresholds() {
                 },
                 body: JSON.stringify(tmp_json),
             }
-            await fetch('http://127.0.0.1:8081/save-config-temp-thresholds', options);
+            await fetch('http://172.30.232.114:8081/save-config-temp-thresholds', options);
 
             maximum_temp.disabled = true;
             minimum_temp.disabled = true;
 
             btnChange_temp_thresholds.style.display = "block";
             btnSave_temp_thresholds.style.display = "none";
-            let results = await fetch(`http://127.0.0.1:8081/init-config-thresholds`)
+            let results = await fetch(`http://172.30.232.114:8081/init-config-thresholds`)
                 .then(function(response) {
                     return response.json();
                 })
@@ -1211,14 +1211,14 @@ async function save_humidity_Thresholds() {
                 },
                 body: JSON.stringify(tmp_json),
             }
-            await fetch('http://127.0.0.1:8081/save-config-humidity-thresholds', options);
+            await fetch('http://172.30.232.114:8081/save-config-humidity-thresholds', options);
 
             maximum_humidity.disabled = true;
             minimum_humidity.disabled = true;
 
             btnChange_humidity_thresholds.style.display = "block";
             btnSave_humidity_thresholds.style.display = "none";
-            let results = await fetch(`http://127.0.0.1:8081/init-config-thresholds`)
+            let results = await fetch(`http://172.30.232.114:8081/init-config-thresholds`)
                 .then(function(response) {
                     return response.json();
                 })
@@ -1240,13 +1240,13 @@ async function check_for_notification(tmp) {
                 if (tmp[i][3] > parseFloat(minimum_temp.value)) {
                     payload.message = "Temperature (in front of rack) : " + tmp[i][3];
                     payload.location = tmp[i][1];
-                    await fetch('http://127.0.0.1:8081/notification-1?' + new URLSearchParams(payload));
+                    await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
                 }
             } else {
                 if (tmp[i][3] > parseFloat(maximum_temp.value)) {
                     payload.message = "Temperature (behind rack) : " + tmp[i][3];
                     payload.location = tmp[i][1];
-                    await fetch('http://127.0.0.1:8081/notification-1?' + new URLSearchParams(payload));
+                    await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
                 }
             }
 
@@ -1255,7 +1255,7 @@ async function check_for_notification(tmp) {
             if (parseFloat(tmp[i][2]) > parseFloat(maximum_humidity.value) || parseFloat(tmp[i][2]) < parseFloat(minimum_humidity.value)) {
                 payload.message = "Humidity : " + tmp[i][2];
                 payload.location = tmp[i][1];
-                await fetch('http://127.0.0.1:8081/notification-1?' + new URLSearchParams(payload));
+                await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
             }
         }
 
