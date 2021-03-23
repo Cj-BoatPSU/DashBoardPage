@@ -338,7 +338,7 @@ function setGaugeValue(gauge, json_value) {
 
 
 async function query_data_influxdb() {
-    let results = await fetch(`http://172.30.232.114:8081/Queryinfluxdb`)
+    let results = await fetch(`http://127.0.0.1:8081/Queryinfluxdb`)
         .then(function(response) {
             return response.json();
         })
@@ -516,7 +516,7 @@ function saveConfigDevice() {
             },
             body: JSON.stringify(tmp),
         }
-        fetch('http://172.30.232.114:8081/save-config-device', options);
+        fetch('http://127.0.0.1:8081/save-config-device', options);
     } else {
         console.log("click cancel");
     }
@@ -525,7 +525,7 @@ function saveConfigDevice() {
 
 async function fetchConfigDevice() {
     let all_devices = [];
-    all_devices = await fetch('http://172.30.232.114:8081/init-config-device')
+    all_devices = await fetch('http://127.0.0.1:8081/init-config-device')
         .then(function(response) {
             return response.json();
         })
@@ -946,7 +946,7 @@ function randomNumber(min, max) {
 
 async function fetch_Data_HistoryGraph() {
     let all_HistoryData = [];
-    all_HistoryData = await fetch('http://172.30.232.114:8081/Queryinfluxdb_HistoryGraph')
+    all_HistoryData = await fetch('http://127.0.0.1:8081/Queryinfluxdb_HistoryGraph')
         .then(function(response) {
             return response.json();
         })
@@ -982,7 +982,7 @@ async function SearchHistory() {
     let all_data_HistoryGraph = [];
     let filter_data_HistoryGraph = [];
 
-    all_data_HistoryGraph = await fetch('http://172.30.232.114:8081/search-history', options).then(function(response) {
+    all_data_HistoryGraph = await fetch('http://127.0.0.1:8081/search-history', options).then(function(response) {
             return response.json();
         })
         .catch(err => console.log('Request Failed', err));
@@ -1063,7 +1063,7 @@ async function SearchHistory_Month() {
 
     let all_data_HistoryGraph = [];
 
-    all_data_HistoryGraph = await fetch('http://172.30.232.114:8081/Query-of-Month', options).then(function(response) {
+    all_data_HistoryGraph = await fetch('http://127.0.0.1:8081/Query-of-Month', options).then(function(response) {
             return response.json();
         })
         .catch(err => console.log('Request Failed', err));
@@ -1084,12 +1084,12 @@ function sleep(ms) {
 
 async function Send_notify_Email() {
     console.log("Access to Send_notify_Email()");
-    await fetch('http://172.30.232.114:8081/Send-Email');
+    await fetch('http://127.0.0.1:8081/Send-Email');
 }
 
 async function Line_Notify() {
     console.log("Access to Line_Notify()");
-    await fetch('http://172.30.232.114:8081/Line-Notify');
+    await fetch('http://127.0.0.1:8081/Line-Notify');
 }
 
 
@@ -1103,7 +1103,7 @@ var maximum_humidity = document.getElementById("maximum-alert-humidity");
 var minimum_humidity = document.getElementById("minimum-alert-humidity");
 
 async function initConfigThresholds() {
-    let results = await fetch(`http://172.30.232.114:8081/init-config-thresholds`)
+    let results = await fetch(`http://127.0.0.1:8081/init-config-thresholds`)
         .then(function(response) {
             return response.json();
         })
@@ -1164,14 +1164,14 @@ async function save_temp_Thresholds() {
                 },
                 body: JSON.stringify(tmp_json),
             }
-            await fetch('http://172.30.232.114:8081/save-config-temp-thresholds', options);
+            await fetch('http://127.0.0.1:8081/save-config-temp-thresholds', options);
 
             maximum_temp.disabled = true;
             minimum_temp.disabled = true;
 
             btnChange_temp_thresholds.style.display = "block";
             btnSave_temp_thresholds.style.display = "none";
-            let results = await fetch(`http://172.30.232.114:8081/init-config-thresholds`)
+            let results = await fetch(`http://127.0.0.1:8081/init-config-thresholds`)
                 .then(function(response) {
                     return response.json();
                 })
@@ -1211,14 +1211,14 @@ async function save_humidity_Thresholds() {
                 },
                 body: JSON.stringify(tmp_json),
             }
-            await fetch('http://172.30.232.114:8081/save-config-humidity-thresholds', options);
+            await fetch('http://127.0.0.1:8081/save-config-humidity-thresholds', options);
 
             maximum_humidity.disabled = true;
             minimum_humidity.disabled = true;
 
             btnChange_humidity_thresholds.style.display = "block";
             btnSave_humidity_thresholds.style.display = "none";
-            let results = await fetch(`http://172.30.232.114:8081/init-config-thresholds`)
+            let results = await fetch(`http://127.0.0.1:8081/init-config-thresholds`)
                 .then(function(response) {
                     return response.json();
                 })
@@ -1240,13 +1240,13 @@ async function check_for_notification(tmp) {
                 if (tmp[i][3] > parseFloat(minimum_temp.value)) {
                     payload.message = "Temperature (in front of rack) : " + tmp[i][3];
                     payload.location = tmp[i][1];
-                    await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
+                    await fetch('http://127.0.0.1:8081/notification-1?' + new URLSearchParams(payload));
                 }
             } else {
                 if (tmp[i][3] > parseFloat(maximum_temp.value)) {
                     payload.message = "Temperature (behind rack) : " + tmp[i][3];
                     payload.location = tmp[i][1];
-                    await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
+                    await fetch('http://127.0.0.1:8081/notification-1?' + new URLSearchParams(payload));
                 }
             }
 
@@ -1255,7 +1255,7 @@ async function check_for_notification(tmp) {
             if (parseFloat(tmp[i][2]) > parseFloat(maximum_humidity.value) || parseFloat(tmp[i][2]) < parseFloat(minimum_humidity.value)) {
                 payload.message = "Humidity : " + tmp[i][2];
                 payload.location = tmp[i][1];
-                await fetch('http://172.30.232.114:8081/notification-1?' + new URLSearchParams(payload));
+                await fetch('http://127.0.0.1:8081/notification-1?' + new URLSearchParams(payload));
             }
         }
 
@@ -1276,29 +1276,32 @@ async function initHeatmap() {
     let all_devices = await fetchConfigDevice();
     let tmp = [];
     var heatmapArea = document.getElementById("heatmapArea");
-    var heatmapArea1 = document.getElementById("test");
-    var HeatmapArray = [];
+    var element = document.getElementById("temp-legend"); //Create Temperature legend
+    element.style.cssText = "border-radius:5px;position:absolute;" + "font-family:Helvetica; width:280px;z-index:10000000000; background:rgba(255,255,255,1);padding:10px;border:1px solid black;margin-top:20px;";
+    element.innerHTML = "<h3 style='padding:0;margin:0;text-align:center;font-size:16px;'>" + "Temperature (°C)" + "</h3>";
+    var labelsEl = document.createElement("ul");
+    labelsEl.style.cssText = "position:relative;font-size:12px;display:block;list-style:none;list-style-type:none;margin:0;height:15px;";
+    let offset = -3;
+    let temp_legend = [18, 25, 30, 35, 40];
+    for (var i = 0; i < 5; i++) {
+        labelsEl.innerHTML += '<li style="position:absolute;left:' + offset + 'px;">' + temp_legend[i] + '</li>'; //' + (((((1 / (10 - 1) * i * 256) || 0)) >> 0) - 2 + .5) + '
+        offset += 62;
+    } //(1)
+    gradient = document.createElement("div");
+    gradient.style.cssText = ["position:relative;display:block;width:256px;height:15px;margin-top:5px; background-image:url(", createGradientImage(), ");"].join(""); //border-bottom:1px solid black;
+    element.appendChild(labelsEl);
+    element.appendChild(gradient);
     var data = {
-        "max": 33,
+        "max": 40,
         "data": [],
     };
-    var cfg = {
-            "element": heatmapArea,
-            "opacity": 0.1,
-            "radius": 70,
-            "visible": true,
-            "maxOpacity": 1,
-            "minOpacity": 0,
-            "legend": {
-                "title": "Temperature (c°)",
-                "position": "bl",
-            },
-            // "gradient": { 0.25: "rgb(0,0,255)", 0.35: "rgb(0,255,255)", 0.65: "rgb(0,255,0)" },
-        }
-        // for (let i = 0; i < all_devices.length; i++) {
-        //     var heatmapInstance = h337.create(cfg);
-        //     HeatmapArray.push(heatmapInstance);
-        // }
+    var config = {
+        container: heatmapArea,
+        radius: 150,
+        maxOpacity: .5,
+        minOpacity: 0,
+        blur: .8 //.75
+    };
     console.log("Heatmap data array length (before PushData_Heatmap):" + data.data.length);
     temp_only(all_data);
     all_data.sort(function(a, b) { //sort array location rack
@@ -1307,64 +1310,78 @@ async function initHeatmap() {
         return 0;
     });
     tmp = separate_value(all_data);
-    // CreateHeatmap(HeatmapArray, tmp, all_devices)
-    // cfg.gradient = { 0.25: "rgb(0,0,255)", 0.35: "rgb(0,255,255)", 0.65: "rgb(0,255,0)" }; // 0.25: "rgb(0,0,255)", 0.35: "rgb(0,255,255)", 2: "rgb(255,165,0)"
-    var heatmapInstance_front = h337.create(cfg);
-    var heatmapInstance_behind = h337.create(cfg);
-    var heatmapInstance = h337.create(cfg);
+    var heatmapInstance = h337.create(config);
     tmp = await initDataPoint(tmp, all_devices, []);
-    console.log(heatmapInstance.get("gradient"));
     var data = {
-        max: 33,
+        max: 40,
         min: 0,
-        data: [],
+        data: []
     };
-    var data1 = {
-        max: 33,
-        min: 0,
-        data: [],
-    };
-    var data2 = {
-        max: 33,
-        min: 0,
-        data: [],
-    };
-    for (let i = 0; i < (tmp.length / 2); i++) { //front
+    // data.data.push({ x: 200, y: 200, value: 34 }, { x: 400, y: 200, value: 34 });
+    for (let i = 0; i < tmp.length; i++) {
         data.data.push(tmp[i]);
     }
-    for (let i = (tmp.length / 2); i < tmp.length; i++) { //behind
-        data1.data.push(tmp[i]);
-    }
-    for (let i = 0; i < tmp.length; i++) {
-        data2.data.push(tmp[i]);
-    }
-    console.log(data2);
+    console.log(data.data);
     // TemperatureDistributionUP(data.data);
     // fillHeatmap(data2.data, tmp);
-    fillHeatmapV1(data2.data, tmp);
+    fillHeatmapV1(data.data, tmp, );
     // TemperatureDistributionDown(data.data, tmp);
-    // heatmapInstance_front.store.setDataSet(data);
-    // heatmapInstance_behind.store.setDataSet(data1);
-    heatmapInstance.store.setDataSet(data2);
-    console.log(data2);
-    // cfg.gradient = { 0.65: "rgb(0,255,0)", 0.80: "yellow", 0.85: "rgb(255,165,0)", 0.95: "rgb(255,0,0)" };
-    // heatmapInstance = h337.create(cfg);
-    // fillHeatmap(data1.data, tmp);
-    // heatmapInstance.store.setDataSet(data1);
+    heatmapInstance.setDataMax(40);
+    heatmapInstance.setData(data);
+    console.log(heatmapInstance.getData());
+    createGradientImage();
+}
+
+function createGradientImage() {
+    var gradArr = [{ stop: 0, value: "rgb(0, 0, 254)" }, { stop: 0.1, value: "rgb(88,124,247)" }, { stop: 0.2, value: "rgb(1,126,254)" },
+        { stop: 0.3, value: "rgb(29,170,241)" }, { stop: 0.4, value: "rgb(58,181,74)" }, { stop: 0.5, value: "rgb(255,255,73)" },
+        { stop: 0.6, value: "rgb(255,255,0)" }, { stop: 0.7, value: "rgb(255,215,40)" }, { stop: 0.8, value: "rgb(255,158,7)" },
+        { stop: 0.9, value: "rgb(244,101,35)" }, { stop: 1, value: "rgb(255,0,0)" },
+    ];
+    // var canvas = document.getElementById("test");
+
+
+    var canvas = document.createElement("canvas");
+    var ctx = canvas.getContext("2d");
+
+    var grad = ctx.createLinearGradient(0, 0, 256, 0);
+    for (var i = 0; i < gradArr.length; i++) {
+        grad.addColorStop(gradArr[i].stop, gradArr[i].value);
+    }
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 256, 15);
+    // ctx.strokeStyle = "black";
+    // ctx.beginPath();
+    // ctx.moveTo(0, 0);
+    // ctx.lineTo(0, 50);
+    // ctx.lineTo(50, 50);
+    // ctx.stroke();
+    return canvas.toDataURL();
 }
 
 function fillHeatmapV1(data, tmp) {
+    var heatmapArea = document.getElementById("heatmapArea");
+    console.log(tmp);
+    // for (let i = 0; i < (tmp.length / 2); i++) {
+    //     data.push({
+    //         x: tmp[i].x,
+    //         y: 10,
+    //         value: tmp[i].value,
+    //     });
+    // }
+    // data.push({
+    //     x: 60,
+    //     y: 60,
+    //     value: 22,
+    // });
     data.push({
-        "x": 50,
-        "y": 50,
-        "count": 22,
-    }, {
-        "x": 160,
-        "y": 50,
-        "count": 22,
+        x: 60,
+        y: 210,
+        value: 22,
     });
-}
+    console.log(data);
 
+}
 
 function fillHeatmap(data, tmp) {
     var heatmapArea = document.getElementById("heatmapArea");
@@ -1517,7 +1534,7 @@ async function initDataPoint(all_data, all_devices, data) {
     }
     console.log("after splice data length : " + data.length);
     for (let i = 0; i < all_data.length; i++) { //set value
-        data[i].count = parseFloat(all_data[i][3]); //parseFloat Don't forget
+        data[i].value = parseFloat(all_data[i][3]); //parseFloat Don't forget
     }
     console.log("----------------------------");
     console.log(data);

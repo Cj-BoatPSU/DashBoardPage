@@ -268,7 +268,7 @@ app.get('/notification-1', (req, res) => {
     profileInfo.get().then(function(doc) {
         if (doc.exists) {
             Line_Notify(req.query, doc.data().LineNotifyToken);
-            // Send_notify_Email(req.query, doc.data().ContactEmail);
+            Send_notify_Email(req.query, doc.data().ContactEmail);
         } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
@@ -790,8 +790,8 @@ async function Send_notify_Email(res, email) {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'dcprojectdashboard@gmail.com',
-            pass: 'Boat123**'
+            user: 'Chutiwat.Boat@gmail.com',
+            pass: 'L3asickung-'
         }
     });
 

@@ -234,7 +234,7 @@
                 // the gradient in the legend including the ticks will be 256x15px
                 canvas.width = "256";
                 canvas.height = "15";
-
+                console.log(gradArr);
                 grad = ctx.createLinearGradient(0, 5, 256, 10);
 
                 for (var i = 0; i < length; i++) {
