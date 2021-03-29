@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "chart.js": "^2.9.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "file-system": "^1.2.2",
