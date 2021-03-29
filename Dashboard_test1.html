@@ -112,14 +112,14 @@
             </div>
             <div class="container">
                 <div class="item" id="item-1">
-                    <div id="input-date">
-                        <div class="group-date">
+                    <!-- <div id="input-date"> -->
+                    <!-- <div class="group-date">
                             <label for="search-history-heatmap">Search History Heatmap</label><br />
                             <input type="date" id="search-history-heatmap">
                         </div>
 
-                    </div>
-                    <div id="input-time">
+                    </div> -->
+                    <!-- <div id="input-time">
                         <div class="group-unit">
                             <label for="select-time">Select a time:</label><br />
                             <input type="time" id="select-time">
@@ -127,15 +127,28 @@
                         <div class="group-date">
                             <button type="button" id="search_history" onclick="">Search</button>
                         </div>
-                    </div>
+                    </div> -->
                     <p id="label-date-Heatmap"></p>
+                    <div class="slidecontainer">
+                        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                        <p>Value: <span id="demo"></span></p>
+                    </div>
+                    <script>
+                        var slider = document.getElementById("myRange");
+                        var output = document.getElementById("demo");
+                        output.innerHTML = slider.value;
+
+                        slider.oninput = function() {
+                            output.innerHTML = this.value;
+                        }
+                    </script>
                     <div id="heatmapContainer">
                         <div id="heatmapArea">
                         </div>
                         <div id="rack1"></div>
                     </div>
                     <div id="temp-legend"></div>
-                    <canvas id="test" width="256" height="15"></canvas>
+                    <!-- <canvas id="test1" width="256" height="100"></canvas> -->
                 </div>
                 <div class="item" id="item-2">
                     <div id="status-color" style="text-align:right">

@@ -67,7 +67,7 @@
             0.675: "rgb(58,181,74)", //27-28 //green
             0.725: "rgb(255,255,73)", //29-30
             0.775: "rgb(255,255,0)", //31-32
-            0.825: "rgb(255,215,40)", //33-34
+            0.825: "rgb(250,188,2)", //33-34
             0.875: "rgb(255,158,7)", //35-36
             0.925: "rgb(244,101,35)", //37-38
             1: "rgb(255,0,0)", //39-40
@@ -205,7 +205,7 @@
             setData: function(data) {
                 var dataPoints = data.data;
                 var pointsLen = dataPoints.length;
-
+                console.log("===========access to setData===========");
 
                 // reset data arrays
                 this._data = [];
@@ -297,22 +297,22 @@
 
     var Canvas2dRenderer = (function Canvas2dRendererClosure() {
 
-        var _getColorPalette = function(config) {
+        var _getColorPalette = function(config) { //(1)
+            console.log("============access to _getColorPalette============");
             var gradientConfig = config.gradient || config.defaultGradient;
             var paletteCanvas = document.createElement('canvas');
             var paletteCtx = paletteCanvas.getContext('2d');
-
+            // console.log(gradientConfig);
             paletteCanvas.width = 256;
-            paletteCanvas.height = 1;
-
+            paletteCanvas.height = 1; //1
             var gradient = paletteCtx.createLinearGradient(0, 0, 256, 1);
             for (var key in gradientConfig) {
+                // console.log(key);
+                // console.log(gradientConfig[key]);
                 gradient.addColorStop(key, gradientConfig[key]);
             }
-
             paletteCtx.fillStyle = gradient;
             paletteCtx.fillRect(0, 0, 256, 1);
-
             return paletteCtx.getImageData(0, 0, 256, 1).data;
         };
 
@@ -324,14 +324,14 @@
             tplCanvas.width = tplCanvas.height = radius * 2;
 
             if (blurFactor == 1) {
-                console.log("access to if to arc()");
+                // console.log("access to if to arc()");
                 tplCtx.beginPath();
                 tplCtx.arc(x, y, radius, 0, 2 * Math.PI, true);
                 tplCtx.fillStyle = 'rgba(0,0,0,1)';
                 tplCtx.fill();
-            } else {
-                console.log("access to else to createRadialGradient()");
-                var gradient = tplCtx.createRadialGradient(x, y, radius * blurFactor, x, y, radius); //(1)
+            } else { //now access else only
+                // console.log("access to else to createRadialGradient()");
+                var gradient = tplCtx.createRadialGradient(x, y, radius * blurFactor, x, y, radius);
                 gradient.addColorStop(0, 'rgba(0,0,0,1)');
                 gradient.addColorStop(1, 'rgba(0,0,0,0)');
                 tplCtx.fillStyle = gradient;
@@ -404,29 +404,32 @@
 
             this._palette = _getColorPalette(config);
             this._templates = {};
-
             this._setStyles(config);
         };
 
         Canvas2dRenderer.prototype = {
             renderPartial: function(data) {
+                console.log("============access to renderPartial============");
                 if (data.data.length > 0) {
                     this._drawAlpha(data);
                     this._colorize();
                 }
             },
-            renderAll: function(data) {
+            renderAll: function(data) { //(2)
                 // reset render boundaries
+                console.log("============access to renderAll============");
                 this._clear();
                 if (data.data.length > 0) {
                     this._drawAlpha(_prepareData(data));
-                    this._colorize();
+                    this._colorize(_prepareData(data));
                 }
             },
             _updateGradient: function(config) {
+                console.log("============access to _updateGradient============");
                 this._palette = _getColorPalette(config);
             },
             updateConfig: function(config) {
+                console.log("============access to updateConfig============");
                 if (config['gradient']) {
                     this._updateGradient(config);
                 }
@@ -459,17 +462,15 @@
                 this._useGradientOpacity = !!config.useGradientOpacity;
             },
             _drawAlpha: function(data) {
-                var min = this._min = data.min;
+                console.log("============access to _drawAlpha============");
+                var min = this._min = data.min; //0
                 var max = this._max = data.max;
                 var data = data.data || [];
                 var dataLen = data.length;
                 // on a point basis?
                 var blur = 1 - this._blur;
-
                 while (dataLen--) {
-
                     var point = data[dataLen];
-
                     var x = point.x;
                     var y = point.y;
                     var radius = point.radius;
@@ -479,10 +480,6 @@
                     var rectX = x - radius;
                     var rectY = y - radius;
                     var shadowCtx = this.shadowCtx;
-
-
-
-
                     var tpl;
                     if (!this._templates[radius]) {
                         this._templates[radius] = tpl = _getPointTemplate(radius, blur);
@@ -491,31 +488,45 @@
                     }
                     // value from minimum / value range
                     // => [0, 1]
-                    console.log("value : " + value);
+                    // console.log("value : " + value);
                     var templateAlpha = (value - min) / (max - min);
                     // this fixes #176: small values are not visible because globalAlpha < .01 cannot be read from imageData
-                    shadowCtx.globalAlpha = templateAlpha < .01 ? .01 : templateAlpha; //(2) //.01 ? .01: templateAlpha
-                    console.log(tpl); //all canvas
-                    console.log(templateAlpha);
-                    shadowCtx.drawImage(tpl, rectX, rectY); //(2)
-                    console.log(this._renderBoundaries);
-                    // update renderBoundaries //(2)
+                    shadowCtx.globalAlpha = templateAlpha < .01 ? .01 : templateAlpha; //.01 ? .01: templateAlpha
+                    // console.log(tpl); //all canvas
+                    // console.log("templateAlpha: " + templateAlpha);
+                    shadowCtx.drawImage(tpl, rectX, rectY);
+                    // console.log("========this._renderBoundaries=================");
+                    // console.log(this._renderBoundaries);
+                    // console.log("rectX: " + rectX);
+                    // console.log("rectY: " + rectY);
+                    // update renderBoundaries  //ขอบเขตการแสดงผล
                     if (rectX < this._renderBoundaries[0]) {
+                        // console.log("access to if_1");
                         this._renderBoundaries[0] = rectX;
+                        // this._renderBoundaries[0] = 0; //test
                     }
                     if (rectY < this._renderBoundaries[1]) {
+                        // console.log("access to if_2");
                         this._renderBoundaries[1] = rectY;
+                        // this._renderBoundaries[1] = 0; //test
                     }
                     if (rectX + 2 * radius > this._renderBoundaries[2]) {
-                        this._renderBoundaries[2] = rectX + 2 * radius;
+                        // console.log("access to if_3");
+                        // this._renderBoundaries[2] = rectX + 2 * radius;
+                        this._renderBoundaries[2] = rectX + 2 * radius; //test
                     }
                     if (rectY + 2 * radius > this._renderBoundaries[3]) {
-                        this._renderBoundaries[3] = rectY + 2 * radius;
+                        // console.log("access to if_4");
+                        // this._renderBoundaries[3] = rectY + 2 * radius;
+                        this._renderBoundaries[3] = rectY + 2 * radius; //test
                     }
-                    console.log(this._renderBoundaries);
+
                 }
+                console.log("========this._renderBoundaries (New)========");
+                console.log(this._renderBoundaries);
             },
-            _colorize: function() {
+            _colorize: function(data) { //(3)
+                console.log("===========access to _colorize===========");
                 var x = this._renderBoundaries[0];
                 var y = this._renderBoundaries[1];
                 var width = this._renderBoundaries[2] - x;
@@ -526,30 +537,161 @@
                 var maxOpacity = this._maxOpacity;
                 var minOpacity = this._minOpacity;
                 var useGradientOpacity = this._useGradientOpacity;
+                var data = data.data || [];
+                var dataLen = data.length;
+                console.log("dataLen : " + dataLen);
+                console.log(data);
+                console.log(data[dataLen - 1]);
+                console.log(data[dataLen - 1].value);
+                var tmp_temp_front = [];
+                var tmp_temp_behind = [];
+                for (let i = 0; i < dataLen; i++) {
+                    if (data[i].value <= 29) {
+                        tmp_temp_front.push(data[i]);
+                    }
 
+                }
+                var tmp_temp_front_maximum = tmp_temp_front[0];
+                for (let i = 0; i < tmp_temp_front.length; i++) {
+                    if (tmp_temp_front[i].value > tmp_temp_front_maximum.value) {
+                        tmp_temp_front_maximum = tmp_temp_front[i];
+                    }
+
+                }
+                for (let i = 0; i < dataLen; i++) {
+                    if (data[i].value > 29) {
+                        tmp_temp_behind.push(data[i]);
+                    }
+
+                }
+                // tmp_temp_front_maximum.value -= 2;
+                console.log("=======tmp_temp_front=========");
+                console.log(tmp_temp_front);
+                console.log("=======tmp_temp_behind=========");
+                console.log(tmp_temp_behind);
+                console.log("=======tmp_temp_front_maximum=========");
+                console.log(tmp_temp_front_maximum);
                 if (x < 0) {
+                    // console.log("access to if _colorize() x < 0");
                     x = 0;
                 }
                 if (y < 0) {
+                    // console.log("access to if _colorize() y < 0");
                     y = 0;
                 }
                 if (x + width > maxWidth) {
+                    // console.log("access to if _colorize() x + width > maxWidth");
                     width = maxWidth - x;
                 }
                 if (y + height > maxHeight) {
+                    // console.log("access to if _colorize() y + height > maxHeight");
                     height = maxHeight - y;
                 }
-
+                // console.log("x : " + x);
+                // console.log("y : " + y);
+                // console.log("width : " + width);
+                // console.log("height : " + height);
                 var img = this.shadowCtx.getImageData(x, y, width, height);
                 var imgData = img.data;
                 var len = imgData.length;
                 var palette = this._palette;
 
-
-                for (var i = 3; i < len; i += 4) {
+                console.log("===========img===========");
+                console.log(img);
+                // console.log("===========imgData===========");
+                // console.log(imgData);
+                console.log("len : " + len);
+                // console.log("opacity : " + opacity);
+                let count = 0;
+                let tmp_offset = 0;
+                for (var i = 3; i < (len); i += 4) { //(4)
                     var alpha = imgData[i];
-                    var offset = alpha * 4; //4
-
+                    var offset = alpha * 4;
+                    // console.log("alpha : " + alpha);
+                    // console.log("offset : " + offset);
+                    if (tmp_temp_front_maximum.value <= 22) { //temperature lower than 22°C
+                        if (offset > 510 && i < ((len / 2) + (80000 * 2))) { //&& i < (len / 2) //offset < 744 //&& offset < 840
+                            count++;
+                            offset = tmp_offset;
+                        }
+                        if (offset > 500 && offset < 510) {
+                            tmp_offset = offset;
+                        }
+                    } else if (tmp_temp_front_maximum.value >= 23 && tmp_temp_front_maximum.value <= 24) { //temperature range 23°C - 24°C
+                        // console.log("temperature range 23°C - 24°C");
+                        if (offset > 590 && i < ((len / 2) + (80000 * 2))) {
+                            count++;
+                            offset = tmp_offset;
+                        }
+                        if (offset > 580 && offset < 590) {
+                            tmp_offset = offset;
+                        }
+                    } else if (tmp_temp_front_maximum.value >= 25 && tmp_temp_front_maximum.value <= 26) { //temperature range 25°C - 26°C
+                        // console.log("temperature range 25°C - 26°C");
+                        if (offset > 640 && i < ((len / 2) + (80000 * 2))) {
+                            count++;
+                            offset = tmp_offset;
+                        }
+                        if (offset > 630 && offset < 640) { //offset > 630 &&
+                            tmp_offset = offset;
+                        }
+                    } else if (tmp_temp_front_maximum.valuee >= 27 && tmp_temp_front_maximum.value <= 28) { //temperature range 27°C - 28°C
+                        if (offset > 690 && i < ((len / 2) + (80000 * 2))) {
+                            count++;
+                            offset = tmp_offset;
+                        }
+                        if (offset < 690) {
+                            tmp_offset = offset;
+                        }
+                    } else if (tmp_temp_front_maximum.value && tmp_temp_front_maximum.value <= 30) { //temperature range 29°C - 30°C
+                        if (offset > 740 && i < ((len / 2) + (80000 * 2))) {
+                            count++;
+                            offset = tmp_offset;
+                        }
+                        if (offset > 730 && offset < 740) {
+                            tmp_offset = offset;
+                        }
+                    } else if (tmp_temp_front_maximum.value >= 31 && tmp_temp_front_maximum.value <= 32) { //temperature range 31°C - 32°C
+                        if (offset > 790 && i < ((len / 2) + (80000 * 2))) {
+                            count++;
+                            offset = tmp_offset;
+                        }
+                        if (offset > 780 && offset < 790) {
+                            tmp_offset = offset;
+                        }
+                    } else if (tmp_temp_front_maximum.value >= 33 && tmp_temp_front_maximum.valuee <= 34) { //temperature range 33°C - 34°C
+                        if (offset > 840 && i < (len / 2)) {
+                            count++;
+                            offset = tmp_offset;
+                        }
+                        if (offset > 830 && offset < 840) {
+                            tmp_offset = offset;
+                        }
+                    } else if (tmp_temp_front_maximum.value >= 33 && tmp_temp_front_maximum.value <= 34) { //temperature range 33°C - 34°C
+                        if (offset > 890 && i < ((len / 2) + (80000 * 2))) {
+                            count++;
+                            offset = tmp_offset;
+                        }
+                        if (offset > 880 && offset < 890) {
+                            tmp_offset = offset;
+                        }
+                    } else if (tmp_temp_front_maximum.value >= 35 && tmp_temp_front_maximum.value <= 36) { //temperature range 35°C - 36°C
+                        if (offset > 940 && i < ((len / 2) + (80000 * 2))) {
+                            count++;
+                            offset = tmp_offset;
+                        }
+                        if (offset > 930 && offset < 940) {
+                            tmp_offset = offset;
+                        }
+                    } else if (tmp_temp_front_maximum.value >= 37 && tmp_temp_front_maximum.value <= 38) { //temperature range 37°C - 38°C
+                        if (offset > 990 && i < ((len / 2) + (80000 * 2))) {
+                            count++;
+                            offset = tmp_offset;
+                        }
+                        if (offset > 980 && offset < 990) {
+                            tmp_offset = offset;
+                        }
+                    }
 
                     if (!offset) {
                         continue;
@@ -557,31 +699,50 @@
 
                     var finalAlpha;
                     if (opacity > 0) {
+                        // console.log("access to if _colorize()");
                         finalAlpha = opacity;
                     } else {
+                        // console.log("access to else _colorize()");
                         if (alpha < maxOpacity) {
+                            // console.log("access to else || if _colorize()");
                             if (alpha < minOpacity) {
+                                // console.log("access to else || if || if _colorize()");
                                 finalAlpha = minOpacity;
-                            } else {
+                            } else { //only access here
+                                // console.log("access to else || if || else _colorize()");
                                 finalAlpha = alpha;
                             }
-                        } else {
+                        } else { //access to this condition if when intersect
+                            // console.log("access to else || else _colorize()");
                             finalAlpha = maxOpacity;
+                            // finalAlpha = alpha;
                         }
+                        // console.log("finalAlpha : " + finalAlpha);
                     }
-
+                    // console.log("useGradientOpacity : " + useGradientOpacity);
+                    // console.log("finalAlpha : " + finalAlpha);
                     imgData[i - 3] = palette[offset];
-                    imgData[i - 2] = palette[offset + 1];
-                    imgData[i - 1] = palette[offset + 2];
-                    imgData[i] = useGradientOpacity ? palette[offset + 3] : finalAlpha; //3
+                    // console.log(imgData[i - 3]);
+                    imgData[i - 2] = palette[offset + 1]; //palette[offset + 1];
+                    // console.log(imgData[i - 2]);
+                    imgData[i - 1] = palette[offset + 2]; //palette[offset + 2];
+                    // console.log(imgData[i - 1]);
+                    imgData[i] = useGradientOpacity ? palette[offset + 3] : finalAlpha; //palette[offset + 3];
+                    // console.log(imgData[i]);
 
                 }
-
+                console.log("count : " + count);
+                let tmp = 684;
+                console.log(palette[tmp]);
+                console.log(palette[tmp + 1]);
+                console.log(palette[tmp + 2]);
+                console.log("===========after update imgData===========");
+                console.log(imgData);
                 img.data = imgData;
                 this.ctx.putImageData(img, x, y);
-
                 this._renderBoundaries = [1000, 1000, 0, 0];
-
+                console.log("===========palette===========");
+                console.log(palette);
             },
             getValueAt: function(point) {
                 var value;

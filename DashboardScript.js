@@ -1291,18 +1291,13 @@ async function initHeatmap() {
     gradient.style.cssText = ["position:relative;display:block;width:256px;height:15px;margin-top:5px; background-image:url(", createGradientImage(), ");"].join(""); //border-bottom:1px solid black;
     element.appendChild(labelsEl);
     element.appendChild(gradient);
-    var data = {
-        "max": 40,
-        "data": [],
-    };
-    var config = {
+    var config = { //(1)
         container: heatmapArea,
         radius: 150,
-        maxOpacity: .5,
+        maxOpacity: .5, //.5
         minOpacity: 0,
-        blur: .8 //.75
+        blur: .5 //.75 //.1
     };
-    console.log("Heatmap data array length (before PushData_Heatmap):" + data.data.length);
     temp_only(all_data);
     all_data.sort(function(a, b) { //sort array location rack
         if (a[1] < b[1]) { return -1; }
@@ -1317,25 +1312,21 @@ async function initHeatmap() {
         min: 0,
         data: []
     };
-    // data.data.push({ x: 200, y: 200, value: 34 }, { x: 400, y: 200, value: 34 });
-    for (let i = 0; i < tmp.length; i++) {
+    for (let i = 0; i < (tmp.length); i++) {
         data.data.push(tmp[i]);
     }
-    console.log(data.data);
-    // TemperatureDistributionUP(data.data);
-    // fillHeatmap(data2.data, tmp);
-    fillHeatmapV1(data.data, tmp, );
-    // TemperatureDistributionDown(data.data, tmp);
+    // console.log(data.data);
+    fillHeatmapV1(data.data, tmp);
     heatmapInstance.setDataMax(40);
     heatmapInstance.setData(data);
     console.log(heatmapInstance.getData());
     createGradientImage();
 }
 
-function createGradientImage() {
+function createGradientImage() { //Create temperature legend
     var gradArr = [{ stop: 0, value: "rgb(0, 0, 254)" }, { stop: 0.1, value: "rgb(88,124,247)" }, { stop: 0.2, value: "rgb(1,126,254)" },
         { stop: 0.3, value: "rgb(29,170,241)" }, { stop: 0.4, value: "rgb(58,181,74)" }, { stop: 0.5, value: "rgb(255,255,73)" },
-        { stop: 0.6, value: "rgb(255,255,0)" }, { stop: 0.7, value: "rgb(255,215,40)" }, { stop: 0.8, value: "rgb(255,158,7)" },
+        { stop: 0.6, value: "rgb(255,255,0)" }, { stop: 0.7, value: "rgb(250,188,2)" }, { stop: 0.8, value: "rgb(255,158,7)" },
         { stop: 0.9, value: "rgb(244,101,35)" }, { stop: 1, value: "rgb(255,0,0)" },
     ];
     // var canvas = document.getElementById("test");
@@ -1350,37 +1341,77 @@ function createGradientImage() {
     }
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 256, 15);
-    // ctx.strokeStyle = "black";
-    // ctx.beginPath();
-    // ctx.moveTo(0, 0);
-    // ctx.lineTo(0, 50);
-    // ctx.lineTo(50, 50);
-    // ctx.stroke();
     return canvas.toDataURL();
 }
 
 function fillHeatmapV1(data, tmp) {
     var heatmapArea = document.getElementById("heatmapArea");
     console.log(tmp);
-    // for (let i = 0; i < (tmp.length / 2); i++) {
-    //     data.push({
-    //         x: tmp[i].x,
-    //         y: 10,
-    //         value: tmp[i].value,
-    //     });
-    // }
-    // data.push({
-    //     x: 60,
-    //     y: 60,
-    //     value: 22,
-    // });
-    data.push({
-        x: 60,
-        y: 210,
-        value: 22,
+    console.log("heatmapArea.offsetWidth : " + heatmapArea.offsetWidth);
+    console.log("heatmapArea.offsetHeight : " + heatmapArea.offsetHeight);
+    for (let i = 0; i < (tmp.length / 2); i++) { //front rack
+        data.push({
+            x: tmp[i].x,
+            y: 0,
+            value: tmp[i].value,
+        });
+    }
+    for (let i = (tmp.length / 2); i < tmp.length; i++) { //behind rack
+        data.push({
+            x: tmp[i].x,
+            y: tmp[i].y + 100,
+            value: tmp[i].value,
+        });
+    }
+    //==========================================//
+    data.push({ //left side behind
+        x: 80,
+        y: heatmapArea.offsetHeight,
+        value: tmp[(tmp.length / 2)].value,
     });
-    console.log(data);
+    data.push({ //left side between
+        x: 40,
+        y: 340,
+        value: tmp[0].value,
+    });
+    data.push({ //right side between
+        x: 990,
+        y: 370,
+        value: tmp[(tmp.length / 2) - 1].value,
+    });
 
+    data.push({ //right side behind
+        x: 950,
+        y: heatmapArea.offsetHeight,
+        value: tmp[(tmp.length - 1)].value,
+    });
+
+    //=============================
+    //left side front
+    data.push({
+        x: 40,
+        y: 40,
+        value: tmp[0].value,
+    });
+    //right side front
+    data.push({
+        x: heatmapArea.offsetWidth - 40,
+        y: 40,
+        value: tmp[(tmp.length / 2) - 1].value,
+    });
+    //=============================
+    //left side between
+    data.push({
+        x: 90,
+        y: 170,
+        value: tmp[0].value,
+    });
+    //right side between
+    data.push({
+        x: heatmapArea.offsetWidth - 70,
+        y: 190,
+        value: tmp[(tmp.length - 1)].value, //tmp[(tmp.length - 1)].value,
+    });
 }
 
 function fillHeatmap(data, tmp) {
@@ -1478,9 +1509,11 @@ async function CreateHeatmap(HeatmapArray, all_data, all_devices) {
 async function initDataPoint(all_data, all_devices, data) {
     console.log("access to initDataPoint");
     console.log(all_data);
+    console.log(all_devices);
     let location = ["rack1", "rack2", "rack3", "rack4", "rack5"];
     for (let i = 0; i < 2; i++) { //follow number of row rack in picture 
         let x = 240;
+        let x1 = 240;
         for (let j = 0; j < 5; j++) { //follow number of rack in picture //set x point
             data.push({
                 "x": x,
@@ -1495,7 +1528,7 @@ async function initDataPoint(all_data, all_devices, data) {
     }
     let index = 0;
     let y = 170; //160
-    for (let i = 0; i < 2; i++) { //follow number of row rack in picture
+    for (let i = 0; i < 2; i++) { //follow number of row rack in picture //2
         for (let j = 0; j < 5; j++) { //follow number of rack in picture //set y point
             data[index].y = y;
             if (i < 1) {
@@ -1525,20 +1558,26 @@ async function initDataPoint(all_data, all_devices, data) {
             }
         }
     }
+    console.log(data);
     console.log("after initPointData data length : " + data.length);
+    var tmp = [];
     for (let i = 0; i < data.length; i++) {
-        if (data[i].status === "") {
-            data.splice(i, 1);
-            i = 0;
+        // if (data[i].status === "") {
+        //     data.splice(i, 1);
+        //     i = 0;
+        // }
+        if (data[i].status === "found data") {
+            tmp.push(data[i]);
         }
     }
     console.log("after splice data length : " + data.length);
     for (let i = 0; i < all_data.length; i++) { //set value
-        data[i].value = parseFloat(all_data[i][3]); //parseFloat Don't forget
+        // data[i].value = parseFloat(all_data[i][3]); //parseFloat Don't forget
+        tmp[i].value = parseFloat(all_data[i][3]); //parseFloat Don't forget
     }
     console.log("----------------------------");
-    console.log(data);
-    return data;
+    console.log(tmp);
+    return tmp;
 }
 
 
