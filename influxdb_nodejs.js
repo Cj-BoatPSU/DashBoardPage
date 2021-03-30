@@ -9,8 +9,8 @@ const admin = require('firebase-admin');
 const serviceAccount = require('./modules/serviceAccountKey.json');
 
 const { Server, FIREBASE_CONFIG } = require('./modules/config.js');
-// const client = new Influx(`http://mydb:cjboat@${Server.ip_address}:${Server.port}/db_version2`);
-const client = new Influx(`http://mydb:cjboat@127.0.0.1:8086/db_version2`);
+const client = new Influx(`http://mydb:cjboat@${Server.ip_address}:${Server.port}/db_version2`);
+// const client = new Influx(`http://mydb:cjboat@127.0.0.1:8086/db_version2`);
 // const client = new Influx(`http://mydb:cjboat@192.168.1.103:8086/db_version2`);
 // const client = new Influx(`http://mydb:cjboat@10.100.100.200:8086/db_version2`);
 app.use(express.static('public'));
@@ -380,6 +380,25 @@ app.get('/mockData', (req, res) => {
             }
         }
         // console.info(results);
+
+    });
+});
+app.post('/mock-Data', (req, res) => {
+    var time = req.body;
+    let tmp = "19:00";
+    fs.readFile("mock_Data.json", 'utf-8', function(err, data) {
+        // Check for errors 
+        if (err) throw err;
+        // Converting to JSON 
+        console.info('/mock-Data');
+        console.info(time);
+        const results = JSON.parse(data);
+        for (let i = 0; i < results.length; i++) {
+            if (results[i].time == time.time_history) {
+                console.info(results[i]);
+                res.json(results[i]);
+            }
+        }
 
     });
 });
