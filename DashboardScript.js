@@ -104,6 +104,7 @@ function toggle_contents(btn_id) {
                 // TestsetInterval();
             } else if (item.id === "item-1") {
                 initHeatmap();
+                initSlider_History();
             } else if (item.id === "item-4") {
                 initConfigThresholds();
             }
@@ -137,6 +138,7 @@ function checkAuth() {
     var username = tmp.substring(0, tmp.indexOf('@')); // cut a string after a specific character
     document.getElementById("profile_name").innerHTML = username;
     initHeatmap();
+    initSlider_History();
 }
 
 // Profile section
@@ -340,6 +342,7 @@ function setGaugeValue(gauge, json_value) {
 async function query_data_influxdb() {
     let results = await fetch(`http://127.0.0.1:8081/Queryinfluxdb`)
         .then(function(response) {
+            // console.log(response.json());
             return response.json();
         })
         .catch(err => console.log('Request Failed', err));
@@ -1305,7 +1308,13 @@ async function initHeatmap() {
         return 0;
     });
     tmp = separate_value(all_data);
-    var heatmapInstance = h337.create(config);
+    if (heatmapArea.childElementCount == 1) {
+        console.log("acces to if detect repeat canvas");
+        heatmapArea.removeChild(heatmapArea.firstElementChild);
+        var heatmapInstance = h337.create(config);
+    } else {
+        var heatmapInstance = h337.create(config);
+    }
     tmp = await initDataPoint(tmp, all_devices, []);
     var data = {
         max: 40,
@@ -1319,7 +1328,9 @@ async function initHeatmap() {
     fillHeatmapV1(data.data, tmp);
     heatmapInstance.setDataMax(40);
     heatmapInstance.setData(data);
+    heatmapArea.style.position = "absolute";
     console.log(heatmapInstance.getData());
+    console.log(" heatmapArea.childElementCount :" + heatmapArea.childElementCount);
     createGradientImage();
 }
 
@@ -1614,403 +1625,55 @@ function temp_only(all_data) {
     }
 }
 
-function TemperatureDistributionDown(data, all_data) {
-    console.log("access to TemperatureDistributionDown");
-    console.log(all_data);
-    for (let i = 0; i < all_data.length; i++) {
-        let inc = 25;
-        if (all_data[i].position === "behind rack") {
-            for (let j = 0; j < 2; j++) { //frist row
-                data.push({
-                    "x": data[i].x + inc,
-                    "y": data[i].y,
-                    "count": data[i].count,
-                }, {
-                    "x": data[i].x - inc,
-                    "y": data[i].y,
-                    "count": data[i].count,
-                }, );
-                inc += inc;
+function initSlider_History() {
+    var slider_container = document.getElementById("history_slider");
+    console.log("slider-container count : " + slider_container.childElementCount);
+    var label_time = document.getElementById("label-time-Heatmap");
+    var date_TH = new Date();
+    date_TH.setHours(date_TH.getHours() + 7);
+    // var tmp = date_TH.getHours();
+    var date_str_time = date_TH.toISOString().substring(11, 16);
+    // var date_str_time1 = date_TH.toISOString().substring(11, 13);
+    let times = ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30',
+        '05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00',
+        '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
+        '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00',
+        '21:30', '22:00', '22:30', '23:00', '23:30'
+    ];
+    let index = 0;
+    for (let i = 0; i < times.length; i++) {
+        let hours_now = date_TH.toISOString().substring(11, 13);
+        let hours_times = times[i].substring(0, 2);
+        let minute_now = parseInt(date_TH.toISOString().substring(14, 15));
+        let minute_times = parseInt(times[i].substring(3, 4));
+        if (hours_now === hours_times) {
+            if (minute_now >= minute_times && minute_now < 3) { //0-29 minute
+                index = i;
+                break;
+            } else if (minute_now >= minute_times && minute_times >= 3) { //30-59 minute
+                index = i;
+                break;
             }
-            // data[data.length - 2].count -= 15; //decrement count point edge
-            // data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 25;
-            data.push({
-                "x": data[i].x + 15,
-                "y": data[i].y + 20,
-                "count": data[i].count,
-            }, {
-                "x": data[i].x - 15,
-                "y": data[i].y + 20,
-                "count": data[i].count,
-            });
-            for (let j = 0; j < 2; j++) { //second row
-                data.push({
-                    "x": data[data.length - 2].x + inc,
-                    "y": data[data.length - 2].y,
-                    "count": data[i].count,
-                }, {
-                    "x": data[data.length - 1].x - inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[i].count,
-                }, );
-                // inc += inc;
-            }
-            // data[data.length - 2].count -= 15; //decrement count point edge
-            // data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 25;
-            data.push({
-                "x": data[i].x,
-                "y": data[i].y + 40,
-                "count": data[i].count,
-            }, );
-            for (let j = 0; j < 3; j++) { //third row
-
-                if (j > 0) {
-                    data.push({
-                        "x": data[data.length - 2].x + inc,
-                        "y": data[data.length - 2].y,
-                        "count": data[i].count,
-                    }, {
-                        "x": data[data.length - 1].x - inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[i].count,
-                    }, );
-                } else {
-                    data.push({
-                        "x": data[data.length - 1].x + inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[i].count,
-                    }, {
-                        "x": data[data.length - 1].x - inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[data.length - 1].count,
-                    }, );
-                }
-            }
-            // data[data.length - 2].count -= 15; //decrement count point edge
-            // data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 25;
-            data.push({
-                "x": data[i].x + 15,
-                "y": data[i].y + 60,
-                "count": data[i].count,
-            }, {
-                "x": data[i].x - 15,
-                "y": data[i].y + 60,
-                "count": data[i].count,
-            });
-            for (let j = 0; j < 3; j++) { //fourth row
-                data.push({
-                    "x": data[data.length - 2].x + inc,
-                    "y": data[data.length - 2].y,
-                    "count": data[i].count,
-                }, {
-                    "x": data[data.length - 1].x - inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[i].count,
-                }, );
-            }
-            // data[data.length - 2].count -= 15; //decrement count point edge
-            // data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 25;
-            data.push({
-                "x": data[i].x,
-                "y": data[i].y + 80,
-                "count": data[i].count,
-            }, );
-            for (let j = 0; j < 4; j++) { //fifth row
-                if (j > 0) {
-                    data.push({
-                        "x": data[data.length - 2].x + inc,
-                        "y": data[data.length - 2].y,
-                        "count": data[i].count,
-                    }, {
-                        "x": data[data.length - 1].x - inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[i].count,
-                    }, );
-                } else {
-                    data.push({
-                        "x": data[data.length - 1].x + inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[i].count,
-                    }, {
-                        "x": data[data.length - 1].x - inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[data.length - 1].count,
-                    }, );
-                }
-            }
-            // data[data.length - 2].count -= 15; //decrement count point edge
-            // data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 25;
-            data.push({
-                "x": data[i].x + 15,
-                "y": data[i].y + 100,
-                "count": data[i].count,
-            }, {
-                "x": data[i].x - 15,
-                "y": data[i].y + 100,
-                "count": data[i].count,
-            });
-            for (let j = 0; j < 4; j++) { //sixth row
-                data.push({
-                    "x": data[data.length - 2].x + inc,
-                    "y": data[data.length - 2].y,
-                    "count": data[i].count,
-                }, {
-                    "x": data[data.length - 1].x - inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[i].count,
-                }, );
-            }
-            // data[data.length - 2].count -= 15; //decrement count point edge
-            // data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 25;
-            data.push({
-                "x": data[i].x,
-                "y": data[i].y + 120,
-                "count": data[i].count,
-            }, );
-            for (let j = 0; j < 5; j++) { //seventh row
-                if (j > 0) {
-                    data.push({
-                        "x": data[data.length - 2].x + inc,
-                        "y": data[data.length - 2].y,
-                        "count": data[i].count,
-                    }, {
-                        "x": data[data.length - 1].x - inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[i].count,
-                    }, );
-                } else {
-                    data.push({
-                        "x": data[data.length - 1].x + inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[i].count,
-                    }, {
-                        "x": data[data.length - 1].x - inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[data.length - 1].count,
-                    }, );
-                }
-            }
-            // data[data.length - 2].count -= 15; //decrement count point edge
-            // data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 28;
-            data.push({
-                "x": data[i].x + 15,
-                "y": data[i].y + 140,
-                "count": data[i].count,
-            }, {
-                "x": data[i].x - 15,
-                "y": data[i].y + 140,
-                "count": data[i].count,
-            });
-            for (let j = 0; j < 4; j++) { //eight th row
-                data.push({
-                    "x": data[data.length - 2].x + inc,
-                    "y": data[data.length - 2].y,
-                    "count": data[i].count,
-                }, {
-                    "x": data[data.length - 1].x - inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[i].count,
-                }, );
-            }
-            // data[data.length - 2].count -= 15; //decrement count point edge
-            // data[data.length - 1].count -= 15; //decrement count point edge
         }
-
     }
-}
-
-function TemperatureDistributionUP(data) {
-    console.log("access to TemperatureDistributionUP");
-    for (let i = 0; i < data.length; i++) {
-        let inc = 28;
-        if (data[i].position === "front rack") {
-            for (let j = 0; j < 2; j++) { //frist row
-                data.push({
-                    "x": data[i].x + inc,
-                    "y": data[i].y,
-                    "count": data[i].count,
-                }, {
-                    "x": data[i].x - inc,
-                    "y": data[i].y,
-                    "count": data[i].count,
-                }, );
-                inc += inc;
-            }
-            data[data.length - 2].count -= 15; //decrement count point edge
-            data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 28;
-            data.push({
-                "x": data[i].x + 15,
-                "y": data[i].y - 26,
-                "count": data[i].count,
-            }, {
-                "x": data[i].x - 15,
-                "y": data[i].y - 26,
-                "count": data[i].count,
-            });
-            for (let j = 0; j < 2; j++) { //second row
-                data.push({
-                    "x": data[data.length - 2].x + inc,
-                    "y": data[data.length - 2].y,
-                    "count": data[i].count,
-                }, {
-                    "x": data[data.length - 1].x - inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[i].count,
-                }, );
-                // inc += inc;
-            }
-            data[data.length - 2].count -= 15; //decrement count point edge
-            data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 28;
-            data.push({
-                "x": data[i].x,
-                "y": data[i].y - 52,
-                "count": data[i].count,
-            }, );
-            for (let j = 0; j < 2; j++) { //thrid row
-
-                if (j > 0) {
-                    data.push({
-                        "x": data[data.length - 2].x + inc,
-                        "y": data[data.length - 2].y,
-                        "count": data[i].count,
-                    }, {
-                        "x": data[data.length - 1].x - inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[i].count,
-                    }, );
-                } else {
-                    data.push({
-                        "x": data[data.length - 1].x + inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[i].count,
-                    }, {
-                        "x": data[data.length - 1].x - inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[data.length - 1].count,
-                    }, );
-                }
-            }
-            data[data.length - 2].count -= 15; //decrement count point edge
-            data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 28;
-            data.push({
-                "x": data[i].x + 15,
-                "y": data[i].y - 78,
-                "count": data[i].count,
-            }, {
-                "x": data[i].x - 15,
-                "y": data[i].y - 78,
-                "count": data[i].count,
-            });
-            for (let j = 0; j < 2; j++) { //fourth row
-                data.push({
-                    "x": data[data.length - 2].x + inc,
-                    "y": data[data.length - 2].y,
-                    "count": data[i].count,
-                }, {
-                    "x": data[data.length - 1].x - inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[i].count,
-                }, );
-            }
-            data[data.length - 2].count -= 15; //decrement count point edge
-            data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 28;
-            data.push({
-                "x": data[i].x,
-                "y": data[i].y - 104,
-                "count": data[i].count,
-            }, );
-            for (let j = 0; j < 2; j++) { //fifth row
-                if (j > 0) {
-                    data.push({
-                        "x": data[data.length - 2].x + inc,
-                        "y": data[data.length - 2].y,
-                        "count": data[i].count,
-                    }, {
-                        "x": data[data.length - 1].x - inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[i].count,
-                    }, );
-                } else {
-                    data.push({
-                        "x": data[data.length - 1].x + inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[i].count,
-                    }, {
-                        "x": data[data.length - 1].x - inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[data.length - 1].count,
-                    }, );
-                }
-            }
-            data[data.length - 2].count -= 15; //decrement count point edge
-            data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 28;
-            data.push({
-                "x": data[i].x + 15,
-                "y": data[i].y - 130,
-                "count": data[i].count,
-            }, {
-                "x": data[i].x - 15,
-                "y": data[i].y - 130,
-                "count": data[i].count,
-            });
-            for (let j = 0; j < 2; j++) { //sixth row
-                data.push({
-                    "x": data[data.length - 2].x + inc,
-                    "y": data[data.length - 2].y,
-                    "count": data[i].count,
-                }, {
-                    "x": data[data.length - 1].x - inc,
-                    "y": data[data.length - 1].y,
-                    "count": data[i].count,
-                }, );
-            }
-            data[data.length - 2].count -= 15; //decrement count point edge
-            data[data.length - 1].count -= 15; //decrement count point edge
-            inc = 28;
-            data.push({
-                "x": data[i].x,
-                "y": data[i].y - 156,
-                "count": data[i].count,
-            }, );
-            for (let j = 0; j < 2; j++) { //seventh row
-                if (j > 0) {
-                    data.push({
-                        "x": data[data.length - 2].x + inc,
-                        "y": data[data.length - 2].y,
-                        "count": data[i].count,
-                    }, {
-                        "x": data[data.length - 1].x - inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[i].count,
-                    }, );
-                } else {
-                    data.push({
-                        "x": data[data.length - 1].x + inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[i].count,
-                    }, {
-                        "x": data[data.length - 1].x - inc,
-                        "y": data[data.length - 1].y,
-                        "count": data[data.length - 1].count,
-                    }, );
-                }
-            }
-            data[data.length - 2].count -= 15; //decrement count point edge
-            data[data.length - 1].count -= 15; //decrement count point edge
-
-        }
-
+    if (slider_container.childElementCount > 1) {
+        console.log("acces to if detect repeat canvas");
+        slider_container.removeChild(slider_container.lastElementChild);
     }
+    var slider2 = new rSlider({
+        target: '#slider2',
+        values: times,
+        range: false,
+        step: 1,
+        labels: false,
+        // set: [5],
+        tooltip: true,
+        onChange: function(vals) {
+            // console.log(vals);
+            label_time.innerHTML = `Time : ${vals}`;
+        },
+    });
+    console.log(times[index]);
+    label_time.innerHTML = `Time : ${times[index]}`;
+    slider2.setValues(times[index]); //init slider value
 }

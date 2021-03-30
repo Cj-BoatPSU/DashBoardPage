@@ -467,7 +467,8 @@ body {
 
 #heatmapArea {
     /* border: 2px solid red; */
-    position: absolute;
+    /* position: relative; */
+    /* position: absolute; */
     width: 88%;
     height: 95%;
     z-index: 2;
@@ -1260,4 +1261,15 @@ label.footer {
     border-radius: 50%;
     background: #4CAF50;
     cursor: pointer;
+}
+
+#label-time-Heatmap {
+    width: 40%;
+    /* text-align: center; */
+    font-size: 30px;
+    /* background-color: rgb(2, 62, 125); */
+    margin-bottom: 10px;
+    color: rgb(2, 62, 125);
+    padding: 10px;
+    font-weight: bold;
 }

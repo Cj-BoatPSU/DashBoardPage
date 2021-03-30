@@ -205,7 +205,7 @@
             setData: function(data) {
                 var dataPoints = data.data;
                 var pointsLen = dataPoints.length;
-                console.log("===========access to setData===========");
+                // console.log("===========access to setData===========");
 
                 // reset data arrays
                 this._data = [];
@@ -298,7 +298,7 @@
     var Canvas2dRenderer = (function Canvas2dRendererClosure() {
 
         var _getColorPalette = function(config) { //(1)
-            console.log("============access to _getColorPalette============");
+            // console.log("============access to _getColorPalette============");
             var gradientConfig = config.gradient || config.defaultGradient;
             var paletteCanvas = document.createElement('canvas');
             var paletteCtx = paletteCanvas.getContext('2d');
@@ -409,7 +409,7 @@
 
         Canvas2dRenderer.prototype = {
             renderPartial: function(data) {
-                console.log("============access to renderPartial============");
+                // console.log("============access to renderPartial============");
                 if (data.data.length > 0) {
                     this._drawAlpha(data);
                     this._colorize();
@@ -417,7 +417,7 @@
             },
             renderAll: function(data) { //(2)
                 // reset render boundaries
-                console.log("============access to renderAll============");
+                // console.log("============access to renderAll============");
                 this._clear();
                 if (data.data.length > 0) {
                     this._drawAlpha(_prepareData(data));
@@ -425,11 +425,11 @@
                 }
             },
             _updateGradient: function(config) {
-                console.log("============access to _updateGradient============");
+                // console.log("============access to _updateGradient============");
                 this._palette = _getColorPalette(config);
             },
             updateConfig: function(config) {
-                console.log("============access to updateConfig============");
+                // console.log("============access to updateConfig============");
                 if (config['gradient']) {
                     this._updateGradient(config);
                 }
@@ -462,7 +462,7 @@
                 this._useGradientOpacity = !!config.useGradientOpacity;
             },
             _drawAlpha: function(data) {
-                console.log("============access to _drawAlpha============");
+                // console.log("============access to _drawAlpha============");
                 var min = this._min = data.min; //0
                 var max = this._max = data.max;
                 var data = data.data || [];
@@ -522,11 +522,11 @@
                     }
 
                 }
-                console.log("========this._renderBoundaries (New)========");
-                console.log(this._renderBoundaries);
+                // console.log("========this._renderBoundaries (New)========");
+                // console.log(this._renderBoundaries);
             },
             _colorize: function(data) { //(3)
-                console.log("===========access to _colorize===========");
+                // console.log("===========access to _colorize===========");
                 var x = this._renderBoundaries[0];
                 var y = this._renderBoundaries[1];
                 var width = this._renderBoundaries[2] - x;
@@ -539,10 +539,10 @@
                 var useGradientOpacity = this._useGradientOpacity;
                 var data = data.data || [];
                 var dataLen = data.length;
-                console.log("dataLen : " + dataLen);
-                console.log(data);
-                console.log(data[dataLen - 1]);
-                console.log(data[dataLen - 1].value);
+                // console.log("dataLen : " + dataLen);
+                // console.log(data);
+                // console.log(data[dataLen - 1]);
+                // console.log(data[dataLen - 1].value);
                 var tmp_temp_front = [];
                 var tmp_temp_behind = [];
                 for (let i = 0; i < dataLen; i++) {
@@ -565,12 +565,12 @@
 
                 }
                 // tmp_temp_front_maximum.value -= 2;
-                console.log("=======tmp_temp_front=========");
-                console.log(tmp_temp_front);
-                console.log("=======tmp_temp_behind=========");
-                console.log(tmp_temp_behind);
-                console.log("=======tmp_temp_front_maximum=========");
-                console.log(tmp_temp_front_maximum);
+                // console.log("=======tmp_temp_front=========");
+                // console.log(tmp_temp_front);
+                // console.log("=======tmp_temp_behind=========");
+                // console.log(tmp_temp_behind);
+                // console.log("=======tmp_temp_front_maximum=========");
+                // console.log(tmp_temp_front_maximum);
                 if (x < 0) {
                     // console.log("access to if _colorize() x < 0");
                     x = 0;
@@ -596,11 +596,11 @@
                 var len = imgData.length;
                 var palette = this._palette;
 
-                console.log("===========img===========");
-                console.log(img);
+                // console.log("===========img===========");
+                // console.log(img);
                 // console.log("===========imgData===========");
                 // console.log(imgData);
-                console.log("len : " + len);
+                // console.log("len : " + len);
                 // console.log("opacity : " + opacity);
                 let count = 0;
                 let tmp_offset = 0;
@@ -731,18 +731,18 @@
                     // console.log(imgData[i]);
 
                 }
-                console.log("count : " + count);
+                // console.log("count : " + count);
                 let tmp = 684;
-                console.log(palette[tmp]);
-                console.log(palette[tmp + 1]);
-                console.log(palette[tmp + 2]);
-                console.log("===========after update imgData===========");
-                console.log(imgData);
+                // console.log(palette[tmp]);
+                // console.log(palette[tmp + 1]);
+                // console.log(palette[tmp + 2]);
+                // console.log("===========after update imgData===========");
+                // console.log(imgData);
                 img.data = imgData;
                 this.ctx.putImageData(img, x, y);
                 this._renderBoundaries = [1000, 1000, 0, 0];
-                console.log("===========palette===========");
-                console.log(palette);
+                // console.log("===========palette===========");
+                // console.log(palette);
             },
             getValueAt: function(point) {
                 var value;

@@ -365,6 +365,24 @@ app.post('/save-config-humidity-thresholds', (req, res) => {
     res.send('save temperature_thresholds.json success!!');
 });
 
+app.get('/mockData', (req, res) => {
+    let tmp = "19:00";
+    fs.readFile("mock_Data.json", 'utf-8', function(err, data) {
+        // Check for errors 
+        if (err) throw err;
+        // Converting to JSON 
+        console.info('/mockData');
+        const results = JSON.parse(data);
+        for (let i = 0; i < results.length; i++) {
+            if (results[i].time == tmp) {
+                console.info(results[i]);
+                res.json(results[i]);
+            }
+        }
+        // console.info(results);
+
+    });
+});
 
 
 async function Query_influxDB_Gauge(config_device, date) {

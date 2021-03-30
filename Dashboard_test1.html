@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Data Center Monitoring Dashboard</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/rSlider.min.css">
     <script defer src="/css/all.js"></script>
     <!-- <script src="https://kit.fontawesome.com/4734782259.js" crossorigin="anonymous"></script> -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -14,6 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@0.1.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@0.1.1"></script>
+    <script src="/modules/rSlider.min.js"></script>
     <script>
         $(document).ready(function() {
             $(".hamburger .hamburger__inner").click(function() {
@@ -129,26 +131,16 @@
                         </div>
                     </div> -->
                     <p id="label-date-Heatmap"></p>
-                    <div class="slidecontainer">
-                        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-                        <p>Value: <span id="demo"></span></p>
+                    <div class="slider-container" id="history_slider">
+                        <input type="text" id="slider2" class="slider" />
                     </div>
-                    <script>
-                        var slider = document.getElementById("myRange");
-                        var output = document.getElementById("demo");
-                        output.innerHTML = slider.value;
-
-                        slider.oninput = function() {
-                            output.innerHTML = this.value;
-                        }
-                    </script>
+                    <p id="label-time-Heatmap"></p>
                     <div id="heatmapContainer">
-                        <div id="heatmapArea">
+                        <div id="heatmapArea" style="position: absolute;">
                         </div>
                         <div id="rack1"></div>
                     </div>
                     <div id="temp-legend"></div>
-                    <!-- <canvas id="test1" width="256" height="100"></canvas> -->
                 </div>
                 <div class="item" id="item-2">
                     <div id="status-color" style="text-align:right">

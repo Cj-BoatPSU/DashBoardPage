@@ -1,0 +1,433 @@
+[{
+        "time": "00:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 29.0 },
+            { "location": "rack2", "positon": "front rack", "value": 23 }, { "location": "rack2", "positon": "behind rack", "value": 32 },
+            { "location": "rack3", "positon": "front rack", "value": 26 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 25 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 20 }, { "location": "rack5", "positon": "behind rack", "value": 29 }
+        ]
+    },
+    {
+        "time": "00:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 29 },
+            { "location": "rack2", "positon": "front rack", "value": 22 }, { "location": "rack2", "positon": "behind rack", "value": 32 },
+            { "location": "rack3", "positon": "front rack", "value": 22 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 22 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 22 }, { "location": "rack5", "positon": "behind rack", "value": 29 }
+        ]
+    },
+    {
+        "time": "01:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 23 }, { "location": "rack1", "positon": "behind rack", "value": 29 },
+            { "location": "rack2", "positon": "front rack", "value": 25 }, { "location": "rack2", "positon": "behind rack", "value": 35 },
+            { "location": "rack3", "positon": "front rack", "value": 20 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 21 }, { "location": "rack5", "positon": "behind rack", "value": 29 }
+        ]
+    },
+    {
+        "time": "01:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 27 }, { "location": "rack1", "positon": "behind rack", "value": 29 },
+            { "location": "rack2", "positon": "front rack", "value": 25 }, { "location": "rack2", "positon": "behind rack", "value": 35 },
+            { "location": "rack3", "positon": "front rack", "value": 27 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 28 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 21 }, { "location": "rack5", "positon": "behind rack", "value": 29 }
+        ]
+    },
+    {
+        "time": "02:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 25 }, { "location": "rack1", "positon": "behind rack", "value": 29 },
+            { "location": "rack2", "positon": "front rack", "value": 25 }, { "location": "rack2", "positon": "behind rack", "value": 35 },
+            { "location": "rack3", "positon": "front rack", "value": 27 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 28 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 25 }, { "location": "rack5", "positon": "behind rack", "value": 29 }
+        ]
+    },
+    {
+        "time": "02:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 27 }, { "location": "rack1", "positon": "behind rack", "value": 38 },
+            { "location": "rack2", "positon": "front rack", "value": 27 }, { "location": "rack2", "positon": "behind rack", "value": 35 },
+            { "location": "rack3", "positon": "front rack", "value": 27 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 28 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 27 }, { "location": "rack5", "positon": "behind rack", "value": 34 }
+        ]
+    },
+    {
+        "time": "03:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 24 }, { "location": "rack1", "positon": "behind rack", "value": 38 },
+            { "location": "rack2", "positon": "front rack", "value": 23 }, { "location": "rack2", "positon": "behind rack", "value": 35 },
+            { "location": "rack3", "positon": "front rack", "value": 23 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 25 }, { "location": "rack4", "positon": "behind rack", "value": 35 },
+            { "location": "rack5", "positon": "front rack", "value": 22 }, { "location": "rack5", "positon": "behind rack", "value": 34 }
+        ]
+    },
+    {
+        "time": "03:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 24 }, { "location": "rack1", "positon": "behind rack", "value": 38 },
+            { "location": "rack2", "positon": "front rack", "value": 23 }, { "location": "rack2", "positon": "behind rack", "value": 35 },
+            { "location": "rack3", "positon": "front rack", "value": 23 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 25 }, { "location": "rack4", "positon": "behind rack", "value": 35 },
+            { "location": "rack5", "positon": "front rack", "value": 20 }, { "location": "rack5", "positon": "behind rack", "value": 34 }
+        ]
+    },
+    {
+        "time": "04:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 20 }, { "location": "rack1", "positon": "behind rack", "value": 38 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 40 },
+            { "location": "rack3", "positon": "front rack", "value": 23 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 35 },
+            { "location": "rack5", "positon": "front rack", "value": 20 }, { "location": "rack5", "positon": "behind rack", "value": 40 }
+        ]
+    },
+    {
+        "time": "04:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 24 }, { "location": "rack1", "positon": "behind rack", "value": 35 },
+            { "location": "rack2", "positon": "front rack", "value": 24 }, { "location": "rack2", "positon": "behind rack", "value": 35 },
+            { "location": "rack3", "positon": "front rack", "value": 23 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 25 }, { "location": "rack4", "positon": "behind rack", "value": 35 },
+            { "location": "rack5", "positon": "front rack", "value": 20 }, { "location": "rack5", "positon": "behind rack", "value": 37 }
+        ]
+    },
+    {
+        "time": "05:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 35 },
+            { "location": "rack2", "positon": "front rack", "value": 22 }, { "location": "rack2", "positon": "behind rack", "value": 35 },
+            { "location": "rack3", "positon": "front rack", "value": 23 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 22 }, { "location": "rack4", "positon": "behind rack", "value": 35 },
+            { "location": "rack5", "positon": "front rack", "value": 20 }, { "location": "rack5", "positon": "behind rack", "value": 37 }
+        ]
+    },
+    {
+        "time": "05:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 21 }, { "location": "rack2", "positon": "behind rack", "value": 29 },
+            { "location": "rack3", "positon": "front rack", "value": 21 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 22 }, { "location": "rack4", "positon": "behind rack", "value": 35 },
+            { "location": "rack5", "positon": "front rack", "value": 21 }, { "location": "rack5", "positon": "behind rack", "value": 29 }
+        ]
+    },
+    {
+        "time": "06:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 23 }, { "location": "rack2", "positon": "behind rack", "value": 32 },
+            { "location": "rack3", "positon": "front rack", "value": 24 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 24 }, { "location": "rack4", "positon": "behind rack", "value": 35 },
+            { "location": "rack5", "positon": "front rack", "value": 23 }, { "location": "rack5", "positon": "behind rack", "value": 32 }
+        ]
+    },
+    {
+        "time": "06:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 20 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 21 }, { "location": "rack2", "positon": "behind rack", "value": 32 },
+            { "location": "rack3", "positon": "front rack", "value": 20 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 24 }, { "location": "rack4", "positon": "behind rack", "value": 35 },
+            { "location": "rack5", "positon": "front rack", "value": 22 }, { "location": "rack5", "positon": "behind rack", "value": 32 }
+        ]
+    },
+    {
+        "time": "07:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 21 }, { "location": "rack2", "positon": "behind rack", "value": 32 },
+            { "location": "rack3", "positon": "front rack", "value": 20 }, { "location": "rack3", "positon": "behind rack", "value": 33 },
+            { "location": "rack4", "positon": "front rack", "value": 22 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 22 }, { "location": "rack5", "positon": "behind rack", "value": 32 }
+        ]
+    },
+    {
+        "time": "07:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 24 }, { "location": "rack2", "positon": "behind rack", "value": 32 },
+            { "location": "rack3", "positon": "front rack", "value": 25 }, { "location": "rack3", "positon": "behind rack", "value": 33 },
+            { "location": "rack4", "positon": "front rack", "value": 24 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 20 }, { "location": "rack5", "positon": "behind rack", "value": 38 }
+        ]
+    },
+    {
+        "time": "08:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 27 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 24 }, { "location": "rack2", "positon": "behind rack", "value": 29 },
+            { "location": "rack3", "positon": "front rack", "value": 27 }, { "location": "rack3", "positon": "behind rack", "value": 36 },
+            { "location": "rack4", "positon": "front rack", "value": 24 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 25 }, { "location": "rack5", "positon": "behind rack", "value": 38 }
+        ]
+    },
+    {
+        "time": "08:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 20 }, { "location": "rack1", "positon": "behind rack", "value": 35 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 29 },
+            { "location": "rack3", "positon": "front rack", "value": 27 }, { "location": "rack3", "positon": "behind rack", "value": 29 },
+            { "location": "rack4", "positon": "front rack", "value": 24 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 25 }, { "location": "rack5", "positon": "behind rack", "value": 30 }
+        ]
+    },
+    {
+        "time": "09:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 25 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 24 }, { "location": "rack2", "positon": "behind rack", "value": 29 },
+            { "location": "rack3", "positon": "front rack", "value": 20 }, { "location": "rack3", "positon": "behind rack", "value": 34 },
+            { "location": "rack4", "positon": "front rack", "value": 24 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 25 }, { "location": "rack5", "positon": "behind rack", "value": 38 }
+        ]
+    },
+    {
+        "time": "09:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 20 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 29 },
+            { "location": "rack3", "positon": "front rack", "value": 27 }, { "location": "rack3", "positon": "behind rack", "value": 29 },
+            { "location": "rack4", "positon": "front rack", "value": 24 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 25 }, { "location": "rack5", "positon": "behind rack", "value": 30 }
+        ]
+    },
+    {
+        "time": "10:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 22 }, { "location": "rack2", "positon": "behind rack", "value": 29 },
+            { "location": "rack3", "positon": "front rack", "value": 22 }, { "location": "rack3", "positon": "behind rack", "value": 34 },
+            { "location": "rack4", "positon": "front rack", "value": 21 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 22 }, { "location": "rack5", "positon": "behind rack", "value": 38 }
+        ]
+    },
+    {
+        "time": "10:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 25 }, { "location": "rack1", "positon": "behind rack", "value": 33 },
+            { "location": "rack2", "positon": "front rack", "value": 25 }, { "location": "rack2", "positon": "behind rack", "value": 33 },
+            { "location": "rack3", "positon": "front rack", "value": 25 }, { "location": "rack3", "positon": "behind rack", "value": 33 },
+            { "location": "rack4", "positon": "front rack", "value": 25 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 25 }, { "location": "rack5", "positon": "behind rack", "value": 30 }
+        ]
+    },
+    {
+        "time": "11:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 20 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 22 }, { "location": "rack2", "positon": "behind rack", "value": 29 },
+            { "location": "rack3", "positon": "front rack", "value": 25 }, { "location": "rack3", "positon": "behind rack", "value": 34 },
+            { "location": "rack4", "positon": "front rack", "value": 21 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 24 }, { "location": "rack5", "positon": "behind rack", "value": 38 }
+        ]
+    },
+    {
+        "time": "11:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 25 }, { "location": "rack1", "positon": "behind rack", "value": 29 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 33 },
+            { "location": "rack3", "positon": "front rack", "value": 25 }, { "location": "rack3", "positon": "behind rack", "value": 33 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 25 }, { "location": "rack5", "positon": "behind rack", "value": 30 }
+        ]
+    },
+    {
+        "time": "12:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 24 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 22 }, { "location": "rack2", "positon": "behind rack", "value": 29 },
+            { "location": "rack3", "positon": "front rack", "value": 25 }, { "location": "rack3", "positon": "behind rack", "value": 40 },
+            { "location": "rack4", "positon": "front rack", "value": 23 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 24 }, { "location": "rack5", "positon": "behind rack", "value": 32 }
+        ]
+    },
+    {
+        "time": "12:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 20 }, { "location": "rack1", "positon": "behind rack", "value": 29 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 33 },
+            { "location": "rack3", "positon": "front rack", "value": 20 }, { "location": "rack3", "positon": "behind rack", "value": 38 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 25 }, { "location": "rack5", "positon": "behind rack", "value": 30 }
+        ]
+    },
+    {
+        "time": "13:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 22 }, { "location": "rack2", "positon": "behind rack", "value": 33 },
+            { "location": "rack3", "positon": "front rack", "value": 25 }, { "location": "rack3", "positon": "behind rack", "value": 35 },
+            { "location": "rack4", "positon": "front rack", "value": 22 }, { "location": "rack4", "positon": "behind rack", "value": 33 },
+            { "location": "rack5", "positon": "front rack", "value": 22 }, { "location": "rack5", "positon": "behind rack", "value": 32 }
+        ]
+    },
+    {
+        "time": "13:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 25 }, { "location": "rack1", "positon": "behind rack", "value": 29 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 33 },
+            { "location": "rack3", "positon": "front rack", "value": 24 }, { "location": "rack3", "positon": "behind rack", "value": 40 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 25 }, { "location": "rack5", "positon": "behind rack", "value": 40 }
+        ]
+    },
+    {
+        "time": "14:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 38 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 33 },
+            { "location": "rack3", "positon": "front rack", "value": 25 }, { "location": "rack3", "positon": "behind rack", "value": 35 },
+            { "location": "rack4", "positon": "front rack", "value": 22 }, { "location": "rack4", "positon": "behind rack", "value": 33 },
+            { "location": "rack5", "positon": "front rack", "value": 25 }, { "location": "rack5", "positon": "behind rack", "value": 32 }
+        ]
+    },
+    {
+        "time": "14:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 25 }, { "location": "rack1", "positon": "behind rack", "value": 38 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 33 },
+            { "location": "rack3", "positon": "front rack", "value": 24 }, { "location": "rack3", "positon": "behind rack", "value": 40 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 25 }, { "location": "rack5", "positon": "behind rack", "value": 40 }
+        ]
+    },
+    {
+        "time": "15:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 27 }, { "location": "rack1", "positon": "behind rack", "value": 38 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 33 },
+            { "location": "rack3", "positon": "front rack", "value": 25 }, { "location": "rack3", "positon": "behind rack", "value": 40 },
+            { "location": "rack4", "positon": "front rack", "value": 22 }, { "location": "rack4", "positon": "behind rack", "value": 33 },
+            { "location": "rack5", "positon": "front rack", "value": 27 }, { "location": "rack5", "positon": "behind rack", "value": 29 }
+        ]
+    },
+    {
+        "time": "15:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 25 }, { "location": "rack1", "positon": "behind rack", "value": 38 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 40 },
+            { "location": "rack3", "positon": "front rack", "value": 24 }, { "location": "rack3", "positon": "behind rack", "value": 40 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 25 }, { "location": "rack5", "positon": "behind rack", "value": 40 }
+        ]
+    },
+    {
+        "time": "16:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 24 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 24 }, { "location": "rack2", "positon": "behind rack", "value": 33 },
+            { "location": "rack3", "positon": "front rack", "value": 25 }, { "location": "rack3", "positon": "behind rack", "value": 30 },
+            { "location": "rack4", "positon": "front rack", "value": 22 }, { "location": "rack4", "positon": "behind rack", "value": 33 },
+            { "location": "rack5", "positon": "front rack", "value": 24 }, { "location": "rack5", "positon": "behind rack", "value": 29 }
+        ]
+    },
+    {
+        "time": "16:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 35 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 29 },
+            { "location": "rack3", "positon": "front rack", "value": 22 }, { "location": "rack3", "positon": "behind rack", "value": 29 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 29 },
+            { "location": "rack5", "positon": "front rack", "value": 22 }, { "location": "rack5", "positon": "behind rack", "value": 29 }
+        ]
+    },
+    {
+        "time": "17:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 21 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 21 }, { "location": "rack2", "positon": "behind rack", "value": 35 },
+            { "location": "rack3", "positon": "front rack", "value": 21 }, { "location": "rack3", "positon": "behind rack", "value": 30 },
+            { "location": "rack4", "positon": "front rack", "value": 22 }, { "location": "rack4", "positon": "behind rack", "value": 33 },
+            { "location": "rack5", "positon": "front rack", "value": 21 }, { "location": "rack5", "positon": "behind rack", "value": 38 }
+        ]
+    },
+    {
+        "time": "17:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 35 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 29 },
+            { "location": "rack3", "positon": "front rack", "value": 25 }, { "location": "rack3", "positon": "behind rack", "value": 29 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 35 },
+            { "location": "rack5", "positon": "front rack", "value": 22 }, { "location": "rack5", "positon": "behind rack", "value": 29 }
+        ]
+    },
+    {
+        "time": "18:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 23 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 21 }, { "location": "rack2", "positon": "behind rack", "value": 35 },
+            { "location": "rack3", "positon": "front rack", "value": 25 }, { "location": "rack3", "positon": "behind rack", "value": 30 },
+            { "location": "rack4", "positon": "front rack", "value": 22 }, { "location": "rack4", "positon": "behind rack", "value": 33 },
+            { "location": "rack5", "positon": "front rack", "value": 21 }, { "location": "rack5", "positon": "behind rack", "value": 35 }
+        ]
+    },
+    {
+        "time": "18:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 31 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 34 },
+            { "location": "rack3", "positon": "front rack", "value": 21 }, { "location": "rack3", "positon": "behind rack", "value": 29 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 23 }, { "location": "rack5", "positon": "behind rack", "value": 29 }
+        ]
+    },
+    {
+        "time": "19:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 25 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 21 }, { "location": "rack2", "positon": "behind rack", "value": 35 },
+            { "location": "rack3", "positon": "front rack", "value": 25 }, { "location": "rack3", "positon": "behind rack", "value": 40 },
+            { "location": "rack4", "positon": "front rack", "value": 25 }, { "location": "rack4", "positon": "behind rack", "value": 33 },
+            { "location": "rack5", "positon": "front rack", "value": 21 }, { "location": "rack5", "positon": "behind rack", "value": 38 }
+        ]
+    },
+    {
+        "time": "19:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 22 }, { "location": "rack1", "positon": "behind rack", "value": 31 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 34 },
+            { "location": "rack3", "positon": "front rack", "value": 21 }, { "location": "rack3", "positon": "behind rack", "value": 29 },
+            { "location": "rack4", "positon": "front rack", "value": 25 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 23 }, { "location": "rack5", "positon": "behind rack", "value": 40 }
+        ]
+    },
+    {
+        "time": "20:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 20 }, { "location": "rack1", "positon": "behind rack", "value": 29 },
+            { "location": "rack2", "positon": "front rack", "value": 21 }, { "location": "rack2", "positon": "behind rack", "value": 34 },
+            { "location": "rack3", "positon": "front rack", "value": 20 }, { "location": "rack3", "positon": "behind rack", "value": 40 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 33 },
+            { "location": "rack5", "positon": "front rack", "value": 21 }, { "location": "rack5", "positon": "behind rack", "value": 36 }
+        ]
+    },
+    {
+        "time": "20:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 20 }, { "location": "rack1", "positon": "behind rack", "value": 34 },
+            { "location": "rack2", "positon": "front rack", "value": 25 }, { "location": "rack2", "positon": "behind rack", "value": 34 },
+            { "location": "rack3", "positon": "front rack", "value": 21 }, { "location": "rack3", "positon": "behind rack", "value": 29 },
+            { "location": "rack4", "positon": "front rack", "value": 25 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 23 }, { "location": "rack5", "positon": "behind rack", "value": 40 }
+        ]
+    },
+    {
+        "time": "21:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 23 }, { "location": "rack1", "positon": "behind rack", "value": 29 },
+            { "location": "rack2", "positon": "front rack", "value": 20 }, { "location": "rack2", "positon": "behind rack", "value": 34 },
+            { "location": "rack3", "positon": "front rack", "value": 20 }, { "location": "rack3", "positon": "behind rack", "value": 40 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 23 }, { "location": "rack5", "positon": "behind rack", "value": 30 }
+        ]
+    },
+    {
+        "time": "21:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 25 }, { "location": "rack1", "positon": "behind rack", "value": 30 },
+            { "location": "rack2", "positon": "front rack", "value": 22 }, { "location": "rack2", "positon": "behind rack", "value": 34 },
+            { "location": "rack3", "positon": "front rack", "value": 21 }, { "location": "rack3", "positon": "behind rack", "value": 30 },
+            { "location": "rack4", "positon": "front rack", "value": 25 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 23 }, { "location": "rack5", "positon": "behind rack", "value": 40 }
+        ]
+    },
+    {
+        "time": "22:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 20 }, { "location": "rack1", "positon": "behind rack", "value": 29 },
+            { "location": "rack2", "positon": "front rack", "value": 22 }, { "location": "rack2", "positon": "behind rack", "value": 34 },
+            { "location": "rack3", "positon": "front rack", "value": 20 }, { "location": "rack3", "positon": "behind rack", "value": 30 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 23 }, { "location": "rack5", "positon": "behind rack", "value": 33 }
+        ]
+    },
+    {
+        "time": "22:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 21 }, { "location": "rack1", "positon": "behind rack", "value": 38 },
+            { "location": "rack2", "positon": "front rack", "value": 25 }, { "location": "rack2", "positon": "behind rack", "value": 34 },
+            { "location": "rack3", "positon": "front rack", "value": 21 }, { "location": "rack3", "positon": "behind rack", "value": 30 },
+            { "location": "rack4", "positon": "front rack", "value": 21 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 20 }, { "location": "rack5", "positon": "behind rack", "value": 36 }
+        ]
+    },
+    {
+        "time": "23:00",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 23 }, { "location": "rack1", "positon": "behind rack", "value": 35 },
+            { "location": "rack2", "positon": "front rack", "value": 22 }, { "location": "rack2", "positon": "behind rack", "value": 34 },
+            { "location": "rack3", "positon": "front rack", "value": 23 }, { "location": "rack3", "positon": "behind rack", "value": 30 },
+            { "location": "rack4", "positon": "front rack", "value": 20 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 23 }, { "location": "rack5", "positon": "behind rack", "value": 30 }
+        ]
+    },
+    {
+        "time": "23:30",
+        "data": [{ "location": "rack1", "positon": "front rack", "value": 21 }, { "location": "rack1", "positon": "behind rack", "value": 29 },
+            { "location": "rack2", "positon": "front rack", "value": 23 }, { "location": "rack2", "positon": "behind rack", "value": 34 },
+            { "location": "rack3", "positon": "front rack", "value": 21 }, { "location": "rack3", "positon": "behind rack", "value": 30 },
+            { "location": "rack4", "positon": "front rack", "value": 21 }, { "location": "rack4", "positon": "behind rack", "value": 30 },
+            { "location": "rack5", "positon": "front rack", "value": 20 }, { "location": "rack5", "positon": "behind rack", "value": 29 }
+        ]
+    }
+]
