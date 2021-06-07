@@ -27,3 +27,38 @@
 - Heatmap section-4 (humidity type)
 
 ![](/asset/7.png )
+
+- Charts section-1
+
+![](/asset/8.png )
+
+- Charts section-2
+
+![](/asset/9.png )
+
+- Charts section-3
+
+![](/asset/10.png )
+
+- History section-1
+
+![](/asset/11.png )
+
+
+- History section-2
+
+![](/asset/12.png )
+
+
+- Alert section
+
+![](/asset/13.png )
+
+- Config section
+
+![](/asset/14.png )
+
+
+- Profile Setting section
+
+![](/asset/15.png )
