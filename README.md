@@ -7,5 +7,6 @@
 ## Sequence diagram overview system
 ![](/asset/2.png)
 ## Web UI design
-<p>Login Page</p>
+
+Login Page
 ![](/asset/2.png)
