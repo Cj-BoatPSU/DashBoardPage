@@ -12,3 +12,6 @@
 
 ![](/asset/3.png )
 
+- Heatmap section-1 (temperature type)
+
+![](/asset/4.png )
