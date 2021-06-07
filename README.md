@@ -3,5 +3,4 @@
 <p> ผลจากการดำเนินงานพบว่า สามารถแสดงข้อมูลอุณหภูมิและความชื้นให้อยู่ในรูปแบบ heatmap และข้อมูลดังกล่าวสามารถดูย้อนหลังได้ สามารถแจ้งเตือนเมื่อมีค่าเกินกว่าที่กำหนดผ่านช่องทาง email และ Line notification ได้ </p>
 
 ## ภาพรวมของระบบ
-
-[![An old rock in the desert](D:\github_DashBoardProject\pic\1.jpg "Shiprock, New Mexico by Beau Rogers")]
+![Philadelphia's Magic Gardens. This place was so cool!](D:\github_DashBoardProject\pic\1.jpg "Philadelphia's Magic Gardens")
