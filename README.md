@@ -15,3 +15,15 @@
 - Heatmap section-1 (temperature type)
 
 ![](/asset/4.png )
+
+- Heatmap section-2 (temperature type)
+
+![](/asset/5.png )
+
+- Heatmap section-3 (humidity type)
+
+![](/asset/6.png )
+
+- Heatmap section-4 (humidity type)
+
+![](/asset/7.png )
