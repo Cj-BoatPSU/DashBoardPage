@@ -8,5 +8,4 @@
 ![](/asset/2.png)
 ## Web UI design
 
-<p>Login Page</p>
 ![](/asset/2.png )
