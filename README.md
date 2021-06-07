@@ -4,4 +4,4 @@
 
 ## ภาพรวมของระบบ
 
-![alt text](D:\github_DashBoardProject\pic\1.jpg)
+[![An old rock in the desert](D:\github_DashBoardProject\pic\1.jpg "Shiprock, New Mexico by Beau Rogers")]
