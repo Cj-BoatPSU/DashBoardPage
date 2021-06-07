@@ -7,5 +7,9 @@
 ## Sequence diagram overview system
 ![](/asset/2.png)
 ## Web UI design
+<p>Login Page</p>
 ![](/asset/3.png)
-<p>     Login Page      </p>
+<p>Heatmap section-1 (temperature type)</p>
+![](/asset/4.png)
+<p>Heatmap section-2 (temperature type)</p>
+![](/asset/5.png)
