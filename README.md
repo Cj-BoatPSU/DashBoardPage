@@ -71,6 +71,8 @@
 
 ![](/asset/15.png )
 
-![](/asset/1.jpg ) ![](/asset/16.png )
+![](/asset/16.png )
 
-ตัวอย่างการแจ้งเตือนไปยังผู้ใช้ผ่าน Line notify และ Email ตามลำดับ
+![](/asset/1.jpg ) 
+
+ตัวอย่างการแจ้งเตือนไปยังผู้ใช้ผ่าน Email และ Line notify ตามลำดับ
